@@ -1,0 +1,103 @@
+# Genome Language Specification v0.1
+
+## Overview
+
+Genome Language is a declarative format for autonomous organizations.
+
+The canonical format is YAML.
+
+JSON is also supported as a compiled representation.
+
+## File Extension
+
+Recommended:
+
+```text
+company.genome.yaml
+```
+
+Short form:
+
+```text
+genome.yaml
+```
+
+## Top-Level Structure
+
+```yaml
+genomeVersion: 0.1
+
+company:
+  name:
+  mission:
+  timezone:
+
+departments:
+
+workflows:
+
+policies:
+
+integrations:
+
+memory:
+
+objectives:
+
+metrics:
+```
+
+## Identifiers
+
+Identifiers should use kebab-case or snake_case.
+
+Valid examples:
+
+```text
+engineering
+customer-success
+billing_platform
+```
+
+Invalid examples:
+
+```text
+Engineering Team!
+sales ops
+```
+
+## References
+
+Nested resources can be referenced using dot notation:
+
+```text
+engineering.platform.backend
+```
+
+## Agent Autonomy Levels
+
+Supported values:
+
+- manual
+- supervised
+- autonomous
+
+## Workflow Triggers
+
+Supported values:
+
+- manual
+- event
+- schedule
+- webhook
+
+## Compilation Targets
+
+A Genome document may be compiled into:
+
+- runtime graph
+- office layout
+- workflow definitions
+- agent registry
+- permission map
+- knowledge graph

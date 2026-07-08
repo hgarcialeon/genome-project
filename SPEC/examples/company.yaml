@@ -1,0 +1,103 @@
+genomeVersion: 0.1
+
+company:
+  name: Acme Billing
+  mission: Build the most reliable billing platform for modern businesses.
+  timezone: America/Mexico_City
+
+departments:
+  engineering:
+    mission: Build, maintain, and operate the product.
+    teams:
+      platform:
+        mission: Own core billing infrastructure.
+        agents:
+          architect:
+            role: Software Architect
+            autonomy: supervised
+            skills:
+              - system-design
+              - domain-modeling
+              - technical-strategy
+          backend:
+            role: Backend Engineer
+            autonomy: supervised
+            skills:
+              - node
+              - postgres
+              - api-design
+          frontend:
+            role: Frontend Engineer
+            autonomy: supervised
+            skills:
+              - react
+              - typescript
+              - ux
+          qa:
+            role: Quality Engineer
+            autonomy: supervised
+            skills:
+              - playwright
+              - regression-testing
+              - exploratory-testing
+
+  operations:
+    mission: Keep the organization running.
+    agents:
+      coordinator:
+        role: Operations Coordinator
+        autonomy: supervised
+        skills:
+          - planning
+          - reporting
+          - follow-up
+
+workflows:
+  build-feature:
+    owner: engineering.platform.architect
+    trigger: manual
+    steps:
+      - clarify-requirement
+      - design-solution
+      - implement
+      - review
+      - test
+      - release
+
+  incident-response:
+    owner: engineering.platform.backend
+    trigger: event
+    steps:
+      - detect
+      - triage
+      - mitigate
+      - resolve
+      - document
+
+policies:
+  production-deploy:
+    requiresApprovalFrom:
+      - human:engineering-manager
+
+integrations:
+  github:
+    type: source-control
+    provider: github
+
+memory:
+  retention: long-term
+  stores:
+    - decisions
+    - architecture
+    - incidents
+    - lessons-learned
+
+objectives:
+  reliability:
+    description: Maintain a stable billing platform.
+
+metrics:
+  deployment-frequency:
+    type: delivery
+  defect-escape-rate:
+    type: quality

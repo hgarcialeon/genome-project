@@ -1,0 +1,18 @@
+{
+  "name": "genome",
+  "version": "0.0.1",
+  "private": true,
+  "description": "The declarative language for autonomous organizations.",
+  "scripts": {
+    "dev": "turbo dev",
+    "test": "turbo test",
+    "build": "turbo build",
+    "genome": "pnpm --filter @genome/cli dev",
+    "validate": "pnpm --filter @genome/cli dev validate"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.3",
+    "typescript": "^5.7.2"
+  },
+  "packageManager": "pnpm@9.15.0"
+}

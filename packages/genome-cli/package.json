@@ -1,0 +1,15 @@
+{
+  "name": "@genome/cli",
+  "version": "0.0.1",
+  "type": "module",
+  "bin": {
+    "genome": "src/index.ts"
+  },
+  "scripts": {
+    "dev": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "tsx": "^4.19.2"
+  }
+}

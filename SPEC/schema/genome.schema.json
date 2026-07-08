@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://genome.dev/schema/genome.schema.json",
+  "title": "Genome",
+  "description": "Declarative specification for autonomous organizations.",
+  "type": "object",
+  "required": ["genomeVersion", "company"],
+  "properties": {
+    "genomeVersion": {
+      "type": ["string", "number"]
+    },
+    "company": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string" },
+        "mission": { "type": "string" },
+        "timezone": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "departments": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object"
+      }
+    },
+    "workflows": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object"
+      }
+    },
+    "policies": {
+      "type": "object"
+    },
+    "integrations": {
+      "type": "object"
+    },
+    "memory": {
+      "type": "object"
+    },
+    "objectives": {
+      "type": "object"
+    },
+    "metrics": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}
