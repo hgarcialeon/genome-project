@@ -1,45 +1,33 @@
 # Claude Code Prompt
 
-You are implementing the first commit of the Genome project.
+You are working on the Genome project.
 
 Genome is the declarative language for autonomous organizations.
 
-## Goal
+## Before Doing Anything
 
-Create a working monorepo with:
+Read, in order:
 
-- README
-- ROADMAP
-- RFC documents
-- SPEC documents
-- JSON schema
-- example company.yaml
-- schema package
-- CLI package
+1. `PROJECT_STATE.md`
+2. `docs/BOOTSTRAP.md`
+3. `docs/CONSTITUTION.md`
+4. `docs/ARCHITECT.md`
+5. `docs/GOVERNANCE.md`
+6. active RFC
+7. relevant SPEC files
+8. `IMPLEMENTATION_QUEUE.md`
 
-## Tech Requirements
+Do not implement work that is not in the Implementation Queue.
 
-Use:
+Do not introduce major architectural concepts without RFC or ADR coverage.
 
-- TypeScript
-- pnpm
-- Turborepo
-- Node.js 20+
-- Vitest
-- AJV
-- yaml
-- commander
+## Current Goal
+
+Make Phase 0 executable.
 
 ## First Working Feature
 
 Implement:
-
-```bash
-pnpm install
-pnpm validate SPEC/examples/company.yaml
-```
-
-or:
 
 ```bash
 pnpm genome validate SPEC/examples/company.yaml

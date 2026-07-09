@@ -2,14 +2,22 @@
 
 ## Phase 0 — Foundation
 
-Goal: establish the project as a specification-first platform.
+Goal: establish Genome as a specification-first project.
 
 Deliverables:
 
 - Repository structure
 - README
+- VISION
+- Constitution
+- Architecture Charter
+- Governance Model
+- Bootstrap Protocol
+- Project State
+- Implementation Queue
 - RFC-0000
 - RFC-0001
+- RFC-0002 draft
 - Genome Language v0.1
 - JSON Schema v0.1
 - Example `company.yaml`
@@ -21,25 +29,22 @@ Success criteria:
 genome validate SPEC/examples/company.yaml
 ```
 
-## Phase 1 — Genome Language
+## Phase 1 — Genome Compiler
 
-Goal: define the first usable version of the declarative language.
+Goal: make the Genome specification executable through a compiler boundary.
 
 Deliverables:
 
-- Company model
-- Department model
-- Team model
-- Agent model
-- Workflow model
-- Policy model
-- Integration model
-- Memory model
-- Validation rules
+- compiler pipeline
+- AST model
+- semantic validation
+- Organization Graph
+- compilation targets
+- compiler tests
 
 ## Phase 2 — CLI & Schema
 
-Goal: make the specification executable.
+Goal: make the specification usable from local development.
 
 Deliverables:
 
@@ -48,7 +53,7 @@ Deliverables:
 - `genome diff`
 - `genome graph`
 - TypeScript types generated from schema
-- Test suite for valid and invalid examples
+- valid and invalid fixtures
 
 ## Phase 3 — Runtime Prototype
 

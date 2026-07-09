@@ -2,13 +2,13 @@
 
 **The declarative language for autonomous organizations.**
 
-Genome is an open specification and reference implementation for describing, executing, visualizing, and continuously improving autonomous organizations.
+Genome is an open specification and reference implementation for describing, compiling, executing, visualizing, and continuously improving autonomous organizations.
 
 > Git describes code. Kubernetes describes infrastructure. Terraform describes resources. Genome describes companies.
 
 ## Why Genome?
 
-Modern companies are becoming increasingly automated, agentic, and software-defined.
+Modern companies are becoming software-defined and increasingly autonomous.
 
 But there is no standard way to describe how an autonomous organization is structured, how it operates, what agents it contains, what workflows it runs, what policies govern it, and how it learns.
 
@@ -50,6 +50,7 @@ workflows:
 
 Then Genome can compile that declaration into:
 
+- organization graph
 - AI workforce
 - workflows
 - runtime execution
@@ -70,35 +71,26 @@ The first goal is to validate a Genome document against the v0.1 schema.
 ## Repository Structure
 
 ```text
-genome/
+genome-project/
 ├── README.md
 ├── ROADMAP.md
+├── PROJECT_STATE.md
+├── IMPLEMENTATION_QUEUE.md
 ├── RFC/
-│   ├── 0000-genome.md
-│   └── 0001-language.md
 ├── SPEC/
-│   ├── language.md
-│   ├── schema.md
-│   ├── schema/
-│   │   └── genome.schema.json
-│   └── examples/
-│       └── company.yaml
+├── docs/
 ├── packages/
-│   ├── genome-schema
-│   └── genome-cli
-├── apps/
-│   └── studio
-└── docs/
-    └── adr
+└── apps/
 ```
 
 ## Product Layers
 
 - **Genome Specification**: the standard
+- **Genome Compiler**: transforms documents into internal graph models
 - **Genome Runtime**: executes organizations
 - **Genome Studio**: edits and visualizes companies
 - **Genome Office View**: isometric living office
-- **Genome SDK**: tools for extensions and integrations
+- **Genome SDK**: extensions and integrations
 - **Genome Marketplace**: reusable agents, departments, workflows, and templates
 
 ## Guiding Principles
