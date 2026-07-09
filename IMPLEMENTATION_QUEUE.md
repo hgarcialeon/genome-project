@@ -11,7 +11,7 @@ Claude Code or any engineering agent should consume this queue instead of acting
 
 | Priority | Item | Depends On | Owner | Status |
 |----------|------|------------|-------|--------|
-| High | Complete Genome CLI validation | Genome Schema v0.1 | Engineering | Ready |
+| High | Complete Genome CLI validation | Genome Schema v0.1 | Engineering | Done |
 | High | Genome Compiler package design | RFC-0002 | Architecture | Ready for Review |
 | High | Organization Graph model | RFC-0002 | Architecture | Blocked |
 | Medium | CLI inspect command | Compiler AST | Engineering | Blocked |
