@@ -6,7 +6,8 @@
     "genome": "src/index.ts"
   },
   "scripts": {
-    "dev": "tsx src/index.ts"
+    "dev": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@genome/schema": "workspace:*",
