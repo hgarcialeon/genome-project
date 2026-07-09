@@ -102,3 +102,7 @@ genome-project/
 5. Execution is reproducible.
 6. Human approval remains first-class.
 7. The specification is the product.
+
+## License
+
+Licensed under the [Apache License 2.0](LICENSE).

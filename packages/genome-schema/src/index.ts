@@ -1,5 +1,9 @@
-import Ajv2020, { type ErrorObject } from "ajv/dist/2020.js";
+import _Ajv2020, { type ErrorObject } from "ajv/dist/2020.js";
 import YAML from "yaml";
+
+// Ajv ships as CommonJS, so under NodeNext the default import resolves to the
+// module namespace rather than the constructor. Re-point it at the real class.
+const Ajv2020 = _Ajv2020 as unknown as typeof _Ajv2020.default;
 
 export type ValidationResult = {
   valid: boolean;
