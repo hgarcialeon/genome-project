@@ -2,7 +2,18 @@
 
 ## Status
 
-Draft
+Accepted
+
+Accepted by the Architecture Board (Product Owner, Chief Architect, Lead
+Engineer) on 2026-07-13. The board's vote was **Accept with conditions**;
+the conditions have been incorporated into this document. See
+`docs/reviews/RFC-0005-board-decision.md` for the decision record and
+`docs/adr/0006-genome-diff-contract.md` for the recorded architectural
+decision.
+
+This RFC completes the **Phase 2 roadmap** (CLI & Schema): `genome diff`
+is the last of the four committed CLI commands. It opens no new phase and
+operates entirely inside the compiler boundary ADR-0003 fixed.
 
 ## Summary
 
@@ -184,17 +195,24 @@ genome diff <before> <after> [--json]
 
 ## Decisions
 
-To be resolved by the Architecture Board:
+These resolve the RFC's original open questions, per the Architecture
+Board decision of 2026-07-13.
 
-1. **Comparison representation** — raw document, AST, or Organization
-   Graph? Proposed: the graph (canonical compiled representation; keeps
-   diff vocabulary identical to `genome graph` and runtime attribution).
-2. **Exit-code convention** — plain 0/1 like the existing commands, or the
-   `diff(1)` 0/1/2 convention? Proposed: `diff(1)` convention.
-3. **Rename detection** — none in v0.1 (identity is the node id)?
-4. **Relation to the Phase 6 proposal payload** — is the `DiffReport` a
-   candidate payload format? Proposed: no; it stays a descriptive
-   inspection artifact and the payload stays reserved.
+1. **The diff is computed over the Organization Graph** — the canonical
+   compiled representation. A raw-document diff would resurrect the
+   formatting noise revision derivation erases; an AST diff would speak a
+   vocabulary nothing else exposes. Unanimous.
+2. **Exit codes follow the `diff(1)` convention** (0 identical /
+   1 different / 2 trouble). The command's primary scripted consumer is a
+   CI guard, which needs "different" and "broken" distinguishable. The
+   deviation from the existing commands' plain 0/1 is deliberate.
+3. **No rename detection in v0.1.** Identity is the node id; a diff that
+   guesses is worse than a diff that is literal. Deferred until
+   demonstrated need.
+4. **The `DiffReport` is not the Phase 6 proposal payload.** A proposal
+   is an applicable, schema-validated patch; the diff is a description of
+   a change that already exists as two documents. Description is not
+   authority; the reservation in RFC-0003 stands untouched.
 
 ## Definition of Done
 
@@ -204,6 +222,7 @@ To be resolved by the Architecture Board:
 - `genome diff` CLI command with `--json` and the pinned exit codes
 - formatting-only change produces `identical: true` and an empty report
   (tested)
-- `SPEC/language.md` Compilation Targets updated
-- open questions resolved by the Architecture Board
-- ADR recorded on acceptance
+- `SPEC/language.md` Compilation Targets updated — ✅
+- open questions resolved by the Architecture Board — ✅ (Decisions above)
+- ADR recorded on acceptance — ✅
+  (`docs/adr/0006-genome-diff-contract.md`)

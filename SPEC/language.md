@@ -39,6 +39,12 @@ lexicographically at every level, array order preserved — of the
 schema-valid parsed document. Documents that differ only in YAML formatting
 or key order share a revision; any semantic difference produces a new one.
 
+A revision transition is *explained* by the `diff` compilation target
+(RFC-0005): a structural comparison of the two compiled Organization
+Graphs. Because the diff is computed over compiled documents, "no diff"
+and "same revision" coincide for everything the graph surfaces; formatting
+changes are invisible to both.
+
 ## Top-Level Structure
 
 ```yaml
@@ -201,14 +207,17 @@ trigger.
 
 ## Compilation Targets
 
-Targets are plain functions of the Organization Graph (RFC-0002). The v0.1
-set is fixed:
+Targets are plain, provider-free functions owned by the compiler package
+whose inputs are compiled artifacts (RFC-0002; arity is not the boundary —
+RFC-0005). The v0.1 set is fixed:
 
 - CLI inspection (`inspect`)
 - graph output (`graph`)
 - documentation output (`docs`)
 - runtime model (`runtime-model`, RFC-0003/RFC-0004 — the compiled artifact
   the runtime consumes)
+- structural diff (`diff`, RFC-0005 — compares two compiled documents by
+  their Organization Graphs; explains a revision transition)
 
 Office layout, workflow model, and memory graph targets are deferred to the
 RFCs of their consuming phases (RFC-0002, Compilation Targets).
