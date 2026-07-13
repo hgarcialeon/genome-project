@@ -74,6 +74,38 @@ Nested resources can be referenced using dot notation:
 engineering.platform.backend
 ```
 
+### Reference resolution
+
+A dotted reference traverses the organization hierarchy, **skipping the
+`teams` and `agents` container keys**. A three-segment reference addresses a
+team-level agent:
+
+```text
+engineering.platform.backend
+→ departments.engineering.teams.platform.agents.backend
+```
+
+A two-segment reference addresses a department-level agent:
+
+```text
+operations.coordinator
+→ departments.operations.agents.coordinator
+```
+
+### Principals
+
+Fields that name an approver or actor — for example
+`policies.*.requiresApprovalFrom` — accept either:
+
+- a **human principal** of the form `human:<id>`, where `<id>` is a kebab-case
+  or snake_case identifier:
+
+  ```text
+  human:engineering-manager
+  ```
+
+- an **agent reference** resolved by the dotted-reference rules above.
+
 ## Agent Autonomy Levels
 
 Supported values:

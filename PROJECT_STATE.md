@@ -1,6 +1,6 @@
 # Genome Project State
 
-Last Updated: 2026-07-08
+Last Updated: 2026-07-09
 
 ## Current Phase
 
@@ -16,7 +16,7 @@ Executable Genome Specification
 
 ## Active RFC
 
-RFC-0002 — Genome Compiler
+RFC-0002 — Genome Compiler (Accepted 2026-07-09)
 
 ## Governance Status
 
@@ -39,15 +39,19 @@ Describe a company once. Compile it into an autonomous organization.
 
 ## Open Decisions
 
-1. Compiler pipeline
-2. AST model
-3. Organization Graph
-4. Compilation targets
-5. Compiler package boundaries
+All RFC-0002 open decisions resolved by the Architecture Board on 2026-07-09
+(see `docs/adr/0003-compiler-package-boundary.md`):
+
+1. Compiler pipeline — ✅ resolved
+2. AST model — ✅ resolved (same package, optional source spans)
+3. Organization Graph — ✅ resolved (normative nodes/relationships, adjacency list)
+4. Compilation targets — ✅ resolved (fixed functions; scope trimmed to inspect/graph/docs)
+5. Compiler package boundaries — ✅ resolved (single `genome-compiler` package)
 
 ## Next Architecture Decision
 
-Approve RFC-0002 — Genome Compiler.
+Approve RFC-0003 — Runtime boundary (when drafted). Near-term engineering work
+proceeds from the Implementation Queue.
 
 ## Current Rule
 
@@ -63,13 +67,16 @@ No implementation before specification.
 
 ## Next Expected Deliverable
 
-Complete and approve RFC-0002.
+Implement `packages/genome-compiler` (Stages 1–5) per RFC-0002.
 
 ## Definition of Done for RFC-0002
 
-- compiler stages defined
-- AST responsibility defined
-- semantic validation defined
-- Organization Graph defined
-- compilation targets defined
-- runtime boundary clarified
+- compiler stages defined — ✅
+- AST responsibility defined — ✅
+- semantic validation defined — ✅
+- Organization Graph defined — ✅
+- compilation targets defined — ✅
+- runtime boundary clarified — ✅
+
+RFC-0002 accepted by the Architecture Board on 2026-07-09
+(`docs/reviews/RFC-0002-board-decision.md`).
