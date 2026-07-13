@@ -8,51 +8,44 @@ Consistency with the repository is checked by `pnpm check-state` in CI.
 
 ## Current Phase
 
-Phase 3 — Runtime Prototype (all deliverables landed; phase transition
-review pending).
-
-Determined against `ROADMAP.md` acceptance criteria, not asserted: Phase 0
-(foundation docs, schema, `genome validate`), Phase 1 (compiler pipeline
-through the Organization Graph and targets), Phase 2 (the
-`validate`/`inspect`/`graph`/`diff` CLI set, now covered by CLI-boundary
-tests), and Phase 3 (runtime core per RFC-0004) all have their deliverables
-classified in `ROADMAP.md` with evidence. Phases 0–3 remain formally open
-until the Architecture Board holds the phase transition reviews defined in
-`docs/GOVERNANCE.md` (first application of that process); one Phase 2
-de-scoping (schema type generation) awaits ratification there.
+Phase 3 — Runtime Prototype (active). Phases 0–2 closed 2026-07-13 by the
+phase transition review (`docs/reviews/phase-0-3-board-review.md`,
+ratified by the Product Owner). Phase 3 deliverables are landed as scoped
+by RFC-0003/RFC-0004; the Board scoped the remaining goal-sentence work —
+the reference provider adapter and the `genome run` CLI command — into
+Phase 3 via RFC-0006. Event persistence is assigned to a later phase,
+gated on the first consumer requiring a durable log. Phase 3 closes only
+on CLI-boundary evidence (Board review, Condition 5).
 
 ## Current Iteration
 
 No formal sprint cadence. Work proceeds RFC-by-RFC through
-`IMPLEMENTATION_QUEUE.md`. The current iteration is governance alignment:
-reconciling the project's self-describing documents with the implemented
-system and making that reconciliation mechanical (`scripts/check-state.mjs`).
+`IMPLEMENTATION_QUEUE.md`. The current iteration: draft RFC-0006 —
+Reference Adapter & `genome run` — within the boundary constraints pinned
+by the Board review (Condition 4).
 
 ## Current Milestone
 
-Close Phases 0–3 via phase transition reviews, then open the next phase
-with its RFC (Phase 4 Studio, Phase 5 Office View, or the Phase 6
-proposal-payload RFC reserved by ADR-0006).
+RFC-0006 accepted and its queue drained; then the Phase 3 close review
+with CLI-boundary evidence (`genome run` driving a workflow to completion
+through the reference adapter).
 
 ## Current Objective
 
-Declared project state accurately and mechanically reflects the system that
-exists. After the reviews close, the objective moves to the next phase's
-RFC.
+Draft RFC-0006. Constraints already pinned: the adapter lives below the
+seam as a separate package (ADR-0004 §8) and nothing above the seam names
+a provider; `genome run` consumes compiled artifacts only and introduces
+no state not reconstructible as `replay(log)`; retries, persistence, and
+trigger binding grammars stay out — each gated on its own consumer.
 
 ## Active Architectural Decision
 
-None open. RFC-0002 through RFC-0005 are accepted and their queues drained
-(see Completed RFCs below). The next architectural decision is the next
-phase's RFC.
+RFC-0006 — Reference Adapter & `genome run` (to be drafted; authorized by
+the Phase 0–3 board review). No other decision is open.
 
 ## Current Blockers
 
-None for engineering. The phase transition reviews for Phases 0–3 require
-the Architecture Board (Product Owner, Chief Architect, Lead Engineer) —
-a decision gate, not an implementation gate. The Phase 2 review must
-ratify or overturn the de-scoping of "TypeScript types generated from
-schema" recorded in `ROADMAP.md`.
+None.
 
 ## Governance Status
 
@@ -75,14 +68,16 @@ Describe a company once. Compile it into an autonomous organization.
 - Studio UI
 - Provider-specific agent integrations (the adapter seam ships; adapters do not)
 - Trigger auto-initiation (event/schedule/webhook binding grammars)
-- Schema-to-TypeScript code generation (de-scoped in `ROADMAP.md`, Phase 2;
-  reopening requires an RFC)
+- Event persistence (assigned to a later phase, gated on the first
+  consumer requiring a durable log — Studio runtime logs or the Phase 6
+  observe step; Board review 2026-07-13)
+- Schema-to-TypeScript code generation (de-scoped; ratified 2026-07-13,
+  `docs/reviews/phase-0-3-board-review.md`; reopening requires an RFC)
 
 ## Next Expected Deliverable
 
-The engineering queue is drained. Next: the Architecture Board holds the
-Phase 0–3 transition reviews; new engineering work enters the queue through
-the next phase's RFC.
+The RFC-0006 draft (Reference Adapter & `genome run`), for Architecture
+Board review. Engineering work enters the queue when it is accepted.
 
 ## Completed RFCs
 

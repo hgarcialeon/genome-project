@@ -3,10 +3,11 @@
 - **Process:** `docs/GOVERNANCE.md` → Phase Transition Review (Product
   Owner · Chief Architect · Lead Engineer)
 - **Date prepared:** 2026-07-13
-- **Status:** **Proposed — awaiting Architecture Board decision.** Nothing
-  in this document closes a phase, ratifies a de-scoping, or advances the
-  project. It assembles the repository evidence and proposes
-  classifications for the Board to accept, amend, or reject.
+- **Status:** **Decided 2026-07-13** — see
+  `docs/reviews/phase-0-3-board-review.md` (Outcome B, amended; ratified
+  by the Product Owner). This packet is preserved as the reviewed
+  proposal; the decision record and applied conditions live in the board
+  review document.
 - **Source:** branch `claude/project-principles-audit-lwif7s` (2026-07-13
   governance audit and alignment); evidence verified by `pnpm test`
   (73 passing), `pnpm typecheck`, and `pnpm check-state`.

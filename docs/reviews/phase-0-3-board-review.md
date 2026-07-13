@@ -5,23 +5,26 @@
 - **Date:** 2026-07-13
 - **Under review:** `docs/reviews/phase-0-3-reconciliation.md` (branch
   `claude/project-principles-audit-lwif7s`, PR #10)
-- **Quorum:** 2/3 role reviews complete; **Product Owner ratification
-  pending**
+- **Quorum:** 3/3
 
 ## Votes
 
 | Role | Verdict |
 |------|---------|
-| Product Owner | **Pending ratification** |
+| Product Owner | Ratify — Outcome B (amended) and the codegen de-scoping as worded (2026-07-13) |
 | Chief Architect | Accept with conditions — Outcome B, amended |
 | Lead Engineer | Accept with conditions |
 
-**Outcome: NOT YET APPROVED.** No phase is closed, the codegen
-de-scoping is not ratified, `PROJECT_STATE.md` is not advanced, and PR #10
-is not merged until the Product Owner explicitly ratifies one of the
-outcomes below. Both completed reviews were conducted independently
-against the repository, with all executable evidence re-run rather than
-trusted.
+**Outcome: APPROVED — Outcome B, amended, ratified by the Product Owner
+on 2026-07-13.** Phases 0–2 are closed; the codegen de-scoping is
+ratified with the reviewed wording verbatim; Phase 3 stays active with
+the reference adapter and `genome run` scoped in via RFC-0006; event
+persistence is excluded from Phase 3 and gated on its first consumer.
+Both role reviews were conducted independently against the repository,
+with all executable evidence re-run rather than trusted. Conditions 1–3,
+6, 7, 9 (governance note), and 10 are applied in the application change;
+conditions 4, 5, and the operational half of 8–9 bind future work
+(RFC-0006 and the Phase 3 close review).
 
 ## Converged recommendation to the Product Owner
 
@@ -147,14 +150,17 @@ and after; test counts from a forced uncached run (`pnpm test -- --force`,
   AST. That is exactly why Board ratification, not citation alone, is the
   correct instrument here.
 
-## Pending Product Owner ratification
+## Product Owner ratification (recorded 2026-07-13)
 
-Two decisions, to be recorded here with the Product Owner's verdicts:
+1. **Codegen disposition — ratified as worded:** "De-scoped from the
+   current roadmap; may be reconsidered through a future RFC if
+   schema-driven public SDK types become a concrete requirement."
+2. **Phase 3 outcome — Outcome B, amended**, per the reviewers' joint
+   recommendation: Phases 0–2 closed; Phase 3 active with §4 items 1–2
+   scoped in via RFC-0006; event persistence consumer-gated to a later
+   phase.
 
-1. **Codegen disposition** — ratify the de-scoping wording verbatim, or
-   overturn (→ Deferred with a queue entry, or require an RFC first).
-2. **Phase 3 outcome** — Outcome B as amended (both reviewers' joint
-   recommendation), Outcome A (close Phase 3 as scoped), or defer.
-
-Until both are recorded: no phase closes, `PROJECT_STATE.md` does not
-advance, PR #10 does not merge.
+The decision is applied by the accompanying application change:
+`PROJECT_STATE.md`, `ROADMAP.md`, `IMPLEMENTATION_QUEUE.md`,
+`docs/GOVERNANCE.md` (ADR citation, uncached-evidence note), and
+`docs/adr/0007-phase-transition-governance.md` (Condition 1).

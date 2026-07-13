@@ -9,6 +9,8 @@ reason. A phase closes only through the phase transition review defined in
 
 ## Phase 0 — Foundation
 
+Closed 2026-07-13 (`docs/reviews/phase-0-3-board-review.md`).
+
 Goal: establish Genome as a specification-first project.
 
 | Deliverable | Status | Evidence / Notes |
@@ -38,6 +40,8 @@ genome validate SPEC/examples/company.yaml
 
 ## Phase 1 — Genome Compiler
 
+Closed 2026-07-13 (`docs/reviews/phase-0-3-board-review.md`).
+
 Goal: make the Genome specification executable through a compiler boundary.
 
 | Deliverable | Status | Evidence / Notes |
@@ -51,6 +55,8 @@ Goal: make the Genome specification executable through a compiler boundary.
 
 ## Phase 2 — CLI & Schema
 
+Closed 2026-07-13 (`docs/reviews/phase-0-3-board-review.md`).
+
 Goal: make the specification usable from local development.
 
 | Deliverable | Status | Evidence / Notes |
@@ -59,10 +65,14 @@ Goal: make the specification usable from local development.
 | genome inspect | Done | Same suite; `--json` contract tested |
 | genome diff | Done | Same suite; diff(1) exit codes 0/1/2 tested (ADR-0006) |
 | genome graph | Done | Same suite |
-| TypeScript types generated from schema | De-scoped | Superseded by RFC-0002/ADR-0003: the hand-written AST in `packages/genome-compiler` is the typed representation of a Genome document, and the compiler boundary (ADR-0002) directs consumers to compiled artifacts, never raw document shapes. A generated raw-document type set would create a second typed source of truth with no consumer. Reopening this requires an RFC. De-scoping to be ratified at the Phase 2 transition review. |
+| TypeScript types generated from schema | De-scoped | "De-scoped from the current roadmap; may be reconsidered through a future RFC if schema-driven public SDK types become a concrete requirement." Ratified 2026-07-13, `docs/reviews/phase-0-3-board-review.md`. Rationale: the need (a typed representation) is fulfilled by RFC-0002's AST behind the ADR-0002 compiler boundary; a generated raw-document type set would be a second typed source of truth with no consumer. |
 | Valid and invalid fixtures | Done | `packages/genome-schema/src/__fixtures__`, `packages/genome-compiler/src/__fixtures__`, `packages/genome-cli/src/__fixtures__` |
 
 ## Phase 3 — Runtime Prototype
+
+Active — held open by the 2026-07-13 review: the reference provider
+adapter and `genome run` are scoped in via RFC-0006; the phase closes on
+CLI-boundary evidence.
 
 Goal: execute a simple organization from a Genome file.
 
