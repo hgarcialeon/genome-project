@@ -216,12 +216,14 @@ Board decision of 2026-07-13.
 
 ## Definition of Done
 
-- `DiffReport` shape pinned and implemented as a compiler target
-- one canonicalization shared between revision derivation and diff
-- deterministic ordering guaranteed and tested
-- `genome diff` CLI command with `--json` and the pinned exit codes
+- `DiffReport` shape pinned and implemented as a compiler target — ✅
+  (`packages/genome-compiler/src/targets/diff.ts`)
+- one canonicalization shared between revision derivation and diff — ✅
+  (`canonicalJson` in `packages/genome-compiler/src/revision.ts`)
+- deterministic ordering guaranteed and tested — ✅
+- `genome diff` CLI command with `--json` and the pinned exit codes — ✅
 - formatting-only change produces `identical: true` and an empty report
-  (tested)
+  (tested) — ✅
 - `SPEC/language.md` Compilation Targets updated — ✅
 - open questions resolved by the Architecture Board — ✅ (Decisions above)
 - ADR recorded on acceptance — ✅

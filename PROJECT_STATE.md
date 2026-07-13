@@ -77,18 +77,20 @@ No implementation before specification.
 
 ## Next Expected Deliverable
 
-The `diff` compilation target in `packages/genome-compiler` and the CLI
-command `genome diff <before> <after> [--json]`, authorized by
-RFC-0005/ADR-0006 — the last undelivered Phase 2 roadmap command. The
-Office View prototype remains queued Low for the Office Team.
+The engineering queue is drained: RFC-0005's item landed 2026-07-13 (the
+`diff` target in `packages/genome-compiler` and the CLI `genome diff`
+command), completing the Phase 2 roadmap's CLI command set
+(`validate`/`inspect`/`graph`/`diff`). Next work enters the queue through
+the next phase's RFC (Studio, Office View, or the Phase 6 proposal-payload
+RFC); the Office View prototype remains queued Low for the Office Team.
 
 ## Definition of Done for RFC-0005
 
-- `DiffReport` shape pinned and implemented as a compiler target — ⏳
-- one canonicalization shared between revision derivation and diff — ⏳
-- deterministic ordering guaranteed and tested — ⏳
-- `genome diff` CLI command with `--json` and the pinned exit codes — ⏳
-- formatting-only change produces `identical: true` and an empty report — ⏳
+- `DiffReport` shape pinned and implemented as a compiler target — ✅
+- one canonicalization shared between revision derivation and diff — ✅
+- deterministic ordering guaranteed and tested — ✅
+- `genome diff` CLI command with `--json` and the pinned exit codes — ✅
+- formatting-only change produces `identical: true` and an empty report — ✅
 - `SPEC/language.md` Compilation Targets updated — ✅
 - open questions resolved — ✅
 - ADR recorded — ✅
