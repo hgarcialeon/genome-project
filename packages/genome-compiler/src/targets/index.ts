@@ -125,8 +125,10 @@ export function docsTarget(graph: OrganizationGraph): string {
   if (policies.length > 0) {
     lines.push("## Policies", "");
     for (const policy of policies) {
+      const appliesTo = policy.attributes.appliesTo as string[];
+      const scope = appliesTo.length === 0 ? "" : ` — applies to: ${appliesTo.map((a) => `\`${a}\``).join(", ")}`;
       const principals = policy.attributes.requiresApprovalFrom as string[];
-      lines.push(`- **${policy.label}** — requires approval from: ${principals.map((p) => `\`${p}\``).join(", ")}`);
+      lines.push(`- **${policy.label}**${scope} — requires approval from: ${principals.map((p) => `\`${p}\``).join(", ")}`);
     }
     lines.push("");
   }

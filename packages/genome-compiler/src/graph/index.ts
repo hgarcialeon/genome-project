@@ -79,11 +79,13 @@ export const edgesOf = (graph: OrganizationGraph): GraphEdge[] => Object.values(
  * - `owns`: workflow owner agent → workflow.
  * - `approves`: agent principal → policy (human principals are recorded in the
  *   policy node's attributes; humans are not graph nodes in v0.1).
+ * - `requires`: governed workflow/agent → policy, from the policy's declared
+ *   scope (`appliesTo`, RFC-0003/ADR-0004).
  * - `uses`: company → integration.
  * - `measures`: metric → company.
- * The remaining relationship types (`requires`, `triggers`, `depends_on`) are
- * part of the normative contract but have no v0.1 language construct that
- * produces them yet.
+ * The remaining relationship types (`triggers`, `depends_on`) are part of the
+ * normative contract but have no v0.1 language construct that produces them
+ * yet.
  */
 export function buildGraph(ast: GenomeAst): OrganizationGraph {
   const nodes: Record<string, GraphNode> = {};
@@ -142,6 +144,8 @@ export function buildGraph(ast: GenomeAst): OrganizationGraph {
     }
   }
 
+  const workflowNodeIds = new Map<string, string>();
+
   for (const workflow of ast.workflows) {
     const workflowId = addNode("Workflow", workflow.id, workflow.id, {
       owner: workflow.owner,
@@ -149,6 +153,7 @@ export function buildGraph(ast: GenomeAst): OrganizationGraph {
       steps: workflow.steps,
     });
     addEdge(workflowId, "belongs_to", companyId);
+    workflowNodeIds.set(workflow.id, workflowId);
     const ownerId = workflow.owner === undefined ? undefined : agentNodeIds.get(workflow.owner);
     if (ownerId !== undefined) {
       addEdge(ownerId, "owns", workflowId);
@@ -158,6 +163,7 @@ export function buildGraph(ast: GenomeAst): OrganizationGraph {
   for (const policy of ast.policies) {
     const humanPrincipals = policy.requiresApprovalFrom.filter((p) => p.startsWith("human:"));
     const policyId = addNode("Policy", policy.id, policy.id, {
+      appliesTo: policy.appliesTo,
       requiresApprovalFrom: policy.requiresApprovalFrom,
       humanPrincipals,
     });
@@ -166,6 +172,14 @@ export function buildGraph(ast: GenomeAst): OrganizationGraph {
       const approverId = agentNodeIds.get(principal);
       if (approverId !== undefined) {
         addEdge(approverId, "approves", policyId);
+      }
+    }
+    // Policy scope: dotted entries are agent references, single segments are
+    // workflow ids (SPEC/language.md, Policy Scope).
+    for (const entry of policy.appliesTo) {
+      const governedId = entry.includes(".") ? agentNodeIds.get(entry) : workflowNodeIds.get(entry);
+      if (governedId !== undefined) {
+        addEdge(governedId, "requires", policyId);
       }
     }
   }

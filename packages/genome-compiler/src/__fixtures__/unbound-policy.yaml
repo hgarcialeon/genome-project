@@ -11,10 +11,6 @@ departments:
         autonomy: supervised
 
 policies:
-  production-deploy:
-    appliesTo:
-      - operations.coordinator
+  after-hours-change:
     requiresApprovalFrom:
-      - "human:Engineering Manager!"
-      - sales.nobody
       - operations.coordinator
