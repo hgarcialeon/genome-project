@@ -20,9 +20,9 @@ on CLI-boundary evidence (Board review, Condition 5).
 ## Current Iteration
 
 No formal sprint cadence. Work proceeds RFC-by-RFC through
-`IMPLEMENTATION_QUEUE.md`. The current iteration: draft RFC-0006 —
-Reference Adapter & `genome run` — within the boundary constraints pinned
-by the Board review (Condition 4).
+`IMPLEMENTATION_QUEUE.md`. The current iteration: implement the RFC-0006
+queue item (reference adapter, `genome run`, CLI-boundary evidence),
+scoped strictly to the amended RFC.
 
 ## Current Milestone
 
@@ -32,16 +32,19 @@ through the reference adapter).
 
 ## Current Objective
 
-Draft RFC-0006. Constraints already pinned: the adapter lives below the
-seam as a separate package (ADR-0004 §8) and nothing above the seam names
-a provider; `genome run` consumes compiled artifacts only and introduces
-no state not reconstructible as `replay(log)`; retries, persistence, and
-trigger binding grammars stay out — each gated on its own consumer.
+Implement RFC-0006 as amended: the `@genome/adapter-reference` package,
+the `genome run` command, and the eight CLI-boundary test cases — with no
+change to compiler or runtime public contracts (empty git diff required)
+and no work beyond the amended RFC's scope.
 
 ## Active Architectural Decision
 
-RFC-0006 — Reference Adapter & `genome run` (to be drafted; authorized by
-the Phase 0–3 board review). No other decision is open.
+None open. RFC-0006 — Reference Adapter & `genome run` was **Accepted**
+2026-07-13 under Option B (`docs/reviews/rfc-0006-board-review.md`,
+Product Owner ratification recorded;
+`docs/adr/0008-reference-execution-contract.md`). The next architectural
+decision is the Phase 3 close review, held after the RFC-0006 evidence
+lands.
 
 ## Current Blockers
 
@@ -76,8 +79,8 @@ Describe a company once. Compile it into an autonomous organization.
 
 ## Next Expected Deliverable
 
-The RFC-0006 draft (Reference Adapter & `genome run`), for Architecture
-Board review. Engineering work enters the queue when it is accepted.
+The RFC-0006 implementation item from `IMPLEMENTATION_QUEUE.md`, followed
+by the Phase 3 close review on its CLI-boundary evidence.
 
 ## Completed RFCs
 
