@@ -16,8 +16,10 @@ Executable Genome Specification
 
 ## Active RFC
 
-RFC-0003 — Runtime Boundary (Accepted 2026-07-13). RFC-0002 — Genome
-Compiler was accepted 2026-07-09 and its queue is drained.
+RFC-0004 — Runtime Implementation (Accepted 2026-07-13). RFC-0003 — Runtime
+Boundary was accepted 2026-07-13 and its compiler preconditions are
+drained; RFC-0002 — Genome Compiler was accepted 2026-07-09 and its queue
+is drained.
 
 ## Governance Status
 
@@ -40,23 +42,24 @@ Describe a company once. Compile it into an autonomous organization.
 
 ## Open Decisions
 
-All RFC-0002 open decisions resolved by the Architecture Board on 2026-07-09
-(`docs/adr/0003-compiler-package-boundary.md`). All RFC-0003 open questions
+No open decisions. RFC-0002's were resolved 2026-07-09
+(`docs/adr/0003-compiler-package-boundary.md`), RFC-0003's 2026-07-13
+(`docs/adr/0004-runtime-boundary.md`), and RFC-0004's open questions were
 resolved by the Architecture Board on 2026-07-13
-(`docs/adr/0004-runtime-boundary.md`):
+(`docs/adr/0005-runtime-execution-contract.md`):
 
-1. Event-type ownership — ✅ resolved (`genome-runtime`, dependency-free `events/` module)
-2. Taxonomy normativity — ✅ resolved (envelope + taxonomy normative, additive-only)
-3. Supervised checkpoints — ✅ resolved (layered semantics; deny-safe `manual` default)
-4. Revision adoption — ✅ resolved (drain, normative)
-5. Proposal format — ✅ resolved (payload reserved; Phase 6 RFC under binding constraints)
+1. Supervised intrinsic floor — ✅ resolved (routed to reserved `human:*`; any human may grant)
+2. Control-event envelope — ✅ resolved (`runId: null` on `runtime.halted`/`runtime.resumed` only)
+3. Halt semantics — ✅ resolved (suspend dispatch; never hard-fail in-flight runs)
+4. Adoption events — ✅ resolved (adoption appends nothing; runs carry their revision)
 
 ## Next Architecture Decision
 
-Approve the Phase 3 implementation RFC (runtime implementation: `RuntimeModel`
-shape, trigger executability, scheduling/ordering semantics, operator
-emergency-stop story) when drafted. Near-term engineering work proceeds from
-the Implementation Queue (compiler preconditions from RFC-0003).
+None pending. The next RFC belongs to the phase that needs it (Phase 4
+Studio, Phase 5 Office View, or the Phase 6 proposal-payload RFC), or to a
+trigger-binding grammar when a scheduler/selector consumer is queued.
+Near-term engineering work proceeds from the Implementation Queue
+(runtime-model target and `genome-runtime` core, authorized by RFC-0004).
 
 ## Current Rule
 
@@ -65,17 +68,32 @@ No implementation before specification.
 ## Explicitly Out of Scope
 
 - Office View implementation
-- Runtime implementation
 - Marketplace
 - Studio UI
-- Provider-specific agent integrations
+- Provider-specific agent integrations (the adapter seam ships; adapters do not)
+- Trigger auto-initiation (event/schedule/webhook binding grammars)
 
 ## Next Expected Deliverable
 
-The RFC-0003 compiler preconditions from the Implementation Queue: policy
-`appliesTo` semantic validation + `requires` edges, and `owns` edges for
-objective/metric owners. Runtime implementation stays gated on the Phase 3
-RFC and remains out of scope for Phase 0.
+The RFC-0004 implementation items from the Implementation Queue: Genome
+revision derivation + the runtime-model target in `packages/genome-compiler`,
+and the `packages/genome-runtime` core (events module, append-only log,
+replay, approval gate, halt/resume, drain adoption).
+
+## Definition of Done for RFC-0004
+
+- `RuntimeModel` shape pinned and implemented as a compiler target — ☐
+- Genome revision derivation specified and implemented — ☐
+- trigger executability resolved for v0.1 — ✅
+- ordering and execution semantics pinned and implemented — ☐
+- approval gate mechanics pinned and implemented — ☐
+- emergency stop implemented as attributable control events — ☐
+- `replay` implemented; `state() == replay(log)` by construction — ☐
+- open questions resolved — ✅
+- ADR recorded — ✅
+
+RFC-0004 accepted by the Architecture Board on 2026-07-13
+(`docs/reviews/RFC-0004-board-decision.md`).
 
 ## Definition of Done for RFC-0003
 

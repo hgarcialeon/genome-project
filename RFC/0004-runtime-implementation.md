@@ -2,13 +2,20 @@
 
 ## Status
 
-Draft
+Accepted
+
+Accepted by the Architecture Board (Product Owner, Chief Architect, Lead
+Engineer) on 2026-07-13. The board's vote was **Accept with conditions**;
+the conditions have been incorporated into this document. See
+`docs/reviews/RFC-0004-board-decision.md` for the decision record and
+`docs/adr/0005-runtime-execution-contract.md` for the recorded
+architectural decision.
 
 This is the **Phase 3 implementation RFC** that RFC-0003/ADR-0004 gate
 runtime work on. It operates entirely *inside* the boundary RFC-0003 fixed:
 nothing here relaxes a boundary constraint, and where this RFC is silent,
-RFC-0003 governs. On acceptance it unblocks the two queued items —
-the runtime-model target in `packages/genome-compiler` and the
+RFC-0003 governs. Its acceptance unblocks the two queued items — the
+runtime-model target in `packages/genome-compiler` and the
 `packages/genome-runtime` core.
 
 ## Summary
@@ -233,6 +240,11 @@ task report for nothing assigned) is **refused**: the call returns a
 structured refusal and appends nothing. Refusals change no state, so replay
 equivalence is unaffected; they are results, not observations.
 
+Because a refusal is invisible in the log, the refusal result is the only
+operator-facing signal, and its shape is **normative** (board condition 3):
+`{ ok: false, reason: <machine-readable code> }`, with one stable code per
+refusal cause above.
+
 ## The Approval Gate
 
 Mechanics for RFC-0003's deny-safe, policy-scoped approval contract:
@@ -259,7 +271,10 @@ Mechanics for RFC-0003's deny-safe, policy-scoped approval contract:
    human to approve twice serves nothing. Routing the floor to a *specific*
    human requires a language construct (a named deferred spec item).
    Deny-safety is preserved: a supervised initiation always requires at
-   least one human grant.
+   least one human grant. `human:*` is **reserved** (board condition 2): it
+   is not a valid identifier, so it can never be declared in a Genome
+   document — semantic rule 4 enforces this, and `SPEC/language.md` now
+   states it.
 4. **Requests.** If the required set is non-empty the run enters
    `pending-approval`: one `approval.requested` per governing policy
    (source: the policy node; payload: workflowId and that policy's
@@ -321,7 +336,10 @@ RFC-0003 made `replay` normative; this RFC makes it **structural**:
    order into `{ halted, runs }`, where each run carries `workflowId`,
    `revision`, `status` (`pending-approval` | `running` | `completed` |
    `failed`), the pending principal set, the currently assigned step, and
-   the count of completed steps.
+   the count of completed steps. Replay is **forward-tolerant** (board
+   condition 1): the taxonomy is additive-only, so unknown event types are
+   inert — a v0.1 replayer must never crash on a log written under a later,
+   additively-extended taxonomy.
 2. The runtime core holds **no run state outside the log**: every
    operation derives its view by replaying its own log, decides, and
    appends. `runtime.state()` *is* `replay(log)` — the reconstructibility
@@ -363,23 +381,41 @@ Per ADR-0004 the semantics are drain; this RFC pins the mechanics:
 - `packages/genome-compiler/src/targets/` gains `runtimeModelTarget`;
   revision derivation lands beside the existing stages.
 
-## Open Questions
+## Decisions
 
-1. Should the intrinsic supervised floor route to `human:*`, or should
-   acceptance wait for a language construct naming a supervising human?
-2. Is `runId: null` on control events acceptable, or do control events
-   belong outside the run-scoped envelope entirely?
-3. Should a halt hard-fail in-flight runs instead of suspending dispatch?
-4. Should revision adoption emit an event?
+These resolve the RFC's original open questions, per the Architecture Board
+decision of 2026-07-13.
+
+1. **The intrinsic supervised floor routes to `human:*`** rather than
+   waiting for a named-supervisor language construct. Deny-safety (at least
+   one attributable human grant per supervised initiation) is the
+   constitutional invariant; routing precision is an authorization concern
+   the v0.1 language cannot express, and waiting would leave supervised
+   agents unimplementable for the phase. Resolved 2–1; the
+   named-supervisor construct remains a named deferred spec item.
+2. **Control events carry `runId: null`.** A sentinel string could collide
+   with the run-id namespace, and a second envelope would fork the log and
+   break the single total order. The widening touches only the two new
+   control types; the ten RFC-0003 types keep a required `runId`.
+3. **Halt suspends dispatch; it never hard-fails in-flight runs.** Events
+   are observations: emitting `workflow.failed` for work that did not fail
+   would fabricate observations and poison replay. Suspension also
+   composes with drain adoption (halt → adopt fixed revision → resume).
+4. **Revision adoption emits no event.** The log records what the
+   organization did (each run's events carry its revision); which models
+   were made available is deployment history owned by the Genome's own
+   version control.
 
 ## Definition of Done
 
 - `RuntimeModel` shape pinned and implemented as a compiler target — ☐
 - Genome revision derivation specified and implemented — ☐
-- trigger executability resolved for v0.1 — ☐
+- trigger executability resolved for v0.1 — ✅ (explicit initiation only;
+  binding grammars deferred to their consuming phases)
 - ordering and execution semantics pinned and implemented — ☐
 - approval gate mechanics pinned and implemented (deny-safe, `runId`-matched) — ☐
 - emergency stop implemented as attributable control events — ☐
 - `replay` implemented; `state() == replay(log)` holds by construction — ☐
-- open questions resolved by the Architecture Board — ☐
-- ADR recorded on acceptance — ☐
+- open questions resolved by the Architecture Board — ✅ (Decisions above)
+- ADR recorded on acceptance — ✅
+  (`docs/adr/0005-runtime-execution-contract.md`)

@@ -20,8 +20,9 @@ Claude Code or any engineering agent should consume this queue instead of acting
 | High | RFC-0003 Runtime Boundary review | RFC-0003 draft | Architecture Board | Done |
 | High | Policy `appliesTo`: semantic validation + `requires` edges | RFC-0003 / ADR-0004 | Engineering | Done |
 | Medium | `owns` edges for objective/metric owners | RFC-0003 / ADR-0004 | Engineering | Done |
-| Medium | Runtime model target in `genome-compiler` | Phase 3 RFC (`RuntimeModel` shape) | Engineering | Blocked |
-| Medium | `packages/genome-runtime` core | Phase 3 RFC | Engineering | Blocked |
+| High | RFC-0004 Runtime Implementation review | RFC-0004 draft | Architecture Board | Done |
+| High | Genome revision derivation + runtime-model target in `genome-compiler` | RFC-0004 / ADR-0005 | Engineering | Approved |
+| High | `packages/genome-runtime` core | RFC-0004 / ADR-0005 | Engineering | Approved |
 | Low | Office View prototype | Organization Graph | Office Team | Not Started |
 
 ## Current Engineering Rule
@@ -32,21 +33,30 @@ and exposes the `inspect`/`graph`/`docs` targets as plain functions. The CLI
 `inspect` and `graph` commands consume those targets (2026-07-13) — no
 interpretation of raw Genome YAML happens outside the compiler boundary.
 
-RFC-0003 — Runtime Boundary was accepted 2026-07-13 (`docs/adr/0004-runtime-boundary.md`).
-It queues two **compiler preconditions** with concrete acceptance criteria:
+RFC-0004 — Runtime Implementation was accepted 2026-07-13
+(`docs/adr/0005-runtime-execution-contract.md`), resolving everything the
+Phase 3 gate required: the `RuntimeModel` shape, revision derivation,
+trigger executability (explicit initiation only in v0.1), ordering and
+execution semantics, approval-gate mechanics (deny-safe, `runId`-matched,
+`human:*` intrinsic floor), the emergency stop as attributable control
+events, and the structural replay contract. It authorizes two items with
+concrete acceptance criteria:
 
-1. **Policy `appliesTo`** — semantically validate that entries resolve to
-   existing workflows or agents (reference grammar in `SPEC/language.md`),
-   emit an *unbound policy* warning when absent, and compile entries to
-   `requires` edges (governed workflow/agent `requires` policy).
-2. **Objective/metric ownership** — the compiler already validates
-   `objective.owner`/`metric.owner` (semantic rule 5) but drops them;
-   `buildGraph` must emit `owns` edges so the graph carries what the
-   compiler verified.
+1. **Compiler** — derive the Genome revision (SHA-256 of canonical JSON of
+   the schema-valid document) at Stage 5, carry it as `genomeRevision` on
+   the Organization Graph, and add `runtimeModelTarget` producing the
+   normative `RuntimeModel` (resolved deny-safe `autonomy`/`trigger`
+   defaults, `governedBy` from `requires` edges, principals and provider
+   identifiers as declared data).
+2. **Runtime core** — `packages/genome-runtime`: dependency-free `events/`
+   module (RFC-0003 envelope + taxonomy, plus `runtime.halted`/`runtime.resumed`
+   with `runId: null`), append-only `EventLog` with sequential ids and a
+   subscribe hook, normative forward-tolerant `replay`, and the core
+   (explicit initiation with autonomy/policy gates, approvals matched by
+   `runId`, sequential task lifecycle through the provider-adapter seam,
+   halt/resume, drain adoption, structured refusals). `state()` must equal
+   `replay(log)` by construction; no provider code above the seam.
 
-Runtime work (`genome-runtime` core, the runtime-model target) is **blocked
-on the Phase 3 implementation RFC**, which must pin the `RuntimeModel` shape,
-trigger executability, scheduling/ordering semantics, and the operator
-emergency-stop story. Runtime implementation remains out of scope for
-Phase 0. No interpretation of raw Genome YAML happens outside the compiler
-boundary.
+Provider adapters, trigger auto-initiation, retries, and event persistence
+remain out of scope (RFC-0004 non-goals). No interpretation of raw Genome
+YAML happens outside the compiler boundary.
