@@ -21,11 +21,27 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
+  packages/genome-adapter-reference:
+    dependencies:
+      '@genome/runtime':
+        specifier: workspace:*
+        version: link:../genome-runtime
+    devDependencies:
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.9(@types/node@26.1.1)
+
   packages/genome-cli:
     dependencies:
+      '@genome/adapter-reference':
+        specifier: workspace:*
+        version: link:../genome-adapter-reference
       '@genome/compiler':
         specifier: workspace:*
         version: link:../genome-compiler
+      '@genome/runtime':
+        specifier: workspace:*
+        version: link:../genome-runtime
       '@genome/schema':
         specifier: workspace:*
         version: link:../genome-schema

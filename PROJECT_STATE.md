@@ -10,41 +10,46 @@ Consistency with the repository is checked by `pnpm check-state` in CI.
 
 Phase 3 — Runtime Prototype (active). Phases 0–2 closed 2026-07-13 by the
 phase transition review (`docs/reviews/phase-0-3-board-review.md`,
-ratified by the Product Owner). Phase 3 deliverables are landed as scoped
-by RFC-0003/RFC-0004; the Board scoped the remaining goal-sentence work —
-the reference provider adapter and the `genome run` CLI command — into
-Phase 3 via RFC-0006. Event persistence is assigned to a later phase,
-gated on the first consumer requiring a durable log. Phase 3 closes only
-on CLI-boundary evidence (Board review, Condition 5).
+ratified by the Product Owner). All Phase 3 deliverables are landed: the
+RFC-0003/RFC-0004 runtime core, and — via RFC-0006 — the reference
+provider adapter and the `genome run` CLI command, drained 2026-07-13.
+Event persistence is assigned to a later phase, gated on the first
+consumer requiring a durable log. Phase 3 closes only on CLI-boundary
+evidence (Board review, Condition 5), through the follow-up transition
+review, which has not yet been held.
 
 ## Current Iteration
 
 No formal sprint cadence. Work proceeds RFC-by-RFC through
-`IMPLEMENTATION_QUEUE.md`. The current iteration: implement the RFC-0006
-queue item (reference adapter, `genome run`, CLI-boundary evidence),
-scoped strictly to the amended RFC.
+`IMPLEMENTATION_QUEUE.md`. The current iteration: convene the Phase 3
+close review on the landed RFC-0006 CLI-boundary evidence.
 
 ## Current Milestone
 
-RFC-0006 accepted and its queue drained; then the Phase 3 close review
-with CLI-boundary evidence (`genome run` driving a workflow to completion
-through the reference adapter).
+The Phase 3 close review with CLI-boundary evidence (`genome run` driving
+a workflow to completion through the reference adapter). The RFC-0006
+queue item is drained; the evidence is reproducible on demand
+(`genome run SPEC/examples/company.yaml --workflow build-feature --grant
+human:engineering-manager` → exit 0).
 
 ## Current Objective
 
-Implement RFC-0006 as amended: the `@genome/adapter-reference` package,
-the `genome run` command, and the eight CLI-boundary test cases — with no
-change to compiler or runtime public contracts (empty git diff required)
-and no work beyond the amended RFC's scope.
+Hold the Phase 3 close review on the landed RFC-0006 evidence: the
+`@genome/adapter-reference` package, the `genome run` command, and the
+CLI-boundary test cases, implemented with no change to compiler or
+runtime public contracts (empty git diff verified). One RFC erratum is
+queued for that review (RFC-0006 test case 4 names `policy.enforced` on
+the granted path; the runtime emits it only on denial — see
+`IMPLEMENTATION_QUEUE.md`).
 
 ## Active Architectural Decision
 
 None open. RFC-0006 — Reference Adapter & `genome run` was **Accepted**
 2026-07-13 under Option B (`docs/reviews/rfc-0006-board-review.md`,
 Product Owner ratification recorded;
-`docs/adr/0008-reference-execution-contract.md`). The next architectural
-decision is the Phase 3 close review, held after the RFC-0006 evidence
-lands.
+`docs/adr/0008-reference-execution-contract.md`) and its implementation
+landed the same day. The next architectural decision is the Phase 3
+close review, now unblocked by the landed evidence.
 
 ## Current Blockers
 
@@ -79,8 +84,8 @@ Describe a company once. Compile it into an autonomous organization.
 
 ## Next Expected Deliverable
 
-The RFC-0006 implementation item from `IMPLEMENTATION_QUEUE.md`, followed
-by the Phase 3 close review on its CLI-boundary evidence.
+The Phase 3 close review (Architecture Board) on the landed RFC-0006
+CLI-boundary evidence.
 
 ## Completed RFCs
 
@@ -90,6 +95,7 @@ by the Phase 3 close review on its CLI-boundary evidence.
 | RFC-0003 — Runtime Boundary | Accepted 2026-07-13, `docs/reviews/RFC-0003-board-decision.md` | `docs/adr/0004-runtime-boundary.md` | Drained |
 | RFC-0004 — Runtime Implementation | Accepted 2026-07-13, `docs/reviews/RFC-0004-board-decision.md` | `docs/adr/0005-runtime-execution-contract.md` | Drained |
 | RFC-0005 — Genome Diff | Accepted 2026-07-13, `docs/reviews/RFC-0005-board-decision.md` | `docs/adr/0006-genome-diff-contract.md` | Drained |
+| RFC-0006 — Reference Adapter & `genome run` | Accepted 2026-07-13 (Option B), `docs/reviews/rfc-0006-board-review.md` | `docs/adr/0008-reference-execution-contract.md` | Drained |
 
 Definition-of-Done evidence for each lives in its board decision document.
 One evidence gap found by the 2026-07-13 audit is now closed: the RFC-0005

@@ -69,6 +69,8 @@ genome validate SPEC/examples/company.yaml   # schema validation
 genome inspect  SPEC/examples/company.yaml   # organization summary (--json)
 genome graph    SPEC/examples/company.yaml   # Organization Graph as JSON
 genome diff     before.yaml after.yaml       # structural diff, diff(1) exit codes
+genome run      SPEC/examples/company.yaml --workflow build-feature \
+                --grant human:engineering-manager   # execute one workflow (reference adapter)
 ```
 
 Current phase, milestone, and objective live in `PROJECT_STATE.md`.

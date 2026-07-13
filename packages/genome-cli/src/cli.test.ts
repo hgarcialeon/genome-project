@@ -7,9 +7,13 @@
  * (0 identical / 1 different / 2 trouble, ADR-0006).
  */
 
-import { execFileSync } from "node:child_process";
+import { spawnSync } from "node:child_process";
+import { mkdtempSync, readFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { replay, type RuntimeEvent } from "@genome/runtime";
 import { describe, expect, it } from "vitest";
 
 const CLI = fileURLToPath(new URL("./index.ts", import.meta.url));
@@ -21,20 +25,15 @@ const fixture = (name: string): string => fileURLToPath(new URL(`./__fixtures__/
 type CliResult = { status: number; stdout: string; stderr: string };
 
 function genome(...args: string[]): CliResult {
-  try {
-    const stdout = execFileSync(TSX, [CLI, ...args], {
-      encoding: "utf8",
-      stdio: ["ignore", "pipe", "pipe"],
-    });
-    return { status: 0, stdout, stderr: "" };
-  } catch (error) {
-    const failure = error as { status?: number | null; stdout?: unknown; stderr?: unknown };
-    return {
-      status: failure.status ?? -1,
-      stdout: String(failure.stdout ?? ""),
-      stderr: String(failure.stderr ?? ""),
-    };
-  }
+  const result = spawnSync(TSX, [CLI, ...args], {
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "pipe"],
+  });
+  return {
+    status: result.status ?? -1,
+    stdout: result.stdout ?? "",
+    stderr: result.stderr ?? "",
+  };
 }
 
 describe("genome validate", () => {
@@ -150,5 +149,223 @@ describe("genome diff", () => {
   it("exits 2 (trouble) when an input is unreadable", () => {
     const result = genome("diff", fixture("base.yaml"), fixture("does-not-exist.yaml"));
     expect(result.status).toBe(2);
+  });
+});
+
+/**
+ * RFC-0006 / ADR-0008: the reference execution contract at the CLI boundary.
+ * Exit codes: 0 completed / 1 failed / 2 trouble (all invocation errors) /
+ * 3 blocked pending approval. The Condition 5 phase-close evidence is the
+ * first test, verbatim.
+ */
+describe("genome run", () => {
+  const CLOCK = "2026-07-13T00:00:00.000Z";
+  const exportDir = mkdtempSync(join(tmpdir(), "genome-run-"));
+
+  /** Events from `--json` stdout: every line but the final-state line. */
+  const events = (stdout: string): RuntimeEvent[] =>
+    stdout
+      .trim()
+      .split("\n")
+      .slice(0, -1)
+      .map((line) => JSON.parse(line) as RuntimeEvent);
+
+  const finalLine = (stdout: string): { finalState: Record<string, unknown>; exitCode: number } =>
+    JSON.parse(stdout.trim().split("\n").at(-1)!);
+
+  it("drives the designated example workflow to completion (Board Condition 5)", () => {
+    const result = genome(
+      "run",
+      VALID_EXAMPLE,
+      "--workflow",
+      "build-feature",
+      "--grant",
+      "human:engineering-manager",
+    );
+    expect(result.status).toBe(0);
+    // The Board-verified 16-event sequence: approval, start, six steps, completion.
+    expect(result.stdout).toContain("#1 approval.requested");
+    expect(result.stdout).toContain("#16 workflow.completed");
+    expect(result.stdout).toContain("Run run-1: completed");
+    expect(result.stdout).toContain("completed steps: 6");
+  });
+
+  it("exits 2 when --workflow is missing (parser default overridden)", () => {
+    const result = genome("run", VALID_EXAMPLE);
+    expect(result.status).toBe(2);
+    expect(result.stderr).toContain("--workflow");
+  });
+
+  it("exits 2 for an unknown option (parser default overridden)", () => {
+    const result = genome("run", VALID_EXAMPLE, "--workflow", "build-feature", "--no-such-option");
+    expect(result.status).toBe(2);
+    expect(result.stderr).toContain("unknown option");
+  });
+
+  it("exits 2 with the reason for an unknown workflow", () => {
+    const result = genome("run", VALID_EXAMPLE, "--workflow", "no-such-workflow");
+    expect(result.status).toBe(2);
+    expect(result.stderr).toContain("unknown-workflow");
+  });
+
+  it("exits 2 with the refusal reason verbatim for a reserved principal", () => {
+    const result = genome("run", VALID_EXAMPLE, "--workflow", "build-feature", "--as", "human:*");
+    expect(result.status).toBe(2);
+    expect(result.stderr).toContain("reserved-principal");
+  });
+
+  it("parks deny-safe at exit 3 when a required approval has no grant", () => {
+    const result = genome("run", VALID_EXAMPLE, "--workflow", "build-feature");
+    expect(result.status).toBe(3);
+    expect(result.stdout).toContain("approval.requested");
+    expect(result.stdout).toContain("pending approvals: human:engineering-manager");
+  });
+
+  it("runs the gated workflow with a matching grant, attributed in the log", () => {
+    const result = genome(
+      "run",
+      VALID_EXAMPLE,
+      "--workflow",
+      "build-feature",
+      "--grant",
+      "human:engineering-manager",
+      "--json",
+    );
+    expect(result.status).toBe(0);
+    // The grant is an operator assertion: the log attributes the response to
+    // the named principal. (RFC-0006 test case 4 also names `policy.enforced`
+    // here, but the shipped runtime emits that event only on the denial
+    // path — a runtime change is prohibited by the RFC itself, so the
+    // granted-path evidence is the attributed `approval.granted` event.
+    // Recorded for the Phase 3 close review.)
+    const granted = events(result.stdout).find((event) => event.type === "approval.granted");
+    expect(granted?.source).toBe("human:engineering-manager");
+    expect(granted?.payload.principal).toBe("human:engineering-manager");
+    expect(finalLine(result.stdout)).toEqual({
+      finalState: { runId: "run-1", status: "completed", completedSteps: 6, pendingApprovals: [] },
+      exitCode: 0,
+    });
+  });
+
+  it("satisfies the supervised intrinsic floor with a concrete human grant", () => {
+    const result = genome(
+      "run",
+      VALID_EXAMPLE,
+      "--workflow",
+      "incident-response",
+      "--as",
+      "engineering.platform.backend",
+      "--grant",
+      "human:ops-lead",
+      "--json",
+    );
+    expect(result.status).toBe(0);
+    const log = events(result.stdout);
+    const requested = log.find((event) => event.type === "approval.requested");
+    expect(requested?.payload.principals).toEqual(["human:*"]);
+    const granted = log.find((event) => event.type === "approval.granted");
+    expect(granted?.source).toBe("human:ops-lead");
+  });
+
+  it("warns on stderr for an unmatched grant without changing the exit code", () => {
+    const result = genome(
+      "run",
+      VALID_EXAMPLE,
+      "--workflow",
+      "build-feature",
+      "--grant",
+      "human:engineering-manager",
+      "--grant",
+      "human:bystander",
+    );
+    expect(result.status).toBe(0);
+    expect(result.stderr).toContain("grant human:bystander matched no requested approval");
+  });
+
+  it("exits 1 on --fail-step with agent.task.failed then workflow.failed", () => {
+    const result = genome(
+      "run",
+      VALID_EXAMPLE,
+      "--workflow",
+      "build-feature",
+      "--grant",
+      "human:engineering-manager",
+      "--fail-step",
+      "implement",
+      "--json",
+    );
+    expect(result.status).toBe(1);
+    const types = events(result.stdout).map((event) => event.type);
+    expect(types.indexOf("agent.task.failed")).toBeGreaterThan(-1);
+    expect(types.indexOf("workflow.failed")).toBe(types.indexOf("agent.task.failed") + 1);
+    const failed = events(result.stdout).find((event) => event.type === "agent.task.failed");
+    expect(failed?.payload.detail).toBe("simulated failure");
+    expect(finalLine(result.stdout).exitCode).toBe(1);
+  });
+
+  it("exports NDJSON whose replay equals the reported final state", () => {
+    const exportPath = join(exportDir, "replay-equality.ndjson");
+    const result = genome(
+      "run",
+      VALID_EXAMPLE,
+      "--workflow",
+      "build-feature",
+      "--grant",
+      "human:engineering-manager",
+      "--json",
+      "--export-log",
+      exportPath,
+    );
+    expect(result.status).toBe(0);
+
+    // Pinned framing: one envelope per line, LF separators, trailing newline.
+    const raw = readFileSync(exportPath, "utf8");
+    expect(raw.endsWith("\n")).toBe(true);
+    const parsed = raw
+      .trim()
+      .split("\n")
+      .map((line) => JSON.parse(line) as RuntimeEvent);
+    expect(parsed).toHaveLength(16);
+
+    // The required equality is state-level (RFC-0006): replay of the parsed
+    // log reproduces the reported final state exactly.
+    const reported = finalLine(result.stdout).finalState;
+    const run = replay(parsed).runs[reported.runId as string];
+    expect(run.status).toBe(reported.status);
+    expect(run.completedSteps).toBe(reported.completedSteps);
+    expect(run.pendingApprovals).toEqual(reported.pendingApprovals);
+  });
+
+  it("produces byte-identical stdout and export across runs under --clock", () => {
+    const invoke = (exportPath: string) =>
+      genome(
+        "run",
+        VALID_EXAMPLE,
+        "--workflow",
+        "build-feature",
+        "--grant",
+        "human:engineering-manager",
+        "--json",
+        "--clock",
+        CLOCK,
+        "--export-log",
+        exportPath,
+      );
+    const first = invoke(join(exportDir, "determinism-1.ndjson"));
+    const second = invoke(join(exportDir, "determinism-2.ndjson"));
+    expect(first.status).toBe(0);
+    expect(second.status).toBe(0);
+    // stdout and the export are asserted separately; stderr is excluded.
+    expect(second.stdout).toBe(first.stdout);
+    expect(readFileSync(join(exportDir, "determinism-2.ndjson"), "utf8")).toBe(
+      readFileSync(join(exportDir, "determinism-1.ndjson"), "utf8"),
+    );
+  });
+
+  it("produces identical event sequences without --clock (timestamps excluded)", () => {
+    const invoke = () =>
+      genome("run", VALID_EXAMPLE, "--workflow", "build-feature", "--grant", "human:engineering-manager", "--json");
+    const strip = (stdout: string) => events(stdout).map(({ timestamp, ...rest }) => rest);
+    expect(strip(invoke().stdout)).toEqual(strip(invoke().stdout));
   });
 });
