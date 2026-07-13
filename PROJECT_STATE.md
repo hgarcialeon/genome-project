@@ -40,8 +40,11 @@ trigger binding grammars stay out — each gated on its own consumer.
 
 ## Active Architectural Decision
 
-RFC-0006 — Reference Adapter & `genome run` (to be drafted; authorized by
-the Phase 0–3 board review). No other decision is open.
+RFC-0006 — Reference Adapter & `genome run`
+(`RFC/0006-reference-adapter-and-genome-run.md`): drafted 2026-07-13,
+under Architecture Board review. **Draft — not approved; implementation
+does not begin until Product Owner ratification is recorded.** Authorized
+by the Phase 0–3 board review. No other decision is open.
 
 ## Current Blockers
 
@@ -76,8 +79,8 @@ Describe a company once. Compile it into an autonomous organization.
 
 ## Next Expected Deliverable
 
-The RFC-0006 draft (Reference Adapter & `genome run`), for Architecture
-Board review. Engineering work enters the queue when it is accepted.
+The Architecture Board's decision on the RFC-0006 draft. Engineering work
+enters the queue when it is accepted.
 
 ## Completed RFCs
 
