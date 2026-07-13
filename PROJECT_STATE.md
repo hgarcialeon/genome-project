@@ -16,9 +16,8 @@ Executable Genome Specification
 
 ## Active RFC
 
-RFC-0003 — Runtime Boundary (Draft, submitted 2026-07-13; awaiting
-Architecture Board review). RFC-0002 — Genome Compiler was accepted
-2026-07-09 and its queue is drained.
+RFC-0003 — Runtime Boundary (Accepted 2026-07-13). RFC-0002 — Genome
+Compiler was accepted 2026-07-09 and its queue is drained.
 
 ## Governance Status
 
@@ -42,19 +41,22 @@ Describe a company once. Compile it into an autonomous organization.
 ## Open Decisions
 
 All RFC-0002 open decisions resolved by the Architecture Board on 2026-07-09
-(see `docs/adr/0003-compiler-package-boundary.md`):
+(`docs/adr/0003-compiler-package-boundary.md`). All RFC-0003 open questions
+resolved by the Architecture Board on 2026-07-13
+(`docs/adr/0004-runtime-boundary.md`):
 
-1. Compiler pipeline — ✅ resolved
-2. AST model — ✅ resolved (same package, optional source spans)
-3. Organization Graph — ✅ resolved (normative nodes/relationships, adjacency list)
-4. Compilation targets — ✅ resolved (fixed functions; scope trimmed to inspect/graph/docs)
-5. Compiler package boundaries — ✅ resolved (single `genome-compiler` package)
+1. Event-type ownership — ✅ resolved (`genome-runtime`, dependency-free `events/` module)
+2. Taxonomy normativity — ✅ resolved (envelope + taxonomy normative, additive-only)
+3. Supervised checkpoints — ✅ resolved (layered semantics; deny-safe `manual` default)
+4. Revision adoption — ✅ resolved (drain, normative)
+5. Proposal format — ✅ resolved (payload reserved; Phase 6 RFC under binding constraints)
 
 ## Next Architecture Decision
 
-Review RFC-0003 — Runtime Boundary (drafted 2026-07-13, `RFC/0003-runtime.md`)
-and resolve its five open questions. No engineering work starts from RFC-0003
-until it is accepted and queued.
+Approve the Phase 3 implementation RFC (runtime implementation: `RuntimeModel`
+shape, trigger executability, scheduling/ordering semantics, operator
+emergency-stop story) when drafted. Near-term engineering work proceeds from
+the Implementation Queue (compiler preconditions from RFC-0003).
 
 ## Current Rule
 
@@ -70,10 +72,24 @@ No implementation before specification.
 
 ## Next Expected Deliverable
 
-Architecture Board decision on RFC-0003 — Runtime Boundary (drafted
-2026-07-13). The RFC-0002 implementation queue is drained:
-`packages/genome-compiler` (Stages 1–5) and the CLI `inspect`/`graph`
-commands shipped 2026-07-13.
+The RFC-0003 compiler preconditions from the Implementation Queue: policy
+`appliesTo` semantic validation + `requires` edges, and `owns` edges for
+objective/metric owners. Runtime implementation stays gated on the Phase 3
+RFC and remains out of scope for Phase 0.
+
+## Definition of Done for RFC-0003
+
+- runtime input contract defined — ✅
+- runtime output contract defined — ✅
+- reconciliation contract defined — ✅
+- human approval contract defined — ✅
+- provider boundary defined — ✅
+- open questions resolved — ✅
+- specification preconditions landed — ✅
+- ADR recorded — ✅
+
+RFC-0003 accepted by the Architecture Board on 2026-07-13
+(`docs/reviews/RFC-0003-board-decision.md`).
 
 ## Definition of Done for RFC-0002
 
