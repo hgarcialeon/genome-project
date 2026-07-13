@@ -1,0 +1,18 @@
+genomeVersion: 0.1
+
+company:
+  name: Acme Billing
+
+departments:
+  operations:
+    agents:
+      coordinator:
+        role: Operations Coordinator
+        autonomy: supervised
+
+policies:
+  production-deploy:
+    requiresApprovalFrom:
+      - "human:Engineering Manager!"
+      - sales.nobody
+      - operations.coordinator

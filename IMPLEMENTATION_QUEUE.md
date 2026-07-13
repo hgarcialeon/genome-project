@@ -13,15 +13,16 @@ Claude Code or any engineering agent should consume this queue instead of acting
 |----------|------|------------|-------|--------|
 | High | Complete Genome CLI validation | Genome Schema v0.1 | Engineering | Done |
 | High | Genome Compiler package design | RFC-0002 | Architecture | Approved |
-| High | Compiler Stages 1–4 (parse/schema reuse, AST, semantic) | RFC-0002 | Engineering | Ready |
-| High | Organization Graph model | RFC-0002 | Architecture | Ready |
-| Medium | CLI inspect command | Compiler AST | Engineering | Blocked |
-| Medium | CLI graph command | Organization Graph | Engineering | Blocked |
+| High | Compiler Stages 1–4 (parse/schema reuse, AST, semantic) | RFC-0002 | Engineering | Done |
+| High | Organization Graph model | RFC-0002 | Architecture | Done |
+| Medium | CLI inspect command | Compiler AST | Engineering | Ready |
+| Medium | CLI graph command | Organization Graph | Engineering | Ready |
 | Low | Office View prototype | Organization Graph | Office Team | Not Started |
 
 ## Current Engineering Rule
 
-RFC-0002 is approved (2026-07-09). `packages/genome-compiler` may be
-implemented per RFC-0002. Reuse `@genome/schema` for Stages 1–2; do not
-reimplement parse or schema validation. Implement the v0.1 semantic set first
-(`autonomy` enum + duplicate detection), then reference/principal checks.
+`packages/genome-compiler` implements RFC-0002 Stages 1–5 (2026-07-13): it
+reuses `@genome/schema` for Stages 1–2, enforces the full v0.1 semantic set,
+and exposes the `inspect`/`graph`/`docs` targets as plain functions. CLI
+`inspect` and `graph` commands are unblocked and MUST consume `@genome/compiler`
+targets — no interpretation of raw Genome YAML outside the compiler boundary.

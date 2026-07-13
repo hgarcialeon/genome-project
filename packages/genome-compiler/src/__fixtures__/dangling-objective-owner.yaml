@@ -1,0 +1,21 @@
+genomeVersion: 0.1
+
+company:
+  name: Acme Billing
+
+departments:
+  operations:
+    agents:
+      coordinator:
+        role: Operations Coordinator
+        autonomy: supervised
+
+objectives:
+  reliability:
+    description: Maintain a stable billing platform.
+    owner: operations.missing
+
+metrics:
+  deployment-frequency:
+    type: delivery
+    owner: nowhere.nobody

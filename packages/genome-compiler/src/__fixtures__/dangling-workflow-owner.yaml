@@ -1,0 +1,20 @@
+genomeVersion: 0.1
+
+company:
+  name: Acme Billing
+
+departments:
+  engineering:
+    teams:
+      platform:
+        agents:
+          backend:
+            role: Backend Engineer
+            autonomy: supervised
+
+workflows:
+  build-feature:
+    owner: engineering.platform.missing
+    trigger: manual
+    steps:
+      - implement
