@@ -76,7 +76,7 @@ export const edgesOf = (graph: OrganizationGraph): GraphEdge[] => Object.values(
  *   departments, agents → teams/departments) and top-level resources
  *   (workflows, policies, integrations, objectives, metrics, memory stores →
  *   company).
- * - `owns`: workflow owner agent → workflow.
+ * - `owns`: owner agent → workflow/objective/metric.
  * - `approves`: agent principal → policy (human principals are recorded in the
  *   policy node's attributes; humans are not graph nodes in v0.1).
  * - `requires`: governed workflow/agent → policy, from the policy's declared
@@ -146,6 +146,15 @@ export function buildGraph(ast: GenomeAst): OrganizationGraph {
 
   const workflowNodeIds = new Map<string, string>();
 
+  // Validated owners (semantic rules 3 and 5) must survive into the graph so
+  // the runtime model can see them (RFC-0003, "derived only from the graph").
+  const addOwnerEdge = (owner: string | undefined, ownedId: string): void => {
+    const ownerId = owner === undefined ? undefined : agentNodeIds.get(owner);
+    if (ownerId !== undefined) {
+      addEdge(ownerId, "owns", ownedId);
+    }
+  };
+
   for (const workflow of ast.workflows) {
     const workflowId = addNode("Workflow", workflow.id, workflow.id, {
       owner: workflow.owner,
@@ -154,10 +163,7 @@ export function buildGraph(ast: GenomeAst): OrganizationGraph {
     });
     addEdge(workflowId, "belongs_to", companyId);
     workflowNodeIds.set(workflow.id, workflowId);
-    const ownerId = workflow.owner === undefined ? undefined : agentNodeIds.get(workflow.owner);
-    if (ownerId !== undefined) {
-      addEdge(ownerId, "owns", workflowId);
-    }
+    addOwnerEdge(workflow.owner, workflowId);
   }
 
   for (const policy of ast.policies) {
@@ -194,14 +200,19 @@ export function buildGraph(ast: GenomeAst): OrganizationGraph {
   }
 
   for (const objective of ast.objectives) {
-    const objectiveId = addNode("Objective", objective.id, objective.id, { description: objective.description });
+    const objectiveId = addNode("Objective", objective.id, objective.id, {
+      description: objective.description,
+      owner: objective.owner,
+    });
     addEdge(objectiveId, "belongs_to", companyId);
+    addOwnerEdge(objective.owner, objectiveId);
   }
 
   for (const metric of ast.metrics) {
-    const metricId = addNode("Metric", metric.id, metric.id, { type: metric.type });
+    const metricId = addNode("Metric", metric.id, metric.id, { type: metric.type, owner: metric.owner });
     addEdge(metricId, "belongs_to", companyId);
     addEdge(metricId, "measures", companyId);
+    addOwnerEdge(metric.owner, metricId);
   }
 
   if (ast.memory) {
