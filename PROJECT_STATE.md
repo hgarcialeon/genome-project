@@ -34,7 +34,7 @@ is drained.
 
 - Architecture Debt: Low
 - Specification Coverage: High
-- Implementation Coverage: Medium
+- Implementation Coverage: High
 
 ## Current North Star
 
@@ -75,20 +75,23 @@ No implementation before specification.
 
 ## Next Expected Deliverable
 
-The RFC-0004 implementation items from the Implementation Queue: Genome
-revision derivation + the runtime-model target in `packages/genome-compiler`,
-and the `packages/genome-runtime` core (events module, append-only log,
-replay, approval gate, halt/resume, drain adoption).
+The engineering queue is drained: RFC-0004's items landed 2026-07-13
+(`packages/genome-compiler` revision + runtime-model target;
+`packages/genome-runtime` core), completing the Phase 3 roadmap
+deliverables (model intake, agent lifecycle, event bus, workflow execution,
+human approval stub, activity log). Next work enters the queue through the
+next phase's RFC (Studio, Office View, or the Phase 6 proposal-payload
+RFC); the Office View prototype remains queued Low for the Office Team.
 
 ## Definition of Done for RFC-0004
 
-- `RuntimeModel` shape pinned and implemented as a compiler target — ☐
-- Genome revision derivation specified and implemented — ☐
+- `RuntimeModel` shape pinned and implemented as a compiler target — ✅
+- Genome revision derivation specified and implemented — ✅
 - trigger executability resolved for v0.1 — ✅
-- ordering and execution semantics pinned and implemented — ☐
-- approval gate mechanics pinned and implemented — ☐
-- emergency stop implemented as attributable control events — ☐
-- `replay` implemented; `state() == replay(log)` by construction — ☐
+- ordering and execution semantics pinned and implemented — ✅
+- approval gate mechanics pinned and implemented — ✅
+- emergency stop implemented as attributable control events — ✅
+- `replay` implemented; `state() == replay(log)` by construction — ✅
 - open questions resolved — ✅
 - ADR recorded — ✅
 

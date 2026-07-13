@@ -21,17 +21,22 @@ Claude Code or any engineering agent should consume this queue instead of acting
 | High | Policy `appliesTo`: semantic validation + `requires` edges | RFC-0003 / ADR-0004 | Engineering | Done |
 | Medium | `owns` edges for objective/metric owners | RFC-0003 / ADR-0004 | Engineering | Done |
 | High | RFC-0004 Runtime Implementation review | RFC-0004 draft | Architecture Board | Done |
-| High | Genome revision derivation + runtime-model target in `genome-compiler` | RFC-0004 / ADR-0005 | Engineering | Approved |
-| High | `packages/genome-runtime` core | RFC-0004 / ADR-0005 | Engineering | Approved |
+| High | Genome revision derivation + runtime-model target in `genome-compiler` | RFC-0004 / ADR-0005 | Engineering | Done |
+| High | `packages/genome-runtime` core | RFC-0004 / ADR-0005 | Engineering | Done |
 | Low | Office View prototype | Organization Graph | Office Team | Not Started |
 
 ## Current Engineering Rule
 
 `packages/genome-compiler` implements RFC-0002 Stages 1–5 (2026-07-13): it
 reuses `@genome/schema` for Stages 1–2, enforces the full v0.1 semantic set,
-and exposes the `inspect`/`graph`/`docs` targets as plain functions. The CLI
-`inspect` and `graph` commands consume those targets (2026-07-13) — no
-interpretation of raw Genome YAML happens outside the compiler boundary.
+and exposes the `inspect`/`graph`/`docs`/`runtime-model` targets as plain
+functions, deriving the Genome revision at Stage 5. The CLI `inspect` and
+`graph` commands consume those targets (2026-07-13).
+`packages/genome-runtime` (2026-07-13) consumes only the runtime-model
+target and produces only the append-only event log; its observed state is
+`replay(log)` by construction, and nothing above the adapter seam names a
+provider. No interpretation of raw Genome YAML happens outside the compiler
+boundary.
 
 RFC-0004 — Runtime Implementation was accepted 2026-07-13
 (`docs/adr/0005-runtime-execution-contract.md`), resolving everything the

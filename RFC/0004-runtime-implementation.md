@@ -408,14 +408,20 @@ decision of 2026-07-13.
 
 ## Definition of Done
 
-- `RuntimeModel` shape pinned and implemented as a compiler target — ☐
-- Genome revision derivation specified and implemented — ☐
+- `RuntimeModel` shape pinned and implemented as a compiler target — ✅
+  (`packages/genome-compiler/src/targets/runtime-model.ts`)
+- Genome revision derivation specified and implemented — ✅
+  (`packages/genome-compiler/src/revision.ts`; carried on the graph)
 - trigger executability resolved for v0.1 — ✅ (explicit initiation only;
   binding grammars deferred to their consuming phases)
-- ordering and execution semantics pinned and implemented — ☐
-- approval gate mechanics pinned and implemented (deny-safe, `runId`-matched) — ☐
-- emergency stop implemented as attributable control events — ☐
-- `replay` implemented; `state() == replay(log)` holds by construction — ☐
+- ordering and execution semantics pinned and implemented — ✅
+  (sequential ids; non-preemptive core; sequential steps; no retries)
+- approval gate mechanics pinned and implemented (deny-safe, `runId`-matched) — ✅
+- emergency stop implemented as attributable control events — ✅
+  (`runtime.halted`/`runtime.resumed`, human-only, `runId: null`)
+- `replay` implemented; `state() == replay(log)` holds by construction — ✅
+  (`packages/genome-runtime`; the core derives state from its log on every
+  operation)
 - open questions resolved by the Architecture Board — ✅ (Decisions above)
 - ADR recorded on acceptance — ✅
   (`docs/adr/0005-runtime-execution-contract.md`)
