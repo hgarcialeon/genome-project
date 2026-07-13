@@ -9,6 +9,7 @@
     "test": "turbo test",
     "typecheck": "turbo typecheck",
     "build": "turbo build",
+    "check-state": "node scripts/check-state.mjs",
     "genome": "tsx packages/genome-cli/src/index.ts",
     "validate": "tsx packages/genome-cli/src/index.ts validate"
   },
