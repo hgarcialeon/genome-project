@@ -35,6 +35,10 @@ importers:
       tsx:
         specifier: ^4.19.2
         version: 4.23.0
+    devDependencies:
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.9(@types/node@26.1.1)
 
   packages/genome-compiler:
     dependencies:

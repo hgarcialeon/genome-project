@@ -60,13 +60,18 @@ Then Genome can compile that declaration into:
 - integrations
 - observability
 
-## First Milestone
+## The CLI
+
+The reference implementation ships a CLI covering the full v0.1 command set:
 
 ```bash
-genome validate SPEC/examples/company.yaml
+genome validate SPEC/examples/company.yaml   # schema validation
+genome inspect  SPEC/examples/company.yaml   # organization summary (--json)
+genome graph    SPEC/examples/company.yaml   # Organization Graph as JSON
+genome diff     before.yaml after.yaml       # structural diff, diff(1) exit codes
 ```
 
-The first goal is to validate a Genome document against the v0.1 schema.
+Current phase, milestone, and objective live in `PROJECT_STATE.md`.
 
 ## Repository Structure
 
@@ -80,7 +85,7 @@ genome-project/
 ├── SPEC/
 ├── docs/
 ├── packages/
-└── apps/
+└── scripts/
 ```
 
 ## Product Layers

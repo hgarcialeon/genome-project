@@ -1,0 +1,19 @@
+genomeVersion: 0.1
+
+company:
+  name: Fixture Co
+  mission: Exercise the CLI boundary.
+
+departments:
+  engineering:
+    agents:
+      builder:
+        role: Backend Engineer
+        autonomy: supervised
+
+workflows:
+  ship:
+    owner: engineering.builder
+    steps:
+      - plan
+      - implement

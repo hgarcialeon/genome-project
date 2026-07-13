@@ -12,7 +12,7 @@ Claude Code or any engineering agent should consume this queue instead of acting
 | Priority | Item | Depends On | Owner | Status |
 |----------|------|------------|-------|--------|
 | High | Complete Genome CLI validation | Genome Schema v0.1 | Engineering | Done |
-| High | Genome Compiler package design | RFC-0002 | Architecture | Approved |
+| High | Genome Compiler package design | RFC-0002 | Architecture | Done |
 | High | Compiler Stages 1–4 (parse/schema reuse, AST, semantic) | RFC-0002 | Engineering | Done |
 | High | Organization Graph model | RFC-0002 | Architecture | Done |
 | Medium | CLI inspect command | Compiler AST | Engineering | Done |
@@ -25,6 +25,11 @@ Claude Code or any engineering agent should consume this queue instead of acting
 | High | `packages/genome-runtime` core | RFC-0004 / ADR-0005 | Engineering | Done |
 | High | RFC-0005 Genome Diff review | RFC-0005 draft | Architecture Board | Done |
 | Medium | `diff` target in `genome-compiler` + CLI `genome diff` | RFC-0005 / ADR-0006 | Engineering | Done |
+| High | CLI-boundary test suite (exit codes, JSON contracts) | 2026-07-13 audit | Engineering | Done |
+| High | `check-state` consistency script + CI step | 2026-07-13 audit | Engineering | Done |
+| High | Governance/state reconciliation (phase reviews, single source of truth) | 2026-07-13 audit | Engineering | Done |
+| High | Phase 0–3 transition reviews (incl. schema-codegen de-scope ratification) | Governance: Phase Transition Review | Architecture Board | Done |
+| High | RFC-0006 — Reference Adapter & `genome run`: draft and Board review | Phase 0–3 review (`docs/reviews/phase-0-3-board-review.md`) | Architecture Board | Not Started |
 | Low | Office View prototype | Organization Graph | Office Team | Not Started |
 
 ## Current Engineering Rule
@@ -77,3 +82,20 @@ deterministic ordering) and the CLI `genome diff <before> <after> [--json]`
 with `diff(1)` exit codes (0 identical / 1 different / 2 trouble). Rename
 detection, patch application, merge, and the Phase 6 proposal payload
 remain out of scope (RFC-0005 non-goals).
+
+The 2026-07-13 governance audit added three drained items: CLI-boundary
+tests in `packages/genome-cli` (exit-code and JSON contracts, previously
+asserted without executable evidence), the `scripts/check-state.mjs`
+consistency check wired into CI, and the reconciliation of
+`PROJECT_STATE.md`, `ROADMAP.md`, `CLAUDE_CODE_PROMPT.md`, `README.md`, and
+`docs/GOVERNANCE.md` (phase transition reviews; current state lives only in
+`PROJECT_STATE.md`). The Phase 0–3 transition reviews were held 2026-07-13
+(`docs/reviews/phase-0-3-board-review.md`, ratified by the Product Owner):
+Phases 0–2 closed — with the note "Phases 0–2 closed; Phase 3 held open by
+decision" — the schema-codegen de-scoping ratified as worded in
+`ROADMAP.md`, and Phase 3 held active with the reference provider adapter
+and `genome run` scoped in via RFC-0006 (boundary constraints pinned in
+the review's Condition 4; the governance process itself is recorded as
+`docs/adr/0007-phase-transition-governance.md`). Event persistence is
+excluded from Phase 3, gated on its first consumer. The next queue intake
+happens when RFC-0006 is accepted.

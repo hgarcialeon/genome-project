@@ -7,6 +7,7 @@
   },
   "scripts": {
     "dev": "tsx src/index.ts",
+    "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -14,5 +15,8 @@
     "@genome/schema": "workspace:*",
     "commander": "^12.1.0",
     "tsx": "^4.19.2"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.8"
   }
 }

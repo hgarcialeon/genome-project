@@ -1,0 +1,5 @@
+# Schema-invalid: company.name is required.
+genomeVersion: 0.1
+
+company:
+  mission: A company with no name.

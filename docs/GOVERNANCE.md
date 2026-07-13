@@ -47,6 +47,52 @@ Implements approved work from the Implementation Queue.
 5. Views do not own domain logic.
 6. Runtime state must be reconcilable with the Genome.
 7. Provider-specific assumptions must not leak into the language core.
+8. Current project state lives only in `PROJECT_STATE.md`; every other
+   document may point to it but must not restate it.
+
+## RFC Completion Criteria
+
+Every RFC's Definition of Done includes, in addition to its own items, the
+standing requirement:
+
+> Project state and governance documents reconciled.
+
+Concretely: `PROJECT_STATE.md`, `ROADMAP.md` deliverable statuses, and
+`IMPLEMENTATION_QUEUE.md` reflect the work at the moment it lands, and
+`pnpm check-state` passes. An RFC whose implementation is merged without
+this reconciliation is not complete.
+
+## Phase Transition Review
+
+Recorded as `docs/adr/0007-phase-transition-governance.md`, together with
+Rule 8 and the RFC completion criterion above.
+
+Phases are defined in `ROADMAP.md`. A phase may be closed only by a phase
+transition review, held by the Architecture Board.
+
+A phase closes only when every one of its roadmap deliverables is
+classified as exactly one of:
+
+- **Done** — with executable or explicitly documented evidence;
+- **Deferred** — with a corresponding `IMPLEMENTATION_QUEUE.md` entry;
+- **De-scoped** — with a stated reason recorded in `ROADMAP.md` (and an RFC
+  or ADR reference when the de-scoping follows from an architectural
+  decision).
+
+The review must also reconcile, in the same change:
+
+- `PROJECT_STATE.md` (current phase, milestone, objective, blockers);
+- `ROADMAP.md` (deliverable statuses);
+- `IMPLEMENTATION_QUEUE.md` (deferred items queued, drained items marked);
+- the Definition of Done evidence for the phase's RFCs.
+
+The mechanical half of this review is `pnpm check-state`, which runs in CI;
+the judgment half (does the evidence actually support "Done"?) belongs to
+the Board and cannot be automated away.
+
+Evidence cited in reviews must come from uncached runs: turbo replays
+cached test logs, so use `pnpm test -- --force` (or a clean environment)
+when producing review evidence.
 
 ## Architecture Board
 

@@ -1,0 +1,16 @@
+# Semantically identical to base.yaml: keys reordered, quoting and
+# formatting changed. `genome diff` must report identical (exit 0).
+company:
+  mission: "Exercise the CLI boundary."
+  name: "Fixture Co"
+genomeVersion: 0.1
+workflows:
+  ship:
+    steps: [plan, implement]
+    owner: "engineering.builder"
+departments:
+  engineering:
+    agents:
+      builder:
+        autonomy: "supervised"
+        role: "Backend Engineer"
