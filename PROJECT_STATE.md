@@ -16,7 +16,9 @@ Executable Genome Specification
 
 ## Active RFC
 
-RFC-0002 — Genome Compiler (Accepted 2026-07-09)
+RFC-0003 — Runtime Boundary (Draft, submitted 2026-07-13; awaiting
+Architecture Board review). RFC-0002 — Genome Compiler was accepted
+2026-07-09 and its queue is drained.
 
 ## Governance Status
 
@@ -50,8 +52,9 @@ All RFC-0002 open decisions resolved by the Architecture Board on 2026-07-09
 
 ## Next Architecture Decision
 
-Approve RFC-0003 — Runtime boundary (when drafted). Near-term engineering work
-proceeds from the Implementation Queue.
+Review RFC-0003 — Runtime Boundary (drafted 2026-07-13, `RFC/0003-runtime.md`)
+and resolve its five open questions. No engineering work starts from RFC-0003
+until it is accepted and queued.
 
 ## Current Rule
 
@@ -67,8 +70,9 @@ No implementation before specification.
 
 ## Next Expected Deliverable
 
-Draft RFC-0003 — Runtime boundary. The RFC-0002 implementation queue is
-drained: `packages/genome-compiler` (Stages 1–5) and the CLI `inspect`/`graph`
+Architecture Board decision on RFC-0003 — Runtime Boundary (drafted
+2026-07-13). The RFC-0002 implementation queue is drained:
+`packages/genome-compiler` (Stages 1–5) and the CLI `inspect`/`graph`
 commands shipped 2026-07-13.
 
 ## Definition of Done for RFC-0002

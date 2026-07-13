@@ -17,6 +17,7 @@ Claude Code or any engineering agent should consume this queue instead of acting
 | High | Organization Graph model | RFC-0002 | Architecture | Done |
 | Medium | CLI inspect command | Compiler AST | Engineering | Done |
 | Medium | CLI graph command | Organization Graph | Engineering | Done |
+| High | RFC-0003 Runtime Boundary review | RFC-0003 draft | Architecture Board | In Review |
 | Low | Office View prototype | Organization Graph | Office Team | Not Started |
 
 ## Current Engineering Rule
@@ -27,6 +28,8 @@ and exposes the `inspect`/`graph`/`docs` targets as plain functions. The CLI
 `inspect` and `graph` commands consume those targets (2026-07-13) — no
 interpretation of raw Genome YAML happens outside the compiler boundary.
 
-The queue is drained except Office View, which stays out of scope for
-Phase 0. New engineering work requires a new RFC; the next expected RFC is
-RFC-0003 (runtime boundary).
+The engineering queue is drained except Office View, which stays out of
+scope for Phase 0. RFC-0003 — Runtime Boundary was drafted 2026-07-13
+(`RFC/0003-runtime.md`) and is awaiting Architecture Board review; it adds
+no engineering work until accepted, at which point its items (runtime model
+target, `packages/genome-runtime`) enter this queue with acceptance criteria.
