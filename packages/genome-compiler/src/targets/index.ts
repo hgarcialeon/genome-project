@@ -2,9 +2,12 @@
  * Compilation targets — plain `(OrganizationGraph) => T` functions.
  *
  * v0.1 is a small, fixed, internal set (no plugin system, per ADR-0003):
- * CLI inspection, graph output, and documentation output. Runtime, office,
- * workflow, and memory targets are deferred to their consuming phases.
+ * CLI inspection, graph output, documentation output, and the runtime model
+ * (RFC-0004). Office, workflow, and memory targets are deferred to their
+ * consuming phases.
  */
+
+export * from "./runtime-model.js";
 
 import {
   COMPANY_NODE_ID,

@@ -16,11 +16,13 @@ import { createValidator, formatErrors, parseGenomeDocument } from "@genome/sche
 import { buildAst, type GenomeAst } from "./ast/index.js";
 import { isWarning, type CompileStage, type Diagnostic } from "./diagnostics.js";
 import { buildGraph, type OrganizationGraph } from "./graph/index.js";
+import { deriveGenomeRevision } from "./revision.js";
 import { validateSemantics } from "./semantics/index.js";
 
 export * from "./ast/index.js";
 export * from "./diagnostics.js";
 export * from "./graph/index.js";
+export * from "./revision.js";
 export * from "./semantics/index.js";
 export * from "./targets/index.js";
 
@@ -106,8 +108,9 @@ export function compile(source: string, options: CompileOptions = {}): CompileRe
     return { ok: false, stage: "semantic", diagnostics: semanticDiagnostics, ast };
   }
 
-  // Stage 5 — Organization Graph.
-  const graph = buildGraph(ast);
+  // Stage 5 — Organization Graph, carrying the derived Genome revision
+  // (RFC-0004: content hash of the canonical schema-valid document).
+  const graph = buildGraph(ast, deriveGenomeRevision(document));
 
   return { ok: true, ast, graph, diagnostics: semanticDiagnostics };
 }

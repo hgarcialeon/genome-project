@@ -33,6 +33,12 @@ revisions are derived, never declared, so a Genome document does not carry a
 revision field. Each revision compiles to exactly one runtime model (1:1),
 and runtime events attribute to the revision they executed under (RFC-0003).
 
+The derivation is normative (RFC-0004): the revision is the lowercase hex
+SHA-256 of the canonical JSON serialization — object keys sorted
+lexicographically at every level, array order preserved — of the
+schema-valid parsed document. Documents that differ only in YAML formatting
+or key order share a revision; any semantic difference produces a new one.
+
 ## Top-Level Structure
 
 ```yaml
@@ -117,6 +123,10 @@ Fields that name an approver or actor — for example
 
 - an **agent reference** resolved by the dotted-reference rules above.
 
+The wildcard principal `human:*` is **reserved** for the runtime's intrinsic
+supervised-approval floor (RFC-0004) and is not a valid identifier, so it can
+never be declared in a Genome document.
+
 ## Agent Autonomy Levels
 
 Supported values:
@@ -176,6 +186,19 @@ Supported values:
 - schedule
 - webhook
 
+If `trigger` is omitted, it defaults to `manual` (deny-safe: an undeclared
+trigger never makes a workflow start by itself).
+
+### Executability (v0.1)
+
+All workflow initiation in v0.1 is **explicit**: a start instruction from a
+principal. The runtime auto-initiates nothing. `event`, `schedule`, and
+`webhook` declare how the organization *intends* the workflow to start, but
+v0.1 defines no event selector, schedule expression, or webhook binding —
+those grammars are deferred language work, each gated on the phase that
+consumes it (RFC-0004). An explicitly started workflow may have any declared
+trigger.
+
 ## Compilation Targets
 
 Targets are plain functions of the Organization Graph (RFC-0002). The v0.1
@@ -184,7 +207,8 @@ set is fixed:
 - CLI inspection (`inspect`)
 - graph output (`graph`)
 - documentation output (`docs`)
+- runtime model (`runtime-model`, RFC-0003/RFC-0004 — the compiled artifact
+  the runtime consumes)
 
-A **runtime model** target is specified by RFC-0003 and lands with Phase 3.
 Office layout, workflow model, and memory graph targets are deferred to the
 RFCs of their consuming phases (RFC-0002, Compilation Targets).
