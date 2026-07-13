@@ -19,7 +19,7 @@ Claude Code or any engineering agent should consume this queue instead of acting
 | Medium | CLI graph command | Organization Graph | Engineering | Done |
 | High | RFC-0003 Runtime Boundary review | RFC-0003 draft | Architecture Board | Done |
 | High | Policy `appliesTo`: semantic validation + `requires` edges | RFC-0003 / ADR-0004 | Engineering | Done |
-| Medium | `owns` edges for objective/metric owners | RFC-0003 / ADR-0004 | Engineering | Queued |
+| Medium | `owns` edges for objective/metric owners | RFC-0003 / ADR-0004 | Engineering | Done |
 | Medium | Runtime model target in `genome-compiler` | Phase 3 RFC (`RuntimeModel` shape) | Engineering | Blocked |
 | Medium | `packages/genome-runtime` core | Phase 3 RFC | Engineering | Blocked |
 | Low | Office View prototype | Organization Graph | Office Team | Not Started |

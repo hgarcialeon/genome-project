@@ -199,6 +199,29 @@ describe("organization graph", () => {
     });
   });
 
+  it("links objective and metric owners with owns edges", () => {
+    const { graph } = compileExample();
+    const edges = edgesOf(graph);
+
+    expect(edges).toContainEqual({
+      from: "agent:engineering.platform.architect",
+      to: "objective:reliability",
+      type: "owns",
+    });
+    expect(edges).toContainEqual({
+      from: "agent:engineering.platform.backend",
+      to: "metric:deployment-frequency",
+      type: "owns",
+    });
+    expect(edges).toContainEqual({
+      from: "agent:engineering.platform.qa",
+      to: "metric:defect-escape-rate",
+      type: "owns",
+    });
+    expect(graph.nodes["objective:reliability"].attributes.owner).toBe("engineering.platform.architect");
+    expect(graph.nodes["metric:deployment-frequency"].attributes.owner).toBe("engineering.platform.backend");
+  });
+
   it("links policy scope with requires edges (governed workflow → policy)", () => {
     const { graph } = compileExample();
 

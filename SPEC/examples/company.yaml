@@ -97,9 +97,12 @@ memory:
 objectives:
   reliability:
     description: Maintain a stable billing platform.
+    owner: engineering.platform.architect
 
 metrics:
   deployment-frequency:
     type: delivery
+    owner: engineering.platform.backend
   defect-escape-rate:
     type: quality
+    owner: engineering.platform.qa
