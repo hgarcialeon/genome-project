@@ -52,6 +52,8 @@ export type WorkflowNode = AstNode & {
 
 export type PolicyNode = AstNode & {
   id: string;
+  /** Declared policy scope: workflow ids and/or agent references (`SPEC/language.md`, Policy Scope). */
+  appliesTo: string[];
   requiresApprovalFrom: string[];
 };
 
@@ -143,6 +145,7 @@ export function buildAst(document: unknown): GenomeAst {
     })),
     policies: entries(doc.policies).map(([id, policy]) => ({
       id,
+      appliesTo: asStringList(policy.appliesTo),
       requiresApprovalFrom: asStringList(policy.requiresApprovalFrom),
     })),
     integrations: entries(doc.integrations).map(([id, integration]) => ({

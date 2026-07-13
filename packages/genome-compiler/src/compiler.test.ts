@@ -133,6 +133,41 @@ describe("semantic validation (RFC-0002 v0.1 rules)", () => {
       ]),
     );
   });
+
+  it("rule 6: rejects appliesTo entries that resolve to no workflow or agent", () => {
+    const failure = expectFailure("./__fixtures__/dangling-applies-to.yaml");
+
+    expect(failure.stage).toBe("semantic");
+    expect(failure.diagnostics).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          rule: 6,
+          path: "policies.production-deploy.appliesTo",
+          message: expect.stringContaining("missing-workflow"),
+        }),
+        expect.objectContaining({
+          rule: 6,
+          path: "policies.production-deploy.appliesTo",
+          message: expect.stringContaining("engineering.platform.nobody"),
+        }),
+      ]),
+    );
+  });
+
+  it("rule 6: an unbound policy warns but still compiles", () => {
+    const result = compileFixture("./__fixtures__/unbound-policy.yaml");
+
+    expect(result.ok).toBe(true);
+    const success = result as CompileSuccess;
+    expect(success.diagnostics).toEqual([
+      expect.objectContaining({
+        rule: 6,
+        severity: "warning",
+        path: "policies.after-hours-change",
+        message: expect.stringContaining("unbound policy"),
+      }),
+    ]);
+  });
 });
 
 describe("organization graph", () => {
@@ -161,6 +196,16 @@ describe("organization graph", () => {
       from: "agent:engineering.platform.architect",
       to: "workflow:build-feature",
       type: "owns",
+    });
+  });
+
+  it("links policy scope with requires edges (governed workflow → policy)", () => {
+    const { graph } = compileExample();
+
+    expect(edgesOf(graph)).toContainEqual({
+      from: "workflow:build-feature",
+      to: "policy:production-deploy",
+      type: "requires",
     });
   });
 
@@ -226,6 +271,7 @@ describe("compilation targets", () => {
     expect(docs).toContain("## Workflows");
     expect(docs).toContain("`engineering.platform.architect`");
     expect(docs).toContain("## Policies");
+    expect(docs).toContain("applies to: `build-feature`");
     expect(docs).toContain("`human:engineering-manager`");
   });
 });

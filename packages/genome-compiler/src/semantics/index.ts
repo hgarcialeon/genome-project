@@ -10,6 +10,10 @@
  *   3. `workflow.owner` resolves to an existing agent.
  *   4. `policy.*.requiresApprovalFrom` principals are valid.
  *   5. No dangling references in `workflows`, `objectives`, or `metrics`.
+ * Plus the RFC-0003 / ADR-0004 policy-scope rule:
+ *   6. `policy.*.appliesTo` entries resolve to an existing workflow (single
+ *      segment) or agent (dotted reference); a policy without `appliesTo` is
+ *      unbound and produces a warning, not an error.
  */
 
 import type { GenomeAst } from "../ast/index.js";
@@ -113,6 +117,30 @@ export function validateSemantics(ast: GenomeAst): Diagnostic[] {
         if (!agentIndex.has(principal)) {
           error(4, path, `'${principal}' is neither a 'human:<id>' principal nor an existing agent reference`);
         }
+      }
+    }
+  }
+
+  // Rule 6 — policy scope (`SPEC/language.md`, Policy Scope): entries with a
+  // dot are agent references; single segments are workflow ids.
+  const workflowIds = new Set(ast.workflows.map((w) => w.id));
+  for (const policy of ast.policies) {
+    if (policy.appliesTo.length === 0) {
+      diagnostics.push({
+        stage: "semantic",
+        severity: "warning",
+        rule: 6,
+        path: `policies.${policy.id}`,
+        message: `unbound policy: '${policy.id}' declares no 'appliesTo' and governs nothing`,
+      });
+      continue;
+    }
+    for (const entry of policy.appliesTo) {
+      const path = `policies.${policy.id}.appliesTo`;
+      if (entry.includes(".")) {
+        checkAgentReference(6, path, entry);
+      } else if (!workflowIds.has(entry)) {
+        error(6, path, `'${entry}' does not resolve to an existing workflow`);
       }
     }
   }

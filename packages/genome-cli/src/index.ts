@@ -134,6 +134,11 @@ function compileOrFail(file: string): CompileSuccess {
     process.exit(1);
   }
 
+  // A successful compile may still carry warnings (e.g. an unbound policy).
+  for (const diagnostic of result.diagnostics) {
+    console.error(`⚠ ${formatDiagnostic(diagnostic)}`);
+  }
+
   return result;
 }
 

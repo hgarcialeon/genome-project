@@ -14,7 +14,7 @@ import { fileURLToPath } from "node:url";
 import { createValidator, formatErrors, parseGenomeDocument } from "@genome/schema";
 
 import { buildAst, type GenomeAst } from "./ast/index.js";
-import type { CompileStage, Diagnostic } from "./diagnostics.js";
+import { isWarning, type CompileStage, type Diagnostic } from "./diagnostics.js";
 import { buildGraph, type OrganizationGraph } from "./graph/index.js";
 import { validateSemantics } from "./semantics/index.js";
 
@@ -37,7 +37,8 @@ export type CompileSuccess = {
   ok: true;
   ast: GenomeAst;
   graph: OrganizationGraph;
-  diagnostics: [];
+  /** Warnings only (e.g. an unbound policy); error diagnostics always fail the compile. */
+  diagnostics: Diagnostic[];
 };
 
 export type CompileFailure = {
@@ -98,14 +99,15 @@ export function compile(source: string, options: CompileOptions = {}): CompileRe
   // Stage 3 — AST.
   const ast = buildAst(document);
 
-  // Stage 4 — Semantic validation.
+  // Stage 4 — Semantic validation. Any error fails the compile (warnings are
+  // reported alongside); a warnings-only result compiles and carries them.
   const semanticDiagnostics = validateSemantics(ast);
-  if (semanticDiagnostics.length > 0) {
+  if (semanticDiagnostics.some((diagnostic) => !isWarning(diagnostic))) {
     return { ok: false, stage: "semantic", diagnostics: semanticDiagnostics, ast };
   }
 
   // Stage 5 — Organization Graph.
   const graph = buildGraph(ast);
 
-  return { ok: true, ast, graph, diagnostics: [] };
+  return { ok: true, ast, graph, diagnostics: semanticDiagnostics };
 }
