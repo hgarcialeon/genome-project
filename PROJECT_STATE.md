@@ -1,6 +1,6 @@
 # Genome Project State
 
-Last Updated: 2026-07-09
+Last Updated: 2026-07-13
 
 ## Current Phase
 
@@ -31,7 +31,7 @@ RFC-0002 — Genome Compiler (Accepted 2026-07-09)
 
 - Architecture Debt: Low
 - Specification Coverage: High
-- Implementation Coverage: Low
+- Implementation Coverage: Medium
 
 ## Current North Star
 
@@ -67,7 +67,9 @@ No implementation before specification.
 
 ## Next Expected Deliverable
 
-Implement `packages/genome-compiler` (Stages 1–5) per RFC-0002.
+Draft RFC-0003 — Runtime boundary. The RFC-0002 implementation queue is
+drained: `packages/genome-compiler` (Stages 1–5) and the CLI `inspect`/`graph`
+commands shipped 2026-07-13.
 
 ## Definition of Done for RFC-0002
 

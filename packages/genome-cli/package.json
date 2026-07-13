@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@genome/compiler": "workspace:*",
     "@genome/schema": "workspace:*",
     "commander": "^12.1.0",
     "tsx": "^4.19.2"
