@@ -2,139 +2,99 @@
 
 Last Updated: 2026-07-13
 
+This file is the **only** source for current project state (Governance
+Rule 8). Other documents point here; none may restate what this file owns.
+Consistency with the repository is checked by `pnpm check-state` in CI.
+
 ## Current Phase
 
-Phase 0 — Foundation
+Phase 3 — Runtime Prototype (all deliverables landed; phase transition
+review pending).
 
-## Current Sprint
+Determined against `ROADMAP.md` acceptance criteria, not asserted: Phase 0
+(foundation docs, schema, `genome validate`), Phase 1 (compiler pipeline
+through the Organization Graph and targets), Phase 2 (the
+`validate`/`inspect`/`graph`/`diff` CLI set, now covered by CLI-boundary
+tests), and Phase 3 (runtime core per RFC-0004) all have their deliverables
+classified in `ROADMAP.md` with evidence. Phases 0–3 remain formally open
+until the Architecture Board holds the phase transition reviews defined in
+`docs/GOVERNANCE.md` (first application of that process); one Phase 2
+de-scoping (schema type generation) awaits ratification there.
 
-Sprint 1
+## Current Iteration
+
+No formal sprint cadence. Work proceeds RFC-by-RFC through
+`IMPLEMENTATION_QUEUE.md`. The current iteration is governance alignment:
+reconciling the project's self-describing documents with the implemented
+system and making that reconciliation mechanical (`scripts/check-state.mjs`).
 
 ## Current Milestone
 
-Executable Genome Specification
+Close Phases 0–3 via phase transition reviews, then open the next phase
+with its RFC (Phase 4 Studio, Phase 5 Office View, or the Phase 6
+proposal-payload RFC reserved by ADR-0006).
 
-## Active RFC
+## Current Objective
 
-RFC-0005 — Genome Diff (Accepted 2026-07-13; completes the Phase 2 CLI
-command set). RFC-0004 — Runtime Implementation was accepted 2026-07-13
-and its queue is drained; RFC-0003 — Runtime Boundary was accepted
-2026-07-13 and its compiler preconditions are drained; RFC-0002 — Genome
-Compiler was accepted 2026-07-09 and its queue is drained.
+Declared project state accurately and mechanically reflects the system that
+exists. After the reviews close, the objective moves to the next phase's
+RFC.
+
+## Active Architectural Decision
+
+None open. RFC-0002 through RFC-0005 are accepted and their queues drained
+(see Completed RFCs below). The next architectural decision is the next
+phase's RFC.
+
+## Current Blockers
+
+None for engineering. The phase transition reviews for Phases 0–3 require
+the Architecture Board (Product Owner, Chief Architect, Lead Engineer) —
+a decision gate, not an implementation gate. The Phase 2 review must
+ratify or overturn the de-scoping of "TypeScript types generated from
+schema" recorded in `ROADMAP.md`.
 
 ## Governance Status
 
-- Constitution: ✅ established
-- Architecture Charter: ✅ established
-- Bootstrap Protocol: ✅ established
-- Architecture Bootstrap Checklist: ✅ established
-- Governance Model: ✅ established
-- Implementation Queue: ✅ established
-
-## Repository Health
-
-- Architecture Debt: Low
-- Specification Coverage: High
-- Implementation Coverage: High
+- Constitution: ✅ established (`docs/CONSTITUTION.md`)
+- Architecture Charter: ✅ established (`docs/ARCHITECT.md`)
+- Bootstrap Protocol: ✅ established (`docs/BOOTSTRAP.md`)
+- Governance Model: ✅ established, including phase transition reviews and
+  the standing RFC reconciliation requirement (`docs/GOVERNANCE.md`)
+- Implementation Queue: ✅ established (`IMPLEMENTATION_QUEUE.md`)
+- Mechanical state check: ✅ established (`scripts/check-state.mjs`, in CI)
 
 ## Current North Star
 
 Describe a company once. Compile it into an autonomous organization.
 
-## Open Decisions
-
-No open decisions. RFC-0002's were resolved 2026-07-09
-(`docs/adr/0003-compiler-package-boundary.md`), RFC-0003's 2026-07-13
-(`docs/adr/0004-runtime-boundary.md`), RFC-0004's 2026-07-13
-(`docs/adr/0005-runtime-execution-contract.md`), and RFC-0005's open
-questions were resolved by the Architecture Board on 2026-07-13
-(`docs/adr/0006-genome-diff-contract.md`):
-
-1. Comparison representation — ✅ resolved (the Organization Graph; never raw text)
-2. Exit-code convention — ✅ resolved (`diff(1)`: 0 identical / 1 different / 2 trouble)
-3. Rename detection — ✅ resolved (none in v0.1; identity is the node id)
-4. Proposal-payload relation — ✅ resolved (the `DiffReport` is descriptive; the Phase 6 payload stays reserved)
-
-## Next Architecture Decision
-
-None pending. The next RFC belongs to the phase that needs it (Phase 4
-Studio, Phase 5 Office View, or the Phase 6 proposal-payload RFC), or to a
-trigger-binding grammar when a scheduler/selector consumer is queued.
-Near-term engineering work proceeds from the Implementation Queue (the
-`diff` target and CLI command, authorized by RFC-0005).
-
-## Current Rule
-
-No implementation before specification.
-
 ## Explicitly Out of Scope
 
-- Office View implementation
+- Office View implementation (prototype queued Low)
 - Marketplace
 - Studio UI
 - Provider-specific agent integrations (the adapter seam ships; adapters do not)
 - Trigger auto-initiation (event/schedule/webhook binding grammars)
+- Schema-to-TypeScript code generation (de-scoped in `ROADMAP.md`, Phase 2;
+  reopening requires an RFC)
 
 ## Next Expected Deliverable
 
-The engineering queue is drained: RFC-0005's item landed 2026-07-13 (the
-`diff` target in `packages/genome-compiler` and the CLI `genome diff`
-command), completing the Phase 2 roadmap's CLI command set
-(`validate`/`inspect`/`graph`/`diff`). Next work enters the queue through
-the next phase's RFC (Studio, Office View, or the Phase 6 proposal-payload
-RFC); the Office View prototype remains queued Low for the Office Team.
+The engineering queue is drained. Next: the Architecture Board holds the
+Phase 0–3 transition reviews; new engineering work enters the queue through
+the next phase's RFC.
 
-## Definition of Done for RFC-0005
+## Completed RFCs
 
-- `DiffReport` shape pinned and implemented as a compiler target — ✅
-- one canonicalization shared between revision derivation and diff — ✅
-- deterministic ordering guaranteed and tested — ✅
-- `genome diff` CLI command with `--json` and the pinned exit codes — ✅
-- formatting-only change produces `identical: true` and an empty report — ✅
-- `SPEC/language.md` Compilation Targets updated — ✅
-- open questions resolved — ✅
-- ADR recorded — ✅
+| RFC | Decision | ADR | Queue |
+|-----|----------|-----|-------|
+| RFC-0002 — Genome Compiler | Accepted 2026-07-09, `docs/reviews/RFC-0002-board-decision.md` | `docs/adr/0003-compiler-package-boundary.md` | Drained |
+| RFC-0003 — Runtime Boundary | Accepted 2026-07-13, `docs/reviews/RFC-0003-board-decision.md` | `docs/adr/0004-runtime-boundary.md` | Drained |
+| RFC-0004 — Runtime Implementation | Accepted 2026-07-13, `docs/reviews/RFC-0004-board-decision.md` | `docs/adr/0005-runtime-execution-contract.md` | Drained |
+| RFC-0005 — Genome Diff | Accepted 2026-07-13, `docs/reviews/RFC-0005-board-decision.md` | `docs/adr/0006-genome-diff-contract.md` | Drained |
 
-RFC-0005 accepted by the Architecture Board on 2026-07-13
-(`docs/reviews/RFC-0005-board-decision.md`).
-
-## Definition of Done for RFC-0004
-
-- `RuntimeModel` shape pinned and implemented as a compiler target — ✅
-- Genome revision derivation specified and implemented — ✅
-- trigger executability resolved for v0.1 — ✅
-- ordering and execution semantics pinned and implemented — ✅
-- approval gate mechanics pinned and implemented — ✅
-- emergency stop implemented as attributable control events — ✅
-- `replay` implemented; `state() == replay(log)` by construction — ✅
-- open questions resolved — ✅
-- ADR recorded — ✅
-
-RFC-0004 accepted by the Architecture Board on 2026-07-13
-(`docs/reviews/RFC-0004-board-decision.md`).
-
-## Definition of Done for RFC-0003
-
-- runtime input contract defined — ✅
-- runtime output contract defined — ✅
-- reconciliation contract defined — ✅
-- human approval contract defined — ✅
-- provider boundary defined — ✅
-- open questions resolved — ✅
-- specification preconditions landed — ✅
-- ADR recorded — ✅
-
-RFC-0003 accepted by the Architecture Board on 2026-07-13
-(`docs/reviews/RFC-0003-board-decision.md`).
-
-## Definition of Done for RFC-0002
-
-- compiler stages defined — ✅
-- AST responsibility defined — ✅
-- semantic validation defined — ✅
-- Organization Graph defined — ✅
-- compilation targets defined — ✅
-- runtime boundary clarified — ✅
-
-RFC-0002 accepted by the Architecture Board on 2026-07-09
-(`docs/reviews/RFC-0002-board-decision.md`).
+Definition-of-Done evidence for each lives in its board decision document.
+One evidence gap found by the 2026-07-13 audit is now closed: the RFC-0005
+item "`genome diff` CLI command with the pinned exit codes" was checked off
+before any test exercised the CLI boundary; `packages/genome-cli/src/cli.test.ts`
+now covers the exit-code and JSON contracts for every shipped command.

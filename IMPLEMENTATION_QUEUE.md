@@ -25,6 +25,10 @@ Claude Code or any engineering agent should consume this queue instead of acting
 | High | `packages/genome-runtime` core | RFC-0004 / ADR-0005 | Engineering | Done |
 | High | RFC-0005 Genome Diff review | RFC-0005 draft | Architecture Board | Done |
 | Medium | `diff` target in `genome-compiler` + CLI `genome diff` | RFC-0005 / ADR-0006 | Engineering | Done |
+| High | CLI-boundary test suite (exit codes, JSON contracts) | 2026-07-13 audit | Engineering | Done |
+| High | `check-state` consistency script + CI step | 2026-07-13 audit | Engineering | Done |
+| High | Governance/state reconciliation (phase reviews, single source of truth) | 2026-07-13 audit | Engineering | Done |
+| High | Phase 0–3 transition reviews (incl. schema-codegen de-scope ratification) | Governance: Phase Transition Review | Architecture Board | Not Started |
 | Low | Office View prototype | Organization Graph | Office Team | Not Started |
 
 ## Current Engineering Rule
@@ -77,3 +81,13 @@ deterministic ordering) and the CLI `genome diff <before> <after> [--json]`
 with `diff(1)` exit codes (0 identical / 1 different / 2 trouble). Rename
 detection, patch application, merge, and the Phase 6 proposal payload
 remain out of scope (RFC-0005 non-goals).
+
+The 2026-07-13 governance audit added three drained items: CLI-boundary
+tests in `packages/genome-cli` (exit-code and JSON contracts, previously
+asserted without executable evidence), the `scripts/check-state.mjs`
+consistency check wired into CI, and the reconciliation of
+`PROJECT_STATE.md`, `ROADMAP.md`, `CLAUDE_CODE_PROMPT.md`, `README.md`, and
+`docs/GOVERNANCE.md` (phase transition reviews; current state lives only in
+`PROJECT_STATE.md`). The open Board item is the Phase 0–3 transition
+reviews, including ratification of the Phase 2 schema-codegen de-scoping
+recorded in `ROADMAP.md`.
