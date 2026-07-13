@@ -23,6 +23,9 @@ importers:
 
   packages/genome-cli:
     dependencies:
+      '@genome/compiler':
+        specifier: workspace:*
+        version: link:../genome-compiler
       '@genome/schema':
         specifier: workspace:*
         version: link:../genome-schema

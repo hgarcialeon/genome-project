@@ -67,8 +67,9 @@ No implementation before specification.
 
 ## Next Expected Deliverable
 
-Wire the CLI `inspect` and `graph` commands to the `@genome/compiler`
-targets (`packages/genome-compiler` Stages 1–5 shipped 2026-07-13).
+Draft RFC-0003 — Runtime boundary. The RFC-0002 implementation queue is
+drained: `packages/genome-compiler` (Stages 1–5) and the CLI `inspect`/`graph`
+commands shipped 2026-07-13.
 
 ## Definition of Done for RFC-0002
 
