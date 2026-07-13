@@ -64,6 +64,9 @@ this reconciliation is not complete.
 
 ## Phase Transition Review
 
+Recorded as `docs/adr/0007-phase-transition-governance.md`, together with
+Rule 8 and the RFC completion criterion above.
+
 Phases are defined in `ROADMAP.md`. A phase may be closed only by a phase
 transition review, held by the Architecture Board.
 
@@ -86,6 +89,10 @@ The review must also reconcile, in the same change:
 The mechanical half of this review is `pnpm check-state`, which runs in CI;
 the judgment half (does the evidence actually support "Done"?) belongs to
 the Board and cannot be automated away.
+
+Evidence cited in reviews must come from uncached runs: turbo replays
+cached test logs, so use `pnpm test -- --force` (or a clean environment)
+when producing review evidence.
 
 ## Architecture Board
 
