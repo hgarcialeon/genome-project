@@ -29,7 +29,8 @@ Claude Code or any engineering agent should consume this queue instead of acting
 | High | `check-state` consistency script + CI step | 2026-07-13 audit | Engineering | Done |
 | High | Governance/state reconciliation (phase reviews, single source of truth) | 2026-07-13 audit | Engineering | Done |
 | High | Phase 0–3 transition reviews (incl. schema-codegen de-scope ratification) | Governance: Phase Transition Review | Architecture Board | Done |
-| High | RFC-0006 — Reference Adapter & `genome run`: draft and Board review | Phase 0–3 review (`docs/reviews/phase-0-3-board-review.md`) | Architecture Board | In Review (`docs/reviews/rfc-0006-board-review.md`) |
+| High | RFC-0006 — Reference Adapter & `genome run`: draft and Board review | Phase 0–3 review (`docs/reviews/phase-0-3-board-review.md`) | Architecture Board | Done |
+| High | RFC-0006 implementation: `@genome/adapter-reference` package + CLI `genome run` + eight CLI-boundary tests | RFC-0006 / ADR-0008 | Engineering | Not Started |
 | Low | Office View prototype | Organization Graph | Office Team | Not Started |
 
 ## Current Engineering Rule
@@ -97,5 +98,20 @@ decision" — the schema-codegen de-scoping ratified as worded in
 and `genome run` scoped in via RFC-0006 (boundary constraints pinned in
 the review's Condition 4; the governance process itself is recorded as
 `docs/adr/0007-phase-transition-governance.md`). Event persistence is
-excluded from Phase 3, gated on its first consumer. The next queue intake
-happens when RFC-0006 is accepted.
+excluded from Phase 3, gated on its first consumer.
+
+RFC-0006 — Reference Adapter and Genome Run was accepted 2026-07-13 under
+Option B (`docs/reviews/rfc-0006-board-review.md`, ratified by the
+Product Owner; `docs/adr/0008-reference-execution-contract.md`). It
+authorizes one implementation item with the Lead Engineer's change
+inventory as its scope: the `@genome/adapter-reference` package (dispatch
+enqueues only; `settle()` returns on first refusal; qualified-over-bare
+`failSteps`; unit-tested with a `test` script), the CLI `genome run`
+command (explicit `--workflow`, deny-safe `--grant`, `--fail-step`,
+`--json`, `--export-log` with pinned NDJSON framing, public `--clock`,
+exit codes 0/1/2/3 with parser defaults overridden), and the eight
+CLI-boundary test cases including the Condition 5 evidence
+(`genome run SPEC/examples/company.yaml --workflow build-feature --grant
+human:engineering-manager` → exit 0). Compiler and runtime public
+contracts must not change (empty git diff required). Phase 3 closes only
+through a follow-up transition review on that evidence.

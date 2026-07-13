@@ -2,8 +2,15 @@
 
 ## Status
 
-**Draft — proposed for Architecture Board review. Not approved. No
-implementation may begin until Product Owner ratification is recorded.**
+Accepted
+
+Accepted by the Architecture Board (Product Owner, Chief Architect, Lead
+Engineer) on 2026-07-13 under **Option B — Approve with Amendments**; the
+eleven consolidated amendments have been incorporated into this document
+and the six open questions resolved per the Joint Board Recommendation.
+See `docs/reviews/rfc-0006-board-review.md` for the decision record and
+`docs/adr/0008-reference-execution-contract.md` for the recorded
+architectural decision.
 
 Authorized by the Phase 0–3 transition review
 (`docs/reviews/phase-0-3-board-review.md`, ratified 2026-07-13), which
@@ -74,7 +81,11 @@ Three accepted decisions converge on this work:
 - **No durable or distributed event persistence**: the log stays
   in-memory for the process lifetime; the export is a file written once
   at the end, not a store. Persistence stays gated on its first consumer
-  (Board review, amendment to Outcome B).
+  (Board review, amendment to Outcome B). No shipped code path reads an
+  exported log as input: `genome run` accepts no log or resume argument,
+  and the only reader of an export is the replay-equality test. Any
+  command or flag that consumes an exported log is the "first consumer"
+  the Board's gate names, and requires its own RFC.
 - **No trigger auto-initiation**, no schedulers, no watch mode
   (ADR-0005: explicit initiation only in v0.1).
 - **No retries, no concurrency**: execution stays sequential and
@@ -96,8 +107,8 @@ genome run <file> --workflow <id> [options]
 |--------|---------|
 | `--workflow <id>` | **Required.** The workflow to execute. There is no default and no "run everything": initiation is explicit (ADR-0005), and selection is part of that explicitness. |
 | `--as <principal>` | Initiating principal: `human:<id>` or an agent node id/reference. Default `human:operator`. |
-| `--grant <principal>` | Repeatable. Pre-authorized approval: when the run requests approval from this exact principal, the CLI submits a grant on its behalf. No `--grant`, no approval — deny-safe. |
-| `--fail-step <step>` | Repeatable. Simulation aid: the reference adapter reports failure for the named step (`workflowId:step` or bare step name). |
+| `--grant <principal>` | Repeatable. Pre-authorized approval, matched by the runtime's rules — the exact requested principal, or a concrete `human:<id>` grant against a pending `human:*` intrinsic floor; `--grant human:*` itself is refused by the runtime (`reserved-principal`). No `--grant`, no approval — deny-safe. |
+| `--fail-step <step>` | Repeatable. Simulation aid: the reference adapter reports failure for the named step (`workflowId:step` or bare step name). `--fail-step` is defined by the reference adapter; a future adapter-selection surface does not inherit it. |
 | `--json` | Machine output: NDJSON event stream plus a final-state line. |
 | `--export-log <path>` | Write the complete event log as NDJSON after the run reaches its terminal or blocked state. |
 | `--clock <iso8601>` | Testing aid: fixes the injectable runtime clock to a constant, making output byte-stable. Not a scheduling feature. |
@@ -110,9 +121,11 @@ state, optionally export the log, and exit with the codes pinned below.
 
 ## Reference Adapter Contract
 
-Package: `packages/genome-adapter-reference` (name final per Open
-Question 2). Depends only on `@genome/runtime` types; exports no
-provider identifiers; performs no I/O and no network access.
+Package: `packages/genome-adapter-reference` (pinned by the Board — the
+`genome-adapter-*` prefix instantiates the RFC-0003 package-boundary
+convention and becomes the rule for everything below the seam). Depends
+only on `@genome/runtime` types; exports no provider identifiers;
+performs no I/O and no network access.
 
 ```ts
 type ReferenceAdapterOptions = {
@@ -137,9 +150,13 @@ Normative behavior:
 1. `dispatch(task)` **never re-enters the runtime**: it appends the task
    to an internal FIFO and returns. All reporting happens inside
    `settle()`, which pops tasks in order and calls
-   `reportTask(runId, outcome, detail)` until the queue is empty
-   (completing a step enqueues the next dispatch, which `settle()` also
-   drains). Single-threaded, no timers, no promises.
+   `reportTask(runId, outcome, detail)` until the queue is empty **or a
+   report is refused; a refusal ends the `settle()` call immediately**,
+   leaving the refused task at the head (behavior 3) and everything
+   behind it queued for a later `settle()`. `settle()` therefore always
+   terminates. (Completing a step enqueues the next dispatch, which the
+   same `settle()` call also drains.) Single-threaded, no timers, no
+   promises.
 2. Outcome is `"failed"` exactly when the task matches `failSteps`
    (qualified match wins over bare match); otherwise `"completed"`. The
    failure `detail` is the fixed string `simulated failure`.
@@ -179,18 +196,22 @@ envelope serializes (no reshaping), followed by one final line that is
 {"finalState": {"runId": "run-1", "status": "completed", "completedSteps": 5, "pendingApprovals": []}, "exitCode": 0}
 ```
 
-`--export-log <path>`: the complete event log, one envelope per line
-(NDJSON), written once after settlement. The export is **descriptive**:
-it is not the Phase 6 proposal payload (that reservation stands,
-ADR-0006), and feeding it back into `replay` must reproduce the reported
-final state exactly — this equality is a required test.
+`--export-log <path>`: the complete event log, written once after
+settlement. Framing is pinned: UTF-8, one `JSON.stringify(envelope)` per
+line, LF separators, with a trailing newline. The export is
+**descriptive**: it is not the Phase 6 proposal payload (that reservation
+stands, ADR-0006), and feeding it back into `replay` must reproduce the
+reported final state exactly — this equality is a required test, defined
+at **state level** (`replay(parsedLog)` equals the reported final state):
+payload fields with `undefined` values do not survive JSON serialization,
+so deep-equality of individual events is deliberately not the contract.
 
 ## Failure and Exit-Code Behavior
 
 | Exit | Meaning |
 |------|---------|
 | 0 | The selected workflow ran to `completed`. |
-| 1 | The workflow reached `failed` (task failure or approval denied). |
+| 1 | The workflow reached `failed` (task failure; approval denial is reachable only through the runtime API in v0.1 — `genome run` has no deny surface, and absent grants park at exit 3). |
 | 2 | Trouble: unreadable file, compile failure, missing/unknown `--workflow`, ownerless workflow, or any structured runtime refusal at initiation (`unknown-agent`, `manual-agent`, `reserved-principal`, …). The refusal reason is printed verbatim. |
 | 3 | Blocked, not terminal: the run parked in `pending-approval` because a required approval had no matching `--grant`. The pending principals are listed. |
 
@@ -198,6 +219,12 @@ The 0/1/2 skeleton deliberately mirrors `genome diff` (ADR-0006):
 scripts can distinguish "the organization's run failed" from "the
 invocation broke". Exit 3 is new and names the one state that is neither
 success nor failure — deny-safe blockage.
+
+All invocation-level failures — including missing or unknown options and
+arguments — are "trouble" and exit 2. The implementation must override
+the argument parser's default exit behavior (commander exits 1 on a
+missing required option) so the pinned codes, not the library's, are the
+contract.
 
 ## Determinism Requirements
 
@@ -209,9 +236,13 @@ success nor failure — deny-safe blockage.
 2. Timestamps remain informational only (RFC-0004) and are excluded from
    the guarantee — except under `--clock`, where the injected constant
    makes stdout and the exported log **byte-identical** across runs. The
-   required determinism test asserts exactly this.
+   required determinism test asserts stdout and the export file
+   separately; stderr (compile warnings, unmatched-grant warnings) is
+   excluded from the byte-identity assertion.
 3. Grant submission order is deterministic: grants are applied to
-   requested approvals in event order, not command-line order.
+   requested approvals in event order, not command-line order. When
+   multiple grants match one pending `human:*` floor, the first in
+   command-line order is submitted, so log attribution is deterministic.
 
 ## Testing and Executable Evidence
 
@@ -250,6 +281,15 @@ spawn `node` against `dist/`) applies without changing any contract.
   log as an ordinary attributable approval), and is matched by the
   runtime's existing rules. The reserved principal `human:*` cannot be
   granted — the runtime refuses it, and the CLI does not special-case it.
+- **A grant is an operator assertion**: the CLI submits the response on
+  the named principal's behalf, and the log attributes the response to
+  that principal, exactly as a test driving `submitApproval` would. This
+  is simulation semantics, appropriate to a local reference run; any
+  future surface where principals respond for themselves must
+  authenticate responders and requires its own RFC.
+- **Unmatched grants are surfaced, not silent**: a `--grant` that matches
+  no requested approval produces a stderr warning and does not change the
+  exit code.
 - **The intrinsic floor stands**: a supervised agent initiation
   (`--as <agent>`) still requires a concrete human grant to start, per
   ADR-0005.
@@ -266,34 +306,47 @@ spawn `node` against `dist/`) applies without changing any contract.
   unit-tested, with a `test` script — ✅/❌
 - `genome run` landed with the exact option set, output contracts, and
   exit codes pinned here — ✅/❌
-- All eight CLI-boundary test cases above passing, uncached
-  (`pnpm test -- --force`) — ✅/❌
+- All eight CLI-boundary test cases above passing, uncached — exact
+  incantations: `pnpm test -- --force` for tests; other tasks invoke
+  turbo directly (`./node_modules/.bin/turbo <task> --force` —
+  `pnpm typecheck -- --force` does not work, pnpm forwards the flag into
+  `tsc`) — ✅/❌
 - The Board's Condition 5 evidence reproducible on demand — ✅/❌
-- No change to compiler or runtime public contracts (verified by their
-  untouched test suites) — ✅/❌
+- No change to compiler or runtime public contracts — verified by an
+  **empty git diff under `packages/genome-compiler` and
+  `packages/genome-runtime`** and by their unchanged test suites
+  passing — ✅/❌
 - `pnpm check-state` passing — ✅/❌
 - Open questions resolved and ADR recorded — ✅/❌
 - Board decision recorded in `docs/reviews/` — ✅/❌
 - **Project state and governance documents reconciled.** — ✅/❌
 
-## Open Questions
+## Open Questions (resolved)
 
-1. **Should `--grant` ship in v0.1 of `run`?** Proposed: yes, as
-   specified — it is the only way to demonstrate a gated workflow
-   end-to-end non-interactively, and it strengthens rather than weakens
-   deny-safety (explicit, attributable, exact-match). The alternative is
-   that gated runs always exit 3 until an interactive approval surface
-   exists.
-2. **Adapter package name**: `packages/genome-adapter-reference`
-   (proposed — the `genome-adapter-` prefix becomes the convention for
-   everything below the seam) versus `packages/genome-reference-adapter`.
-3. **Should the exported-log NDJSON format be pinned in
-   `SPEC/language.md`?** Proposed: not yet — it is a CLI output contract
-   until a second consumer (Studio, Phase 6 observe) needs it as a spec
-   surface; pinning then follows the real-consumer precedent.
-4. **Is `--clock` a public flag or a hidden test seam?** Proposed:
-   public but documented as a testing aid; hiding it would make the
-   determinism guarantee unverifiable by users.
+All open questions were resolved by the Architecture Board on 2026-07-13
+per the Joint Board Recommendation in
+`docs/reviews/rfc-0006-board-review.md`; both role reviews reached
+identical dispositions independently:
+
+1. **`--grant` ships in v0.1**, with the matching rule and attribution
+   semantics as amended above — it is the only non-interactive way to
+   demonstrate the approval gate at the CLI boundary, and the Condition 5
+   workflow is policy-gated.
+2. **The package is `packages/genome-adapter-reference`** — the
+   `genome-adapter-*` prefix instantiates RFC-0003's stated convention
+   and makes "below the seam" a lexical property of the workspace.
+3. **The exported-log format is not pinned in `SPEC/language.md`** —
+   it waits for its second consumer (Studio runtime logs or the Phase 6
+   observe step), whose RFC pins it in the appropriate spec surface. The
+   framing is nonetheless normative *in this RFC* (Event and Final-State
+   Output) and frozen by the byte-identity test.
+4. **`--clock` is optional and public**, documented as a testing aid — a
+   determinism guarantee users cannot verify is a claim, not a contract.
+
+The Board additionally resolved: **`--export-log` ships in v0.1** (it is
+the CLI-boundary witness of the replay invariant; tests 6–7 depend on
+it), and **`--fail-step` is public**, scoped to the reference adapter as
+amended above.
 
 ## Alternatives Considered
 

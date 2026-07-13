@@ -2,7 +2,14 @@
 
 ## Status
 
-Proposed — awaiting Product Owner ratification
+Ratified — Option B (Approve with Amendments), by the Product Owner on
+2026-07-13, issuing the Option B statement verbatim. The eleven
+amendments are applied to `RFC/0006-reference-adapter-and-genome-run.md`,
+the six open questions are resolved per the Joint Board Recommendation,
+the RFC is marked **Accepted**, and the decision is recorded as
+`docs/adr/0008-reference-execution-contract.md`. Implementation is queued
+in `IMPLEMENTATION_QUEUE.md`, scoped to the amended RFC; no changes
+beyond the eleven amendments are authorized.
 
 ## Decision Under Review
 
@@ -480,4 +487,5 @@ For **Option C**:
 
 ## Status
 
-Awaiting Product Owner decision.
+Ratified 2026-07-13 — Option B. See the Status section at the top of this
+document for the applied outcome.
