@@ -1,0 +1,22 @@
+genomeVersion: 0.1
+
+company:
+  name: Fixture Co
+  mission: Exercise the CLI boundary.
+
+departments:
+  engineering:
+    agents:
+      builder:
+        role: Platform Engineer
+        autonomy: supervised
+      reviewer:
+        role: Quality Engineer
+        autonomy: manual
+
+workflows:
+  ship:
+    owner: engineering.builder
+    steps:
+      - plan
+      - implement
