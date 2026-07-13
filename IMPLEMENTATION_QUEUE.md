@@ -23,6 +23,8 @@ Claude Code or any engineering agent should consume this queue instead of acting
 | High | RFC-0004 Runtime Implementation review | RFC-0004 draft | Architecture Board | Done |
 | High | Genome revision derivation + runtime-model target in `genome-compiler` | RFC-0004 / ADR-0005 | Engineering | Done |
 | High | `packages/genome-runtime` core | RFC-0004 / ADR-0005 | Engineering | Done |
+| High | RFC-0005 Genome Diff review | RFC-0005 draft | Architecture Board | Done |
+| Medium | `diff` target in `genome-compiler` + CLI `genome diff` | RFC-0005 / ADR-0006 | Engineering | Done |
 | Low | Office View prototype | Organization Graph | Office Team | Not Started |
 
 ## Current Engineering Rule
@@ -65,3 +67,13 @@ concrete acceptance criteria:
 Provider adapters, trigger auto-initiation, retries, and event persistence
 remain out of scope (RFC-0004 non-goals). No interpretation of raw Genome
 YAML happens outside the compiler boundary.
+
+RFC-0005 — Genome Diff was accepted 2026-07-13
+(`docs/adr/0006-genome-diff-contract.md`) and its item landed the same day,
+completing the Phase 2 roadmap's CLI command set: the `diff` compilation
+target in `packages/genome-compiler` (graph-level comparison, node identity
+by id, one shared canonicalization, `identical` = revision equality,
+deterministic ordering) and the CLI `genome diff <before> <after> [--json]`
+with `diff(1)` exit codes (0 identical / 1 different / 2 trouble). Rename
+detection, patch application, merge, and the Phase 6 proposal payload
+remain out of scope (RFC-0005 non-goals).

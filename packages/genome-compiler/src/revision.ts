@@ -25,6 +25,16 @@ const canonicalize = (value: unknown): unknown => {
   return value;
 };
 
+/**
+ * The single canonical serialization: revision hashing and diff comparison
+ * (RFC-0005, board condition 2) must both call this, so "same revision" and
+ * "no diff" can never drift apart through a second implementation.
+ * `undefined` serializes to `undefined` (absent and undefined compare equal).
+ */
+export function canonicalJson(value: unknown): string | undefined {
+  return value === undefined ? undefined : JSON.stringify(canonicalize(value));
+}
+
 export function deriveGenomeRevision(document: unknown): string {
-  return createHash("sha256").update(JSON.stringify(canonicalize(document)), "utf8").digest("hex");
+  return createHash("sha256").update(canonicalJson(document) as string, "utf8").digest("hex");
 }

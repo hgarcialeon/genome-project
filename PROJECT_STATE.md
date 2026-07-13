@@ -16,10 +16,11 @@ Executable Genome Specification
 
 ## Active RFC
 
-RFC-0004 — Runtime Implementation (Accepted 2026-07-13). RFC-0003 — Runtime
-Boundary was accepted 2026-07-13 and its compiler preconditions are
-drained; RFC-0002 — Genome Compiler was accepted 2026-07-09 and its queue
-is drained.
+RFC-0005 — Genome Diff (Accepted 2026-07-13; completes the Phase 2 CLI
+command set). RFC-0004 — Runtime Implementation was accepted 2026-07-13
+and its queue is drained; RFC-0003 — Runtime Boundary was accepted
+2026-07-13 and its compiler preconditions are drained; RFC-0002 — Genome
+Compiler was accepted 2026-07-09 and its queue is drained.
 
 ## Governance Status
 
@@ -44,22 +45,23 @@ Describe a company once. Compile it into an autonomous organization.
 
 No open decisions. RFC-0002's were resolved 2026-07-09
 (`docs/adr/0003-compiler-package-boundary.md`), RFC-0003's 2026-07-13
-(`docs/adr/0004-runtime-boundary.md`), and RFC-0004's open questions were
-resolved by the Architecture Board on 2026-07-13
-(`docs/adr/0005-runtime-execution-contract.md`):
+(`docs/adr/0004-runtime-boundary.md`), RFC-0004's 2026-07-13
+(`docs/adr/0005-runtime-execution-contract.md`), and RFC-0005's open
+questions were resolved by the Architecture Board on 2026-07-13
+(`docs/adr/0006-genome-diff-contract.md`):
 
-1. Supervised intrinsic floor — ✅ resolved (routed to reserved `human:*`; any human may grant)
-2. Control-event envelope — ✅ resolved (`runId: null` on `runtime.halted`/`runtime.resumed` only)
-3. Halt semantics — ✅ resolved (suspend dispatch; never hard-fail in-flight runs)
-4. Adoption events — ✅ resolved (adoption appends nothing; runs carry their revision)
+1. Comparison representation — ✅ resolved (the Organization Graph; never raw text)
+2. Exit-code convention — ✅ resolved (`diff(1)`: 0 identical / 1 different / 2 trouble)
+3. Rename detection — ✅ resolved (none in v0.1; identity is the node id)
+4. Proposal-payload relation — ✅ resolved (the `DiffReport` is descriptive; the Phase 6 payload stays reserved)
 
 ## Next Architecture Decision
 
 None pending. The next RFC belongs to the phase that needs it (Phase 4
 Studio, Phase 5 Office View, or the Phase 6 proposal-payload RFC), or to a
 trigger-binding grammar when a scheduler/selector consumer is queued.
-Near-term engineering work proceeds from the Implementation Queue
-(runtime-model target and `genome-runtime` core, authorized by RFC-0004).
+Near-term engineering work proceeds from the Implementation Queue (the
+`diff` target and CLI command, authorized by RFC-0005).
 
 ## Current Rule
 
@@ -75,13 +77,26 @@ No implementation before specification.
 
 ## Next Expected Deliverable
 
-The engineering queue is drained: RFC-0004's items landed 2026-07-13
-(`packages/genome-compiler` revision + runtime-model target;
-`packages/genome-runtime` core), completing the Phase 3 roadmap
-deliverables (model intake, agent lifecycle, event bus, workflow execution,
-human approval stub, activity log). Next work enters the queue through the
-next phase's RFC (Studio, Office View, or the Phase 6 proposal-payload
+The engineering queue is drained: RFC-0005's item landed 2026-07-13 (the
+`diff` target in `packages/genome-compiler` and the CLI `genome diff`
+command), completing the Phase 2 roadmap's CLI command set
+(`validate`/`inspect`/`graph`/`diff`). Next work enters the queue through
+the next phase's RFC (Studio, Office View, or the Phase 6 proposal-payload
 RFC); the Office View prototype remains queued Low for the Office Team.
+
+## Definition of Done for RFC-0005
+
+- `DiffReport` shape pinned and implemented as a compiler target — ✅
+- one canonicalization shared between revision derivation and diff — ✅
+- deterministic ordering guaranteed and tested — ✅
+- `genome diff` CLI command with `--json` and the pinned exit codes — ✅
+- formatting-only change produces `identical: true` and an empty report — ✅
+- `SPEC/language.md` Compilation Targets updated — ✅
+- open questions resolved — ✅
+- ADR recorded — ✅
+
+RFC-0005 accepted by the Architecture Board on 2026-07-13
+(`docs/reviews/RFC-0005-board-decision.md`).
 
 ## Definition of Done for RFC-0004
 

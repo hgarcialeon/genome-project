@@ -6,10 +6,12 @@ import { fileURLToPath } from "node:url";
 import { Command } from "commander";
 import {
   compile,
+  diffTarget,
   graphTarget,
   inspectTarget,
   type CompileSuccess,
   type Diagnostic,
+  type DiffReport,
 } from "@genome/compiler";
 import { createValidator, formatErrors, parseGenomeDocument } from "@genome/schema";
 
@@ -38,7 +40,7 @@ program
     try {
       document = parseGenomeDocument(source);
     } catch (error) {
-      fail(`Invalid YAML in ${file}:`, describeError(error));
+      fail(1, `Invalid YAML in ${file}:`, describeError(error));
     }
 
     const schema = JSON.parse(
@@ -120,10 +122,71 @@ program
     console.log(JSON.stringify(graphTarget(result.graph), null, 2));
   });
 
+program
+  .command("diff")
+  .argument("<before>", "Genome YAML file (the older document)")
+  .argument("<after>", "Genome YAML file (the newer document)")
+  .option("--json", "Emit the diff report as JSON")
+  .description(
+    "Compare two Genome documents structurally. " +
+      "Exits 0 when identical, 1 when they differ, 2 on trouble (diff(1) convention).",
+  )
+  .action((beforeFile: string, afterFile: string, options: { json?: boolean }) => {
+    // Trouble (read or compile failure of either input) exits 2, so scripts
+    // can tell "the organization changed" (1) from "the check broke" (2).
+    const before = compileOrFail(beforeFile, 2);
+    const after = compileOrFail(afterFile, 2);
+    const report = diffTarget(before.graph, after.graph);
+
+    if (options.json) {
+      console.log(JSON.stringify(report, null, 2));
+    } else {
+      printDiff(report);
+    }
+    process.exit(report.identical ? 0 : 1);
+  });
+
 program.parse();
 
-function compileOrFail(file: string): CompileSuccess {
-  const source = readTextFile(file, `Cannot read Genome document: ${file}`);
+function printDiff(report: DiffReport): void {
+  if (report.identical) {
+    console.log(`✓ Documents are identical (revision ${report.revisions.before}).`);
+    return;
+  }
+
+  console.log(`revision ${report.revisions.before}`);
+  console.log(`      → ${report.revisions.after}`);
+
+  const { added, removed, changed } = report.nodes;
+  if (added.length + removed.length + changed.length + report.edges.added.length + report.edges.removed.length === 0) {
+    console.log();
+    console.log("The documents differ, but no change surfaces in the Organization Graph.");
+    return;
+  }
+
+  console.log();
+  for (const node of added) {
+    console.log(`+ ${node.id} (${node.type})`);
+  }
+  for (const node of removed) {
+    console.log(`- ${node.id} (${node.type})`);
+  }
+  for (const node of changed) {
+    console.log(`~ ${node.id} (${node.type})`);
+    for (const change of node.changes) {
+      console.log(`    ${change.attribute}: ${JSON.stringify(change.before)} → ${JSON.stringify(change.after)}`);
+    }
+  }
+  for (const edge of report.edges.added) {
+    console.log(`+ edge ${edge.from} -${edge.type}-> ${edge.to}`);
+  }
+  for (const edge of report.edges.removed) {
+    console.log(`- edge ${edge.from} -${edge.type}-> ${edge.to}`);
+  }
+}
+
+function compileOrFail(file: string, failureExitCode = 1): CompileSuccess {
+  const source = readTextFile(file, `Cannot read Genome document: ${file}`, failureExitCode);
   const result = compile(source);
 
   if (!result.ok) {
@@ -131,7 +194,7 @@ function compileOrFail(file: string): CompileSuccess {
     for (const diagnostic of result.diagnostics) {
       console.error(`  - ${formatDiagnostic(diagnostic)}`);
     }
-    process.exit(1);
+    process.exit(failureExitCode);
   }
 
   // A successful compile may still carry warnings (e.g. an unbound policy).
@@ -149,11 +212,11 @@ function formatDiagnostic(diagnostic: Diagnostic): string {
     : `${diagnostic.path}: ${diagnostic.message}`;
 }
 
-function readTextFile(path: string, message: string): string {
+function readTextFile(path: string, message: string, failureExitCode = 1): string {
   try {
     return readFileSync(path, "utf8");
   } catch (error) {
-    fail(message, describeError(error));
+    fail(failureExitCode, message, describeError(error));
   }
 }
 
@@ -161,9 +224,9 @@ function describeError(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
 
-function fail(...lines: string[]): never {
+function fail(exitCode: number, ...lines: string[]): never {
   for (const line of lines) {
     console.error(line);
   }
-  process.exit(1);
+  process.exit(exitCode);
 }
