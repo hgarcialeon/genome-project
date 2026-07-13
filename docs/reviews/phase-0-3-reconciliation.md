@@ -26,7 +26,7 @@ proposed as Deferred.
 
 | Deliverable | Proposed | Evidence |
 |-------------|----------|----------|
-| Repository structure | Done | Tree in `README.md` matches the repository (checked mechanically by `scripts/check-state.mjs`) |
+| Repository structure | Done | Tree in `README.md` matches the repository; top-level entries verified mechanically by `scripts/check-state.mjs`, nested entries by inspection |
 | README | Done | `README.md` |
 | VISION | Done | `docs/VISION.md` |
 | Constitution | Done | `docs/CONSTITUTION.md` |
