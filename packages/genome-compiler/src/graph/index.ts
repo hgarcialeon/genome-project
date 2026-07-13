@@ -55,6 +55,12 @@ export type GraphEdge = {
 };
 
 export type OrganizationGraph = {
+  /**
+   * The Genome revision the graph was compiled from (RFC-0004): an additive
+   * extension of the RFC-0002 contract, carried so the runtime model stays
+   * derived only from the graph while events can attribute their revision.
+   */
+  genomeRevision: string;
   nodes: Record<string, GraphNode>;
   /** Outgoing edges per node id. Every node id has an entry, possibly empty. */
   adjacency: Record<string, GraphEdge[]>;
@@ -87,7 +93,7 @@ export const edgesOf = (graph: OrganizationGraph): GraphEdge[] => Object.values(
  * normative contract but have no v0.1 language construct that produces them
  * yet.
  */
-export function buildGraph(ast: GenomeAst): OrganizationGraph {
+export function buildGraph(ast: GenomeAst, genomeRevision: string): OrganizationGraph {
   const nodes: Record<string, GraphNode> = {};
   const adjacency: Record<string, GraphEdge[]> = {};
 
@@ -222,7 +228,7 @@ export function buildGraph(ast: GenomeAst): OrganizationGraph {
     }
   }
 
-  return deepFreeze({ nodes, adjacency });
+  return deepFreeze({ genomeRevision, nodes, adjacency });
 }
 
 function deepFreeze<T>(value: T): T {
