@@ -61,7 +61,7 @@ Goal: execute a simple organization from a Genome file.
 
 Deliverables:
 
-- Runtime graph
+- Runtime model intake (per RFC-0003)
 - Agent lifecycle
 - Event bus
 - Workflow execution

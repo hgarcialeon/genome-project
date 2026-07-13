@@ -76,6 +76,8 @@ workflows:
 
 policies:
   production-deploy:
+    appliesTo:
+      - build-feature
     requiresApprovalFrom:
       - human:engineering-manager
 

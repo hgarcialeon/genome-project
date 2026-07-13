@@ -22,6 +22,17 @@ Short form:
 genome.yaml
 ```
 
+## Versioning
+
+`genomeVersion` declares the **language version** the document is written in
+(currently `0.1`). It does not identify a revision of the organization.
+
+A **Genome revision** identifies the exact content of a compiled document.
+The compiler derives it as a content hash of the canonical parsed document;
+revisions are derived, never declared, so a Genome document does not carry a
+revision field. Each revision compiles to exactly one runtime model (1:1),
+and runtime events attribute to the revision they executed under (RFC-0003).
+
 ## Top-Level Structure
 
 ```yaml
@@ -114,6 +125,48 @@ Supported values:
 - supervised
 - autonomous
 
+If `autonomy` is omitted, it defaults to `manual`. Absence of a declared
+autonomy level never grants autonomy (deny-safe).
+
+### Behavioral semantics (v0.1)
+
+- `manual` — the agent acts only on explicit human instruction.
+- `supervised` — the runtime requires an approval before the agent initiates
+  each workflow it executes (an intrinsic floor), in addition to any
+  policy-declared checkpoints (see Policy Scope).
+- `autonomous` — the agent acts within policy limits; it is gated only by
+  policy-declared checkpoints.
+
+At every level, approval is deny-safe: absence of an approval response blocks
+the governed action; it never defaults to granted.
+
+## Policy Scope
+
+A policy declares which resources it governs with `appliesTo`: a list of
+workflow identifiers and/or agent references (dotted-reference rules above).
+
+```yaml
+policies:
+  production-deploy:
+    appliesTo:
+      - build-feature                   # a workflow id
+      - engineering.platform.backend    # an agent reference
+    requiresApprovalFrom:
+      - human:engineering-manager
+```
+
+Semantics:
+
+- A policy applying to a **workflow** gates initiation of that workflow: an
+  approval from each declared principal must exist before the workflow starts.
+- A policy applying to an **agent** gates every workflow initiation by that
+  agent.
+- `appliesTo` entries are policy-declared **checkpoints** in the sense of the
+  autonomy semantics above.
+- `appliesTo` is optional in v0.1. A policy without it declares an approval
+  requirement bound to no action; compilers should surface an *unbound
+  policy* diagnostic (warning).
+
 ## Workflow Triggers
 
 Supported values:
@@ -125,11 +178,13 @@ Supported values:
 
 ## Compilation Targets
 
-A Genome document may be compiled into:
+Targets are plain functions of the Organization Graph (RFC-0002). The v0.1
+set is fixed:
 
-- runtime graph
-- office layout
-- workflow definitions
-- agent registry
-- permission map
-- knowledge graph
+- CLI inspection (`inspect`)
+- graph output (`graph`)
+- documentation output (`docs`)
+
+A **runtime model** target is specified by RFC-0003 and lands with Phase 3.
+Office layout, workflow model, and memory graph targets are deferred to the
+RFCs of their consuming phases (RFC-0002, Compilation Targets).
