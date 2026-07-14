@@ -257,8 +257,11 @@ cases:
 2. Missing `--workflow` and unknown workflow → exit 2 with the reason.
 3. A policy-gated workflow with no `--grant` → exit 3, the
    `approval.requested` event visible, pending principals listed.
-4. The same workflow with the matching `--grant` → exit 0, with
-   `approval.granted` and `policy.enforced` attribution in the log.
+4. The same workflow with the matching `--grant` → exit 0, with the
+   `approval.granted` event attributing the response to the granting
+   principal in the log. *(Corrected by the normative erratum approved in
+   the Phase 3 close review, `docs/reviews/phase-3-close-board-review.md`;
+   zero behavioral change.)*
 5. `--fail-step` → exit 1, `agent.task.failed` then `workflow.failed`.
 6. `--export-log`: the file parses as NDJSON envelopes and
    `replay(parsedLog)` equals the reported final state.

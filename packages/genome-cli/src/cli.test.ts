@@ -233,11 +233,9 @@ describe("genome run", () => {
     );
     expect(result.status).toBe(0);
     // The grant is an operator assertion: the log attributes the response to
-    // the named principal. (RFC-0006 test case 4 also names `policy.enforced`
-    // here, but the shipped runtime emits that event only on the denial
-    // path — a runtime change is prohibited by the RFC itself, so the
-    // granted-path evidence is the attributed `approval.granted` event.
-    // Recorded for the Phase 3 close review.)
+    // the named principal (RFC-0006 test case 4, as corrected by the
+    // normative erratum approved in the Phase 3 close review —
+    // docs/reviews/phase-3-close-board-review.md; zero behavioral change).
     const granted = events(result.stdout).find((event) => event.type === "approval.granted");
     expect(granted?.source).toBe("human:engineering-manager");
     expect(granted?.payload.principal).toBe("human:engineering-manager");
