@@ -34,24 +34,26 @@ progress.
 
 ## Current Objective
 
-Self-hosting investigation — "Investigate whether Genome can describe
-and govern the Genome project itself" — commissioned by the Product
-Owner 2026-07-14, scoped to a design proposal only (no implementation).
-The deliverable, `docs/proposals/self-hosting.md`, is delivered and
-awaits Product Owner disposition (it decides nothing by itself). Phase 4
-remains unopened; no Phase 4 work is authorized without its own RFC and
-ratification.
+Disposition of the self-hosting evidence. The investigation deliverable
+(`docs/proposals/self-hosting.md`, 2026-07-14) was followed the same day
+by an Architecture Board review classifying each of its five language
+gaps (`docs/reviews/self-hosting-evidence-board-review.md`); the review
+awaits Product Owner ratification. No solution design or implementation
+is authorized. Phase 4 remains unopened; no Phase 4 work is authorized
+without its own RFC and ratification.
 
 ## Active Architectural Decision
 
-None open. The Phase 3 close review was decided 2026-07-13 under
-Option B (`docs/reviews/phase-3-close-board-review.md`, Product Owner
-ratification recorded): the RFC-0006 case-4 normative erratum was
-approved and applied, then Phase 3 was closed on the re-verified
-evidence. The specification-maintenance proposal in the review packet
-(`docs/reviews/phase-3-close-packet.md`, §4) awaits its own disposition.
-The next architectural decision is the Phase 4 opening RFC review, when
-commissioned.
+One open: the self-hosting evidence disposition
+(`docs/reviews/self-hosting-evidence-board-review.md`, Board review held
+2026-07-14, Option A recommended) awaits Product Owner ratification. It
+classifies the five language gaps found by the self-hosting
+investigation; it designs no solutions and authorizes no implementation.
+The specification-maintenance proposal in the Phase 3 close packet
+(`docs/reviews/phase-3-close-packet.md`, §4) still awaits its own
+disposition. The Phase 3 close review itself was decided 2026-07-13
+under Option B (`docs/reviews/phase-3-close-board-review.md`, Product
+Owner ratification recorded).
 
 ## Current Blockers
 
@@ -86,12 +88,14 @@ Describe a company once. Compile it into an autonomous organization.
 
 ## Next Expected Deliverable
 
-Product Owner disposition of the self-hosting design proposal
-(`docs/proposals/self-hosting.md`: commission its Level 1 RFC, amend, or
-decline). The Phase 4 opening RFC (draft and Board review) remains the
-next engineering milestone, upon Product Owner commissioning. Until then
-the only queued engineering item is the Low-priority Office View
-prototype, which remains Not Started.
+Product Owner ratification (or return) of the self-hosting evidence
+review (`docs/reviews/self-hosting-evidence-board-review.md`), and
+disposition of the proposal's Level 1–3 recommendations
+(`docs/proposals/self-hosting.md`), which the review leaves severable.
+The Phase 4 opening RFC (draft and Board review) remains the next
+engineering milestone, upon Product Owner commissioning. Until then the
+only queued engineering item is the Low-priority Office View prototype,
+which remains Not Started.
 
 ## Completed RFCs
 
