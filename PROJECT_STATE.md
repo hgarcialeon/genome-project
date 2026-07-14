@@ -1,6 +1,6 @@
 # Genome Project State
 
-Last Updated: 2026-07-13
+Last Updated: 2026-07-14
 
 This file is the **only** source for current project state (Governance
 Rule 8). Other documents point here; none may restate what this file owns.
@@ -34,11 +34,13 @@ progress.
 
 ## Current Objective
 
-None active. Phase 3 closed 2026-07-13 with its evidence re-verified
-green after the RFC-0006 case-4 erratum was applied
-(`docs/reviews/phase-3-close-board-review.md`). Awaiting Product Owner
-direction on Phase 4 planning; no Phase 4 work is authorized without its
-own RFC and ratification.
+Self-hosting investigation — "Investigate whether Genome can describe
+and govern the Genome project itself" — commissioned by the Product
+Owner 2026-07-14, scoped to a design proposal only (no implementation).
+The deliverable, `docs/proposals/self-hosting.md`, is delivered and
+awaits Product Owner disposition (it decides nothing by itself). Phase 4
+remains unopened; no Phase 4 work is authorized without its own RFC and
+ratification.
 
 ## Active Architectural Decision
 
@@ -84,9 +86,12 @@ Describe a company once. Compile it into an autonomous organization.
 
 ## Next Expected Deliverable
 
-The Phase 4 opening RFC (draft and Board review), upon Product Owner
-commissioning. Until then the only queued engineering item is the
-Low-priority Office View prototype, which remains Not Started.
+Product Owner disposition of the self-hosting design proposal
+(`docs/proposals/self-hosting.md`: commission its Level 1 RFC, amend, or
+decline). The Phase 4 opening RFC (draft and Board review) remains the
+next engineering milestone, upon Product Owner commissioning. Until then
+the only queued engineering item is the Low-priority Office View
+prototype, which remains Not Started.
 
 ## Completed RFCs
 
