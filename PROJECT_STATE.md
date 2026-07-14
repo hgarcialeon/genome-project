@@ -28,8 +28,9 @@ The Phase 4 opening RFC remains uncommissioned.
 
 ## Current Milestone
 
-The Architecture Board review of RFC-0007 — Executor-Scoped Policies
-(`RFC/0007-executor-scoped-policies.md`, draft committed 2026-07-14).
+Product Owner ratification of the RFC-0007 Board review
+(`docs/reviews/rfc-0007-board-review.md`, held 2026-07-14; Option A
+recommended). The draft itself is unchanged pending ratification.
 
 ## Current Objective
 
@@ -46,9 +47,12 @@ without its own RFC and ratification.
 
 ## Active Architectural Decision
 
-RFC-0007 — Executor-Scoped Policies: draft awaiting Architecture Board
-review. Still awaiting their own dispositions (sequenced next under the
-adopted Option A): the specification-maintenance proposal
+RFC-0007 — Executor-Scoped Policies: Board review held 2026-07-14
+(`docs/reviews/rfc-0007-board-review.md`, Option A — accept with five
+amendments — recommended, with the Product-Owner-directed Language
+Complexity Budget included); awaiting Product Owner ratification. Still
+awaiting their own dispositions (sequenced next under the adopted
+Option A of the product strategy): the specification-maintenance proposal
 (`docs/reviews/phase-3-close-packet.md`, §4) and the self-hosting
 proposal's Level 1–3 adoption recommendations
 (`docs/proposals/self-hosting.md`), which the ratified evidence review
@@ -89,9 +93,10 @@ Describe a company once. Compile it into an autonomous organization.
 
 ## Next Expected Deliverable
 
-The Architecture Board review decision on RFC-0007
-(`RFC/0007-executor-scoped-policies.md`). Per the adopted Option A
-sequencing (`docs/PRODUCT_STRATEGY.md`), the specification-maintenance
+The Product Owner's ratification decision on the RFC-0007 Board review
+(`docs/reviews/rfc-0007-board-review.md`; exact ratification statements
+provided there). Per the adopted Option A sequencing
+(`docs/PRODUCT_STRATEGY.md`), the specification-maintenance
 disposition (Phase 3 close packet §4) and the self-hosting Level 1
 disposition follow, with the Phase 4 opening RFC thereafter, each at
 the Product Owner's direction. Until an RFC is accepted the only queued
