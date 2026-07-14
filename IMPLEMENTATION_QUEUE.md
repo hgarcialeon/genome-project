@@ -32,6 +32,7 @@ Claude Code or any engineering agent should consume this queue instead of acting
 | High | RFC-0006 — Reference Adapter & `genome run`: draft and Board review | Phase 0–3 review (`docs/reviews/phase-0-3-board-review.md`) | Architecture Board | Done |
 | High | RFC-0006 implementation: `@genome/adapter-reference` package + CLI `genome run` + eight CLI-boundary tests | RFC-0006 / ADR-0008 | Engineering | Done |
 | High | Phase 3 close review (erratum disposition + phase closure) | RFC-0006 evidence | Architecture Board | Done |
+| High | Self-hosting evidence classification (Board review + ratification) | `docs/proposals/self-hosting.md` | Architecture Board | Done |
 | Low | Office View prototype | Organization Graph | Office Team | Not Started |
 
 ## Current Engineering Rule
@@ -100,6 +101,21 @@ and `genome run` scoped in via RFC-0006 (boundary constraints pinned in
 the review's Condition 4; the governance process itself is recorded as
 `docs/adr/0007-phase-transition-governance.md`). Event persistence is
 excluded from Phase 3, gated on its first consumer.
+
+The self-hosting evidence classification was ratified 2026-07-14 under
+Option A (`docs/reviews/self-hosting-evidence-board-review.md`): Gap 1
+(initiator- vs executor-scoped gating) is an RFC candidate whose
+commissioning and sequencing remain with the Product Owner; Gaps 2–3
+(human members, artifact primitive) are deferred at named gates (first
+view-phase RFC rendering principals; the Phase 6 proposal-payload RFC or
+an adopted Level 2 disposition); Gap 4 (workflow control flow) requires
+additional consumer evidence (two or more independent consumers with
+executable need); Gap 5 (conjunctive-only approvals) is rejected on the
+evidence at hand. **The classification adds no engineering item to this
+queue**: no RFC is approved, so per this queue's entry rules nothing
+enters it. A Gap 1 RFC, if and when the Product Owner commissions one,
+follows the normal lifecycle (draft → Board review → ratification →
+queue).
 
 RFC-0006 — Reference Adapter and Genome Run was accepted 2026-07-13 under
 Option B (`docs/reviews/rfc-0006-board-review.md`, ratified by the

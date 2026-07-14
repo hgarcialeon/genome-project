@@ -1,6 +1,6 @@
 # Genome Project State
 
-Last Updated: 2026-07-13
+Last Updated: 2026-07-14
 
 This file is the **only** source for current project state (Governance
 Rule 8). Other documents point here; none may restate what this file owns.
@@ -34,22 +34,28 @@ progress.
 
 ## Current Objective
 
-None active. Phase 3 closed 2026-07-13 with its evidence re-verified
-green after the RFC-0006 case-4 erratum was applied
-(`docs/reviews/phase-3-close-board-review.md`). Awaiting Product Owner
-direction on Phase 4 planning; no Phase 4 work is authorized without its
-own RFC and ratification.
+None active. The self-hosting evidence disposition was ratified
+2026-07-14 under Option A
+(`docs/reviews/self-hosting-evidence-board-review.md`): Gap 1 is an RFC
+candidate (commissioning and sequencing remain with the Product Owner),
+Gaps 2–3 are deferred at their named gates, Gap 4 requires additional
+consumer evidence, and Gap 5 is rejected on the evidence at hand. The
+ratification classifies the gaps only — no implementation is
+commissioned, no RFC work is authorized, and the roadmap is not
+reprioritized. Phase 4 remains unopened; no Phase 4 work is authorized
+without its own RFC and ratification.
 
 ## Active Architectural Decision
 
-None open. The Phase 3 close review was decided 2026-07-13 under
-Option B (`docs/reviews/phase-3-close-board-review.md`, Product Owner
-ratification recorded): the RFC-0006 case-4 normative erratum was
-approved and applied, then Phase 3 was closed on the re-verified
-evidence. The specification-maintenance proposal in the review packet
-(`docs/reviews/phase-3-close-packet.md`, §4) awaits its own disposition.
-The next architectural decision is the Phase 4 opening RFC review, when
-commissioned.
+None open. The self-hosting evidence disposition was decided 2026-07-14
+under Option A (`docs/reviews/self-hosting-evidence-board-review.md`,
+Product Owner ratification recorded in the review). Still awaiting
+their own dispositions: the specification-maintenance proposal
+(`docs/reviews/phase-3-close-packet.md`, §4) and the self-hosting
+proposal's Level 1–3 adoption recommendations
+(`docs/proposals/self-hosting.md`), which the ratified review left
+severable. The next architectural decision is the Phase 4 opening RFC
+review, when commissioned.
 
 ## Current Blockers
 
@@ -84,9 +90,14 @@ Describe a company once. Compile it into an autonomous organization.
 
 ## Next Expected Deliverable
 
-The Phase 4 opening RFC (draft and Board review), upon Product Owner
-commissioning. Until then the only queued engineering item is the
-Low-priority Office View prototype, which remains Not Started.
+At the Product Owner's direction: the Phase 4 opening RFC (draft and
+Board review) remains the next engineering milestone, upon
+commissioning; the Gap 1 RFC (classified RFC candidate 2026-07-14) may
+be commissioned and sequenced at the Product Owner's discretion; and
+the pending dispositions (Phase 3 close packet §4; self-hosting
+Levels 1–3) may be taken up when the Product Owner chooses. Until then
+the only queued engineering item is the Low-priority Office View
+prototype, which remains Not Started.
 
 ## Completed RFCs
 
