@@ -2,20 +2,27 @@
 
 ## Status
 
-Draft
+Accepted
 
 Commissioned 2026-07-14 by the Product Owner under Option A of
 `docs/PRODUCT_STRATEGY.md` (architecture item A1), on the Gap 1
 classification ratified 2026-07-14 in
-`docs/reviews/self-hosting-evidence-board-review.md`. Awaiting
-Architecture Board review (Product Owner, Chief Architect, Lead
-Engineer) per `docs/GOVERNANCE.md`.
+`docs/reviews/self-hosting-evidence-board-review.md`.
 
-This draft changes nothing: no accepted document, schema, compiler,
-runtime, or CLI behavior moves until the Board accepts this RFC and its
-item enters `IMPLEMENTATION_QUEUE.md`. The evidence commands quoted
-below were executed and verified during the self-hosting evidence review
-and reproduce at will; no new implementation exists.
+Accepted by the Architecture Board (Product Owner, Chief Architect,
+Lead Engineer) on 2026-07-14 under **Option A — Accept with
+Amendments**; the Product Owner's ratification is recorded in the
+review. The five recorded amendments have been applied to this document
+and the four open questions resolved as recorded. See
+`docs/reviews/rfc-0007-board-review.md` for the decision record
+(including the Language Complexity Budget) and
+`docs/adr/0009-participation-scoped-policies.md` for the recorded
+architectural decision.
+
+Nothing is implemented at acceptance: the implementation item enters
+`IMPLEMENTATION_QUEUE.md` with the amended evidence cases below as its
+acceptance criteria. Every evidence command quoted below was
+re-executed and verified during the Board review.
 
 ## Summary
 
@@ -36,12 +43,13 @@ the named agent **participates**:
    `owner` resolves to that agent — the new binding that closes Gap 1.
 
 The change is deny-safe in direction (it only adds gates, never removes
-one), requires **no schema change**, and is proposed as a
-**compiler-boundary derivation**: the compiler resolves executor
-bindings into the same `requires` edges and `governedBy` sets the
-accepted runtime contract already consumes, so the runtime package is
-expected to change by **zero lines**. Agent autonomy semantics
-(`manual`/`supervised`/`autonomous`) are explicitly **not** widened.
+one), requires **no schema change**, and is a **compiler-boundary
+derivation**: the compiler resolves executor bindings into the same
+`requires` edges and `governedBy` sets the accepted runtime contract
+already consumes, so the runtime's **production source changes by zero
+lines** (the runtime suite gains additive cases only — amendment 1).
+Agent autonomy semantics (`manual`/`supervised`/`autonomous`) are
+explicitly **not** widened.
 
 ## Motivation
 
@@ -136,7 +144,7 @@ organization discovered after the fact.
 - **Phase 4** — this RFC does not open it and is sequenced before it by
   the adopted strategy.
 
-## Semantics Today (v0.1, restated for review)
+## Semantics Before This RFC (v0.1 as shipped at review time)
 
 Per `SPEC/language.md` (Policy Scope) and the shipped implementation:
 
@@ -155,7 +163,7 @@ Per `SPEC/language.md` (Policy Scope) and the shipped implementation:
   (`packages/genome-compiler/src/targets/runtime-model.ts:79-80`), which
   graph construction creates from `appliesTo` entries.
 
-## Proposed Semantics (normative upon acceptance)
+## Accepted Semantics (normative)
 
 ### 1. Participation binding
 
@@ -199,10 +207,11 @@ Consequences, all intended:
 - The `RuntimeModel` shape is unchanged; only the contents of
   `governedBy` (and the derived `RuntimePolicy.appliesTo` echo) gain
   entries.
-- The shipped runtime gates binding (b) with **zero code change**,
-  because `governingPolicies` already unions the workflow's
-  `governedBy`. The expected `git diff` under
-  `packages/genome-runtime` is empty (Definition of Done item 6).
+- The shipped runtime gates binding (b) with **zero production-source
+  change**, because `governingPolicies` already unions the workflow's
+  `governedBy`. The `git diff` under `packages/genome-runtime` is empty
+  except for additive test cases in `runtime.test.ts` (Definition of
+  Done item 6, as amended).
 - Policy deduplication by id means a document using the current
   workaround (the same policy applied to both the agent and its
   workflows explicitly) gains **no duplicate approval requests** — the
@@ -212,8 +221,8 @@ Consequences, all intended:
 
 ### 3. Specification text
 
-Upon acceptance, the agent bullet of `SPEC/language.md` Policy Scope is
-replaced by (final wording subject to Board review):
+Upon implementation, the agent bullet of `SPEC/language.md` Policy
+Scope is replaced by:
 
 > - A policy applying to an **agent** gates every run that agent
 >   participates in: every workflow initiation *by* that agent, and
@@ -234,20 +243,24 @@ roles to `autonomy: manual` agents that own governance workflows, and
 those workflows execute correctly under human initiation today —
 executor-scoped autonomy would make every such run refuse. The
 distinction this RFC draws is: **autonomy governs the agent's
-initiative; policies govern the agent's work.** The Board is asked to
-confirm this boundary explicitly (Open Question 2).
+initiative; policies govern the agent's work.** The Board confirmed
+this boundary (review, OQ2); the sentence is normative, and future
+autonomy RFCs inherit it.
 
 ### 5. Diagnostics
 
 With the semantic fix, the silent under-binding disappears, so no
 "inert gate" warning is needed for the demonstrated case. One small
-addition is proposed for the only remaining provably-inert shape: the
+addition ships for the only remaining provably-inert shape: the
 existing *unbound policy* warning is extended to a policy whose
 `appliesTo` entries resolve **only** to `manual` agents that own no
 workflows (such a policy can never bind any run — a manual agent
-neither initiates nor, owning nothing, executes). Derived bindings are
-observable without new surface: the new `requires` edges appear in
-`genome graph` output, which the evidence cases below pin.
+neither initiates nor, owning nothing, executes). The diagnostic is
+**pinned to warning severity forever** (review, OQ4): a
+declared-ahead-of-wiring organization is legitimate authoring, and this
+project does not hard-fail intent. Derived bindings are observable
+without new surface: the new `requires` edges appear in `genome graph`
+output, which the evidence cases below pin.
 
 ## Schema Impact
 
@@ -270,13 +283,14 @@ principals" — the intended reading.
 - `SPEC/examples/company.yaml` is unaffected: its only policy is
   workflow-scoped (`appliesTo: [build-feature]`). The Board Condition 5
   evidence command and the 16-event sequence are unchanged.
-- The proposal is to correct **within `genomeVersion: 0.1`**, as a
-  specification-integrity defect fix: the pre-adoption stage means no
-  external documents rely on the under-binding, the direction is
-  deny-safe, and the alternative — freezing the defective reading into
-  v0.1 forever — would make the first version's flagship gate semantics
-  permanently untrustworthy. The Board may instead direct a v0.2 bump
-  (Open Question 1).
+- The correction is **within `genomeVersion: 0.1`** (resolved — review,
+  OQ1), as a specification-integrity defect fix: the pre-adoption stage
+  means no external documents rely on the under-binding (verified by
+  the review's inventory), the direction is deny-safe, and the
+  alternative — freezing the defective reading into v0.1 forever —
+  would make the first version's flagship gate semantics permanently
+  untrustworthy. A v0.2 bump was considered and declined: it would
+  imply the initiator-only reading remains a supported dialect.
 
 ## Testing and Executable Evidence
 
@@ -294,7 +308,11 @@ cases upon acceptance:
    `policy.enforced` on this path.)
 3. **Initiator binding retained.** An agent-initiated run of a workflow
    the agent does *not* own, governed by an agent-scoped policy → still
-   gated (runtime-suite level).
+   gated. A new, **additive** case in the runtime suite
+   (`runtime.test.ts`) — agent initiation is unreachable from the CLI
+   (`genome run` initiates as `human:operator`, verified in review) —
+   doubling as closure of the previously untested initiating-agent half
+   of the policy union (amendments 1–2).
 4. **No double-gating.** A fixture applying one policy to both the
    agent and an owned workflow explicitly (the current workaround) →
    exactly one `approval.requested` per policy, one grant drains it.
@@ -302,7 +320,9 @@ cases upon acceptance:
    fixture (workflow-scoped restatement) behaves identically before
    and after the change.
 6. **Graph observability.** `genome graph` on fixture 1 shows the
-   derived workflow→policy `requires` edges.
+   derived workflow→policy `requires` edges **in a deterministic,
+   pinned order** — not merely their presence (amendment 3; same
+   discipline as ADR-0006's shared canonicalization).
 7. **Inert-policy diagnostic.** A policy applying only to a manual,
    workflow-less agent → the extended unbound-policy warning.
 8. **Condition 5 regression.** `genome run SPEC/examples/company.yaml
@@ -312,10 +332,12 @@ cases upon acceptance:
    `--clock` for a gated fixture (existing determinism contract holds
    over the new bindings).
 
-Any existing test asserting the old ungated behavior (none is known;
-an inventory is part of implementation) is updated only with the change
-noted in the review record — behavior change is exactly why this is an
-RFC and not an erratum.
+The Board review's inventory verified that **no existing fixture or
+assertion anywhere in the repository depends on the old binding**
+(review, Finding 2): no shipped fixture declares an agent-scoped policy
+naming an agent that owns workflows. Implementation is therefore
+additive at every site outside the derivation rule itself. Behavior
+change is exactly why this is an RFC and not an erratum.
 
 ## Definition of Done
 
@@ -328,34 +350,40 @@ RFC and not an erratum.
 4. The nine evidence cases above passing uncached at the CLI/runtime
    boundaries.
 5. No schema change: `SPEC/schema/genome.schema.json` diff empty.
-6. No runtime change: `git diff` under `packages/genome-runtime` empty
-   against the merge-base; the runtime suite (17 tests) passes
-   byte-unchanged. (If implementation discovers this cannot hold, work
-   stops and returns to the Board — the expectation is load-bearing,
-   not decorative.)
-7. ADR recorded upon acceptance (next free number), scoped to the
-   participation-binding decision and the autonomy/policy boundary.
+6. No runtime behavior change (amendment 1): `git diff` under
+   `packages/genome-runtime` empty against the merge-base **except for
+   additive test cases in `runtime.test.ts`**; the existing 17 tests
+   byte-unchanged and passing; production runtime source unchanged.
+   (If implementation discovers a runtime *source* change is required,
+   work stops and returns to the Board — the expectation is
+   load-bearing, not decorative.)
+7. ADR recorded: `docs/adr/0009-participation-scoped-policies.md`,
+   scoped to the participation-binding decision and the
+   autonomy/policy boundary.
 8. Standing requirement (Governance): project state and governance
    documents reconciled — `PROJECT_STATE.md`, `ROADMAP.md` statuses if
    touched, `IMPLEMENTATION_QUEUE.md` entry drained, `pnpm check-state`
    passing.
 
-## Open Questions (for the Board)
+## Open Questions (resolved)
 
-1. **Versioning disposition.** Correct within v0.1 (recommended above,
-   on deny-safety and pre-adoption stage) or bump `genomeVersion` to
-   0.2 and treat v0.1's initiator-only reading as frozen?
-2. **The autonomy/policy boundary.** Confirm that autonomy levels
-   remain initiator-scoped (§4) — this sentence becomes normative spec
-   text and future RFCs will build on it.
-3. **Retention of binding (a).** The draft retains initiator binding
-   (participation = initiate ∪ execute) so no currently-gated run is
-   released. The narrower alternative — agent-scoped policies bind
-   executor-only — is cleaner to state but releases gates on
-   agent-initiated runs of non-owned workflows. Confirm the union.
-4. **Diagnostic scope.** Is the extended inert-policy warning (§5)
-   worth its weight in v0.1, or should diagnostics ship with the
-   minimum (derived edges visible in `graph`) and grow on evidence?
+All four were answered by the Board on 2026-07-14 and ratified under
+Option A (`docs/reviews/rfc-0007-board-review.md`, Open Questions —
+Board Answers); the resolutions are folded into the sections above:
+
+1. **Versioning disposition — resolved: correct within v0.1.** No
+   external document relies on the initiator-only reading; the change
+   is monotone deny-safe; a v0.2 bump would freeze the defective
+   reading as a supported dialect (Compatibility and Versioning).
+2. **The autonomy/policy boundary — resolved: confirmed, normative.**
+   Autonomy governs the agent's initiative; policies govern the agent's
+   work (§4).
+3. **Retention of binding (a) — resolved: the union is confirmed.**
+   Executor-only binding would release the existing gate on a governed
+   agent's initiations of non-owned workflows — a deny-safe regression,
+   rejected without dissent (§1).
+4. **Diagnostic scope — resolved: ships, pinned to warning severity
+   forever** (§5).
 
 ## Alternatives Considered
 

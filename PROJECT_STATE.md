@@ -22,35 +22,38 @@ a later phase, gated on the first consumer requiring a durable log.
 ## Current Iteration
 
 No formal sprint cadence. Work proceeds RFC-by-RFC through
-`IMPLEMENTATION_QUEUE.md`. No implementation iteration is active: the
-next engineering work is gated on the RFC-0007 Board review outcome.
-The Phase 4 opening RFC remains uncommissioned.
+`IMPLEMENTATION_QUEUE.md`. No implementation iteration is active yet:
+the RFC-0007 implementation item is queued (High, Not Started) and is
+the next engineering work. The Phase 4 opening RFC remains
+uncommissioned.
 
 ## Current Milestone
 
-Product Owner ratification of the RFC-0007 Board review
-(`docs/reviews/rfc-0007-board-review.md`, held 2026-07-14; Option A
-recommended). The draft itself is unchanged pending ratification.
+Implementation of the RFC-0007 queue item (participation-binding
+derivation, inert-policy diagnostic, `SPEC/language.md` Policy Scope
+wording, the nine amended evidence cases), per its acceptance criteria
+in `IMPLEMENTATION_QUEUE.md` and the amended
+`RFC/0007-executor-scoped-policies.md`.
 
 ## Current Objective
 
-The Product Owner adopted **Option A ("Trust first") of
-`docs/PRODUCT_STRATEGY.md`** on 2026-07-14 and commissioned its first
-sequenced act: **RFC-0007 — Executor-Scoped Policies**
-(`RFC/0007-executor-scoped-policies.md`), addressing Gap 1 of the
-ratified self-hosting evidence disposition
-(`docs/reviews/self-hosting-evidence-board-review.md`). The draft is
-prepared and awaiting Architecture Board review. Nothing is
-implemented: no queue entry exists until acceptance, per the queue's
-entry rules. Phase 4 remains unopened; no Phase 4 work is authorized
-without its own RFC and ratification.
+Execute the adopted **Option A ("Trust first") of
+`docs/PRODUCT_STRATEGY.md`** (adopted 2026-07-14). Its first act is
+complete through acceptance: **RFC-0007 — Executor-Scoped Policies**
+was accepted 2026-07-14 under Option A with the five amendments applied
+(`docs/reviews/rfc-0007-board-review.md`, Product Owner ratification
+recorded there; `docs/adr/0009-participation-scoped-policies.md`). The
+implementation item is queued and **not started** — acceptance
+authorized the work; it did not perform it. Phase 4 remains unopened;
+no Phase 4 work is authorized without its own RFC and ratification.
 
 ## Active Architectural Decision
 
-RFC-0007 — Executor-Scoped Policies: Board review held 2026-07-14
-(`docs/reviews/rfc-0007-board-review.md`, Option A — accept with five
-amendments — recommended, with the Product-Owner-directed Language
-Complexity Budget included); awaiting Product Owner ratification. Still
+None open. RFC-0007 was decided 2026-07-14 (Option A ratified,
+`docs/reviews/rfc-0007-board-review.md`; ADR-0009). The Board's
+Language Complexity Budget recommendation is recorded as non-binding
+review guidance only (Product Owner disposition, 2026-07-14) — not a
+standing governance requirement. Still
 awaiting their own dispositions (sequenced next under the adopted
 Option A of the product strategy): the specification-maintenance proposal
 (`docs/reviews/phase-3-close-packet.md`, §4) and the self-hosting
@@ -93,15 +96,15 @@ Describe a company once. Compile it into an autonomous organization.
 
 ## Next Expected Deliverable
 
-The Product Owner's ratification decision on the RFC-0007 Board review
-(`docs/reviews/rfc-0007-board-review.md`; exact ratification statements
-provided there). Per the adopted Option A sequencing
-(`docs/PRODUCT_STRATEGY.md`), the specification-maintenance
-disposition (Phase 3 close packet §4) and the self-hosting Level 1
-disposition follow, with the Phase 4 opening RFC thereafter, each at
-the Product Owner's direction. Until an RFC is accepted the only queued
-engineering item is the Low-priority Office View prototype, which
-remains Not Started.
+The RFC-0007 implementation queue item (Engineering, High priority,
+Not Started): participation-binding derivation in `genome-compiler`,
+the inert-policy diagnostic, the `SPEC/language.md` Policy Scope
+wording, and the nine amended evidence cases — within the protected
+boundaries pinned in the queue entry and the RFC's Definition of Done.
+Per the adopted Option A sequencing (`docs/PRODUCT_STRATEGY.md`), the
+specification-maintenance disposition (Phase 3 close packet §4) and the
+self-hosting Level 1 disposition follow, with the Phase 4 opening RFC
+thereafter, each at the Product Owner's direction.
 
 ## Completed RFCs
 
@@ -112,6 +115,7 @@ remains Not Started.
 | RFC-0004 — Runtime Implementation | Accepted 2026-07-13, `docs/reviews/RFC-0004-board-decision.md` | `docs/adr/0005-runtime-execution-contract.md` | Drained |
 | RFC-0005 — Genome Diff | Accepted 2026-07-13, `docs/reviews/RFC-0005-board-decision.md` | `docs/adr/0006-genome-diff-contract.md` | Drained |
 | RFC-0006 — Reference Adapter & `genome run` | Accepted 2026-07-13 (Option B), `docs/reviews/rfc-0006-board-review.md`; case-4 erratum applied 2026-07-13 per the Phase 3 close review | `docs/adr/0008-reference-execution-contract.md` | Drained |
+| RFC-0007 — Executor-Scoped Policies | Accepted 2026-07-14 (Option A, five amendments applied), `docs/reviews/rfc-0007-board-review.md` | `docs/adr/0009-participation-scoped-policies.md` | Queued (Not Started) |
 
 Definition-of-Done evidence for each lives in its board decision document.
 One evidence gap found by the 2026-07-13 audit is now closed: the RFC-0005

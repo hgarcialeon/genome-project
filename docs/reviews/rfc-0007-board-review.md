@@ -2,10 +2,19 @@
 
 ## Status
 
-Review held 2026-07-14. **Awaiting Product Owner ratification.** This
-review modifies nothing: the RFC text is untouched (the amendments below
-are recorded here and applied only upon ratification), no implementation
-exists, no queue entry is created, and no accepted document changes.
+**Ratified — Option A, Product Owner, 2026-07-14.** RFC-0007 is
+Accepted; the five amendments below have been applied to
+`RFC/0007-executor-scoped-policies.md`;
+`docs/adr/0009-participation-scoped-policies.md` records the decision;
+the implementation item is queued in `IMPLEMENTATION_QUEUE.md` (not
+implemented at ratification). Per the Product Owner's disposition, the
+Board's recommendation that future language-evolution RFCs carry a
+Language Complexity Budget section is recorded as **non-binding review
+guidance only** — it is not a standing governance requirement, and no
+template or governance document is modified by it. The review below is
+preserved as written at review time.
+
+Review held 2026-07-14.
 
 ## Decision Under Review
 
