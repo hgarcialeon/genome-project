@@ -11,7 +11,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@genome/adapter-reference": "workspace:*",
     "@genome/compiler": "workspace:*",
+    "@genome/runtime": "workspace:*",
     "@genome/schema": "workspace:*",
     "commander": "^12.1.0",
     "tsx": "^4.19.2"

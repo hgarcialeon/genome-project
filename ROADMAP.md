@@ -70,9 +70,10 @@ Goal: make the specification usable from local development.
 
 ## Phase 3 — Runtime Prototype
 
-Active — held open by the 2026-07-13 review: the reference provider
-adapter and `genome run` are scoped in via RFC-0006; the phase closes on
-CLI-boundary evidence.
+Closed 2026-07-13 by the Phase 3 close review
+(`docs/reviews/phase-3-close-board-review.md`, Option B ratified by the
+Product Owner) on CLI-boundary evidence, with the RFC-0006 case-4
+erratum applied first.
 
 Goal: execute a simple organization from a Genome file.
 
@@ -84,6 +85,8 @@ Goal: execute a simple organization from a Genome file.
 | Workflow execution | Done | Sequential step execution with autonomy/policy gates, `packages/genome-runtime/src/runtime/index.ts` |
 | Human approval stub | Done | Full deny-safe approval mechanics (exceeds stub), RFC-0004/ADR-0005 |
 | Activity log | Done | The event log is the activity log; `state() == replay(log)` by construction, 17 tests |
+| Reference adapter (RFC-0006) | Done | `packages/genome-adapter-reference`: enqueue-only dispatch, FIFO settle with return-on-first-refusal, unit-tested (ADR-0008) |
+| genome run (RFC-0006) | Done | CLI-boundary tests in `packages/genome-cli/src/cli.test.ts`; exit codes 0/1/2/3, `--grant`/`--fail-step`/`--json`/`--export-log`/`--clock` contracts, replay equality, byte-determinism |
 
 ## Phase 4 — Studio Prototype
 

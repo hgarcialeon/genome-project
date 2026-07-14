@@ -1,18 +1,27 @@
 #!/usr/bin/env tsx
 
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 import { Command } from "commander";
+import { createReferenceAdapter } from "@genome/adapter-reference";
 import {
   compile,
   diffTarget,
   graphTarget,
   inspectTarget,
+  runtimeModelTarget,
   type CompileSuccess,
   type Diagnostic,
   type DiffReport,
 } from "@genome/compiler";
+import {
+  createRuntime,
+  INTRINSIC_FLOOR_PRINCIPAL,
+  isHumanPrincipal,
+  type RunState,
+  type RuntimeEvent,
+} from "@genome/runtime";
 import { createValidator, formatErrors, parseGenomeDocument } from "@genome/schema";
 
 // Canonical schema location (SPEC is the source of truth). Resolved relative to
@@ -146,7 +155,150 @@ program
     process.exit(report.identical ? 0 : 1);
   });
 
+type RunOptions = {
+  workflow: string;
+  as: string;
+  grant: string[];
+  failStep: string[];
+  json?: boolean;
+  exportLog?: string;
+  clock?: string;
+};
+
+const collect = (value: string, previous: string[]): string[] => [...previous, value];
+
+program
+  .command("run")
+  .argument("<file>", "Genome YAML file")
+  .requiredOption("--workflow <id>", "Workflow to execute (initiation is explicit; there is no default)")
+  .option("--as <principal>", "Initiating principal: human:<id> or an agent id/reference", "human:operator")
+  .option("--grant <principal>", "Pre-authorized approval, matched by the runtime's rules (repeatable, deny-safe)", collect, [])
+  .option(
+    "--fail-step <step>",
+    "Simulation aid, defined by the reference adapter: fail the named step (repeatable; workflowId:step or bare step)",
+    collect,
+    [],
+  )
+  .option("--json", "Machine output: NDJSON event stream plus a final-state line")
+  .option("--export-log <path>", "Write the complete event log as NDJSON after the run settles")
+  .option("--clock <iso8601>", "Testing aid: fix the injectable runtime clock to a constant")
+  .description(
+    "Compile a Genome document and execute one workflow through the reference adapter. " +
+      "Exits 0 completed / 1 failed / 2 trouble / 3 blocked pending approval (RFC-0006).",
+  )
+  // All invocation-level failures are "trouble": override commander's default
+  // exit 1 so the pinned exit codes, not the library's, are the contract
+  // (RFC-0006). Help and version keep exit 0.
+  .exitOverride((error) => {
+    process.exit(error.exitCode === 0 ? 0 : 2);
+  })
+  .action(runWorkflow);
+
 program.parse();
+
+function runWorkflow(file: string, options: RunOptions): never {
+  // --clock is an invocation input, so a malformed value is trouble.
+  let clock: (() => string) | undefined;
+  if (options.clock !== undefined) {
+    if (Number.isNaN(Date.parse(options.clock))) {
+      fail(2, `Invalid --clock value: ${options.clock} (expected an ISO 8601 timestamp)`);
+    }
+    const fixed = options.clock;
+    clock = () => fixed;
+  }
+
+  // Compiled artifacts only: compile → runtimeModelTarget → createRuntime.
+  const result = compileOrFail(file, 2);
+  const model = runtimeModelTarget(result.graph);
+
+  const adapter = createReferenceAdapter({ failSteps: options.failStep });
+  const runtime = createRuntime({ model, adapter, clock });
+  adapter.bind(runtime);
+
+  runtime.subscribe((event) => {
+    console.log(options.json ? JSON.stringify(event) : formatEvent(event));
+  });
+
+  const initiation = runtime.startWorkflow(options.workflow, options.as);
+  if (!initiation.ok) {
+    fail(2, `✗ run refused: ${initiation.reason}`);
+  }
+
+  // Grants are applied to requested approvals in event order, not
+  // command-line order; each grant is consumed at most once, first in
+  // command-line order when several match one pending principal. `human:*`
+  // is not special-cased here — the runtime refuses it (reserved-principal).
+  const used = new Set<number>();
+  for (const principal of runtime.state().runs[initiation.runId].pendingApprovals) {
+    for (;;) {
+      const index = options.grant.findIndex(
+        (grant, position) =>
+          !used.has(position) &&
+          (grant === principal || (principal === INTRINSIC_FLOOR_PRINCIPAL && isHumanPrincipal(grant))),
+      );
+      if (index === -1) break;
+      used.add(index);
+      const approval = runtime.submitApproval(initiation.runId, options.grant[index], true);
+      if (approval.ok) break;
+      console.error(`⚠ grant ${options.grant[index]} refused: ${approval.reason}`);
+    }
+  }
+  for (const [index, grant] of options.grant.entries()) {
+    if (!used.has(index)) {
+      console.error(`⚠ grant ${grant} matched no requested approval`);
+    }
+  }
+
+  adapter.settle();
+
+  const run = runtime.state().runs[initiation.runId];
+  const exitCode = run.status === "completed" ? 0 : run.status === "failed" ? 1 : run.status === "pending-approval" ? 3 : 2;
+
+  if (options.json) {
+    // The final-state line is CLI output, not an event (RFC-0006).
+    console.log(
+      JSON.stringify({
+        finalState: {
+          runId: run.runId,
+          status: run.status,
+          completedSteps: run.completedSteps,
+          pendingApprovals: run.pendingApprovals,
+        },
+        exitCode,
+      }),
+    );
+  } else {
+    printFinalState(run);
+  }
+
+  if (options.exportLog !== undefined) {
+    // Pinned framing: UTF-8, one JSON.stringify(envelope) per line, LF
+    // separators, trailing newline — written once, after settlement.
+    const log = runtime
+      .events()
+      .map((event) => JSON.stringify(event))
+      .join("\n");
+    writeFileSync(options.exportLog, `${log}\n`, "utf8");
+  }
+
+  process.exit(exitCode);
+}
+
+function formatEvent(event: RuntimeEvent): string {
+  const payload = Object.entries(event.payload)
+    .map(([key, value]) => `${key}=${typeof value === "string" ? value : JSON.stringify(value)}`)
+    .join(" ");
+  return `#${event.id} ${event.type} ${event.source}${payload === "" ? "" : ` ${payload}`}`;
+}
+
+function printFinalState(run: RunState): void {
+  console.log();
+  console.log(`Run ${run.runId}: ${run.status}`);
+  console.log(`  completed steps: ${run.completedSteps}`);
+  if (run.pendingApprovals.length > 0) {
+    console.log(`  pending approvals: ${run.pendingApprovals.join(", ")}`);
+  }
+}
 
 function printDiff(report: DiffReport): void {
   if (report.identical) {

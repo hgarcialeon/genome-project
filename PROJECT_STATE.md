@@ -8,43 +8,48 @@ Consistency with the repository is checked by `pnpm check-state` in CI.
 
 ## Current Phase
 
-Phase 3 — Runtime Prototype (active). Phases 0–2 closed 2026-07-13 by the
-phase transition review (`docs/reviews/phase-0-3-board-review.md`,
-ratified by the Product Owner). Phase 3 deliverables are landed as scoped
-by RFC-0003/RFC-0004; the Board scoped the remaining goal-sentence work —
-the reference provider adapter and the `genome run` CLI command — into
-Phase 3 via RFC-0006. Event persistence is assigned to a later phase,
-gated on the first consumer requiring a durable log. Phase 3 closes only
-on CLI-boundary evidence (Board review, Condition 5).
+Phase 4 — Studio Prototype (named as next; **not started**). Phases 0–3
+are closed: Phases 0–2 by the 2026-07-13 phase transition review
+(`docs/reviews/phase-0-3-board-review.md`), Phase 3 by the Phase 3 close
+review the same day (`docs/reviews/phase-3-close-board-review.md`,
+Option B ratified by the Product Owner) on CLI-boundary evidence, with
+the RFC-0006 case-4 erratum applied first. Naming Phase 4 as current is
+a statement of position, not a work authorization: opening Phase 4
+requires its own RFC, Architecture Board review, and Product Owner
+ratification (Governance Rule 2). Event persistence remains assigned to
+a later phase, gated on the first consumer requiring a durable log.
 
 ## Current Iteration
 
 No formal sprint cadence. Work proceeds RFC-by-RFC through
-`IMPLEMENTATION_QUEUE.md`. The current iteration: implement the RFC-0006
-queue item (reference adapter, `genome run`, CLI-boundary evidence),
-scoped strictly to the amended RFC.
+`IMPLEMENTATION_QUEUE.md`. No implementation iteration is active: the
+next engineering work is gated on the Phase 4 opening RFC, which has not
+been commissioned.
 
 ## Current Milestone
 
-RFC-0006 accepted and its queue drained; then the Phase 3 close review
-with CLI-boundary evidence (`genome run` driving a workflow to completion
-through the reference adapter).
+The Phase 4 opening RFC and its Architecture Board review, when the
+Product Owner commissions Phase 4 planning. No milestone is currently in
+progress.
 
 ## Current Objective
 
-Implement RFC-0006 as amended: the `@genome/adapter-reference` package,
-the `genome run` command, and the eight CLI-boundary test cases — with no
-change to compiler or runtime public contracts (empty git diff required)
-and no work beyond the amended RFC's scope.
+None active. Phase 3 closed 2026-07-13 with its evidence re-verified
+green after the RFC-0006 case-4 erratum was applied
+(`docs/reviews/phase-3-close-board-review.md`). Awaiting Product Owner
+direction on Phase 4 planning; no Phase 4 work is authorized without its
+own RFC and ratification.
 
 ## Active Architectural Decision
 
-None open. RFC-0006 — Reference Adapter & `genome run` was **Accepted**
-2026-07-13 under Option B (`docs/reviews/rfc-0006-board-review.md`,
-Product Owner ratification recorded;
-`docs/adr/0008-reference-execution-contract.md`). The next architectural
-decision is the Phase 3 close review, held after the RFC-0006 evidence
-lands.
+None open. The Phase 3 close review was decided 2026-07-13 under
+Option B (`docs/reviews/phase-3-close-board-review.md`, Product Owner
+ratification recorded): the RFC-0006 case-4 normative erratum was
+approved and applied, then Phase 3 was closed on the re-verified
+evidence. The specification-maintenance proposal in the review packet
+(`docs/reviews/phase-3-close-packet.md`, §4) awaits its own disposition.
+The next architectural decision is the Phase 4 opening RFC review, when
+commissioned.
 
 ## Current Blockers
 
@@ -79,8 +84,9 @@ Describe a company once. Compile it into an autonomous organization.
 
 ## Next Expected Deliverable
 
-The RFC-0006 implementation item from `IMPLEMENTATION_QUEUE.md`, followed
-by the Phase 3 close review on its CLI-boundary evidence.
+The Phase 4 opening RFC (draft and Board review), upon Product Owner
+commissioning. Until then the only queued engineering item is the
+Low-priority Office View prototype, which remains Not Started.
 
 ## Completed RFCs
 
@@ -90,6 +96,7 @@ by the Phase 3 close review on its CLI-boundary evidence.
 | RFC-0003 — Runtime Boundary | Accepted 2026-07-13, `docs/reviews/RFC-0003-board-decision.md` | `docs/adr/0004-runtime-boundary.md` | Drained |
 | RFC-0004 — Runtime Implementation | Accepted 2026-07-13, `docs/reviews/RFC-0004-board-decision.md` | `docs/adr/0005-runtime-execution-contract.md` | Drained |
 | RFC-0005 — Genome Diff | Accepted 2026-07-13, `docs/reviews/RFC-0005-board-decision.md` | `docs/adr/0006-genome-diff-contract.md` | Drained |
+| RFC-0006 — Reference Adapter & `genome run` | Accepted 2026-07-13 (Option B), `docs/reviews/rfc-0006-board-review.md`; case-4 erratum applied 2026-07-13 per the Phase 3 close review | `docs/adr/0008-reference-execution-contract.md` | Drained |
 
 Definition-of-Done evidence for each lives in its board decision document.
 One evidence gap found by the 2026-07-13 audit is now closed: the RFC-0005

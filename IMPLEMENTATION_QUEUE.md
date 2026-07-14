@@ -30,7 +30,8 @@ Claude Code or any engineering agent should consume this queue instead of acting
 | High | Governance/state reconciliation (phase reviews, single source of truth) | 2026-07-13 audit | Engineering | Done |
 | High | Phase 0–3 transition reviews (incl. schema-codegen de-scope ratification) | Governance: Phase Transition Review | Architecture Board | Done |
 | High | RFC-0006 — Reference Adapter & `genome run`: draft and Board review | Phase 0–3 review (`docs/reviews/phase-0-3-board-review.md`) | Architecture Board | Done |
-| High | RFC-0006 implementation: `@genome/adapter-reference` package + CLI `genome run` + eight CLI-boundary tests | RFC-0006 / ADR-0008 | Engineering | Not Started |
+| High | RFC-0006 implementation: `@genome/adapter-reference` package + CLI `genome run` + eight CLI-boundary tests | RFC-0006 / ADR-0008 | Engineering | Done |
+| High | Phase 3 close review (erratum disposition + phase closure) | RFC-0006 evidence | Architecture Board | Done |
 | Low | Office View prototype | Organization Graph | Office Team | Not Started |
 
 ## Current Engineering Rule
@@ -115,3 +116,20 @@ CLI-boundary test cases including the Condition 5 evidence
 human:engineering-manager` → exit 0). Compiler and runtime public
 contracts must not change (empty git diff required). Phase 3 closes only
 through a follow-up transition review on that evidence.
+
+The RFC-0006 item was drained 2026-07-13: `packages/genome-adapter-reference`
+landed with the normative settle contract and its own unit suite, and the
+CLI `genome run` landed with the pinned option set, output contracts, and
+exit codes; all evidence cases pass uncached at the subprocess boundary
+(`packages/genome-cli/src/cli.test.ts`), the replay-equality and
+byte-determinism tests among them, with empty git diffs under
+`packages/genome-compiler` and `packages/genome-runtime`. One RFC erratum
+was found during implementation: the RFC's test case 4 named
+`policy.enforced` attribution on the granted path, but the shipped runtime
+emits `policy.enforced` only on the denial path (verified in its suite) —
+since the RFC itself prohibits runtime changes, the granted-path evidence
+is the attributed `approval.granted` event. The Phase 3 close review
+(held 2026-07-13, Option B ratified —
+`docs/reviews/phase-3-close-board-review.md`) approved that erratum as a
+normative correction with zero behavioral change, applied it to the RFC,
+and closed Phase 3 on the re-verified evidence.
