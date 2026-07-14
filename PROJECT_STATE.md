@@ -23,39 +23,36 @@ a later phase, gated on the first consumer requiring a durable log.
 
 No formal sprint cadence. Work proceeds RFC-by-RFC through
 `IMPLEMENTATION_QUEUE.md`. No implementation iteration is active: the
-next engineering work is gated on the Phase 4 opening RFC, which has not
-been commissioned.
+next engineering work is gated on the RFC-0007 Board review outcome.
+The Phase 4 opening RFC remains uncommissioned.
 
 ## Current Milestone
 
-The Phase 4 opening RFC and its Architecture Board review, when the
-Product Owner commissions Phase 4 planning. No milestone is currently in
-progress.
+The Architecture Board review of RFC-0007 — Executor-Scoped Policies
+(`RFC/0007-executor-scoped-policies.md`, draft committed 2026-07-14).
 
 ## Current Objective
 
-None active. The self-hosting evidence disposition was ratified
-2026-07-14 under Option A
-(`docs/reviews/self-hosting-evidence-board-review.md`): Gap 1 is an RFC
-candidate (commissioning and sequencing remain with the Product Owner),
-Gaps 2–3 are deferred at their named gates, Gap 4 requires additional
-consumer evidence, and Gap 5 is rejected on the evidence at hand. The
-ratification classifies the gaps only — no implementation is
-commissioned, no RFC work is authorized, and the roadmap is not
-reprioritized. Phase 4 remains unopened; no Phase 4 work is authorized
+The Product Owner adopted **Option A ("Trust first") of
+`docs/PRODUCT_STRATEGY.md`** on 2026-07-14 and commissioned its first
+sequenced act: **RFC-0007 — Executor-Scoped Policies**
+(`RFC/0007-executor-scoped-policies.md`), addressing Gap 1 of the
+ratified self-hosting evidence disposition
+(`docs/reviews/self-hosting-evidence-board-review.md`). The draft is
+prepared and awaiting Architecture Board review. Nothing is
+implemented: no queue entry exists until acceptance, per the queue's
+entry rules. Phase 4 remains unopened; no Phase 4 work is authorized
 without its own RFC and ratification.
 
 ## Active Architectural Decision
 
-None open. The self-hosting evidence disposition was decided 2026-07-14
-under Option A (`docs/reviews/self-hosting-evidence-board-review.md`,
-Product Owner ratification recorded in the review). Still awaiting
-their own dispositions: the specification-maintenance proposal
+RFC-0007 — Executor-Scoped Policies: draft awaiting Architecture Board
+review. Still awaiting their own dispositions (sequenced next under the
+adopted Option A): the specification-maintenance proposal
 (`docs/reviews/phase-3-close-packet.md`, §4) and the self-hosting
 proposal's Level 1–3 adoption recommendations
-(`docs/proposals/self-hosting.md`), which the ratified review left
-severable. The next architectural decision is the Phase 4 opening RFC
-review, when commissioned.
+(`docs/proposals/self-hosting.md`), which the ratified evidence review
+left severable.
 
 ## Current Blockers
 
@@ -70,6 +67,8 @@ None.
   the standing RFC reconciliation requirement (`docs/GOVERNANCE.md`)
 - Implementation Queue: ✅ established (`IMPLEMENTATION_QUEUE.md`)
 - Mechanical state check: ✅ established (`scripts/check-state.mjs`, in CI)
+- Product Strategy: ✅ adopted — Option A, 2026-07-14
+  (`docs/PRODUCT_STRATEGY.md`)
 
 ## Current North Star
 
@@ -90,14 +89,14 @@ Describe a company once. Compile it into an autonomous organization.
 
 ## Next Expected Deliverable
 
-At the Product Owner's direction: the Phase 4 opening RFC (draft and
-Board review) remains the next engineering milestone, upon
-commissioning; the Gap 1 RFC (classified RFC candidate 2026-07-14) may
-be commissioned and sequenced at the Product Owner's discretion; and
-the pending dispositions (Phase 3 close packet §4; self-hosting
-Levels 1–3) may be taken up when the Product Owner chooses. Until then
-the only queued engineering item is the Low-priority Office View
-prototype, which remains Not Started.
+The Architecture Board review decision on RFC-0007
+(`RFC/0007-executor-scoped-policies.md`). Per the adopted Option A
+sequencing (`docs/PRODUCT_STRATEGY.md`), the specification-maintenance
+disposition (Phase 3 close packet §4) and the self-hosting Level 1
+disposition follow, with the Phase 4 opening RFC thereafter, each at
+the Product Owner's direction. Until an RFC is accepted the only queued
+engineering item is the Low-priority Office View prototype, which
+remains Not Started.
 
 ## Completed RFCs
 

@@ -1,10 +1,15 @@
 # Genome Product Strategy (Proposal)
 
-- **Status:** Proposal, prepared 2026-07-14 at the Product Owner's
-  direction following the approved bootstrap report. **This document
-  decides nothing.** It is not an RFC, it modifies no accepted
-  architecture, and it commissions no work. Adopting any option below
-  follows the normal governance lifecycle (`docs/GOVERNANCE.md`).
+- **Status: Adopted — Option A ("Trust first"), Product Owner,
+  2026-07-14.** The adoption is recorded in `PROJECT_STATE.md`; its
+  first commissioned act is RFC-0007
+  (`RFC/0007-executor-scoped-policies.md`). The proposal below is
+  preserved as written at proposal time.
+- Originally prepared 2026-07-14 at the Product Owner's direction
+  following the approved bootstrap report, as a proposal that decided
+  nothing: it is not an RFC, it modifies no accepted architecture, and
+  adopting any option follows the normal governance lifecycle
+  (`docs/GOVERNANCE.md`).
 - **State ownership:** phase, milestone, objective, and blockers live
   only in `PROJECT_STATE.md` (Governance Rule 8). This document cites
   repository evidence but owns no state.
