@@ -2,10 +2,13 @@
 
 ## Status
 
-**Awaiting Product Owner ratification.** No classification in this
-document is applied until ratified. When ratified, the classification
-table below becomes the recorded disposition of the self-hosting
-evidence; `PROJECT_STATE.md` points here while ratification is pending.
+**Ratified — Option A, Product Owner, 2026-07-14.** The classification
+table below is the recorded disposition of the self-hosting evidence,
+adopted exactly as recorded. The ratification classifies the observed
+gaps only: it does not commission implementation, does not authorize
+new RFC work, and does not reprioritize the roadmap. The sequencing of
+any future RFC (including for Gap 1) remains a Product Owner decision.
+The review below is preserved as written at review time.
 
 ## Decision Under Review
 
