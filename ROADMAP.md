@@ -70,10 +70,10 @@ Goal: make the specification usable from local development.
 
 ## Phase 3 — Runtime Prototype
 
-Active — held open by the 2026-07-13 review: the reference provider
-adapter and `genome run` were scoped in via RFC-0006 and have landed; the
-phase closes only through the follow-up transition review on the
-CLI-boundary evidence.
+Closed 2026-07-13 by the Phase 3 close review
+(`docs/reviews/phase-3-close-board-review.md`, Option B ratified by the
+Product Owner) on CLI-boundary evidence, with the RFC-0006 case-4
+erratum applied first.
 
 Goal: execute a simple organization from a Genome file.
 
