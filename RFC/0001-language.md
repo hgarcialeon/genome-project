@@ -2,7 +2,13 @@
 
 ## Status
 
-Draft
+Accepted
+
+Accepted as a Phase 0 foundational RFC by the Phase 0 close
+(`docs/reviews/phase-0-3-board-review.md`, ratified by the Product Owner,
+2026-07-13; `ROADMAP.md` Phase 0 records it Done). Status corrected from
+`Draft` by erratum `ERR-0002` (`docs/ERRATA.md`, 2026-07-15); normative
+content unchanged.
 
 ## Summary
 
