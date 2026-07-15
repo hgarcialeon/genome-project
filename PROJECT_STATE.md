@@ -30,23 +30,32 @@ The Level 1 self-hosting RFC — commissioned 2026-07-15
 (`docs/reviews/maintenance-self-hosting-disposition-packet.md`), drafted as
 `RFC/0008-self-hosting-example.md` — was **accepted 2026-07-15 under Option B**
 (`docs/reviews/rfc-0008-board-review.md`, Product Owner ratification; the five
-Board open-question dispositions folded into the RFC). Acceptance added **one
-engineering item, `Not Started`**, to `IMPLEMENTATION_QUEUE.md`: the
-descriptive/evidentiary self-hosting example plus its additive CLI-boundary
-evidence. No implementation iteration is active and the item has not been
-started. The Phase 4 opening RFC remains uncommissioned.
+Board open-question dispositions folded into the RFC). Acceptance added one
+engineering item to `IMPLEMENTATION_QUEUE.md`: the descriptive/evidentiary
+self-hosting example plus its additive CLI-boundary evidence. That item
+**landed and was drained 2026-07-15**: `SPEC/examples/genome-project.yaml`
+ships as the single canonical, structure-only example, its nine evidence cases
+E1–E9 pass uncached at the CLI boundary, and the seven protected boundaries
+held as empty diffs. RFC-0008 is **ready for its implementation close review**
+(not yet closed — the RFC-0007 closure precedent). No implementation iteration
+is active. The Phase 4 opening RFC remains uncommissioned.
 
 ## Current Milestone
 
-The RFC-0007 queue item (participation-binding derivation, inert-policy
-diagnostic, `SPEC/language.md` Policy Scope wording, the nine amended
-evidence cases) is **implemented, drained, and closed** (2026-07-15)
-against its acceptance criteria in `IMPLEMENTATION_QUEUE.md` and the
-amended `RFC/0007-executor-scoped-policies.md`, within the pinned
-protected boundaries (empty schema, runtime-production, and CLI-surface
-diffs). The Board's implementation closure review
-(`docs/reviews/rfc-0007-implementation-close-review.md`) ratified Option
-A on that evidence; no milestone is active.
+The RFC-0008 queue item (the single canonical, structure-only
+`SPEC/examples/genome-project.yaml` — agent-scoped `queue-discipline`,
+top-of-file non-normative marking — plus the additive E1–E9 CLI-boundary
+evidence) is **implemented and drained** (2026-07-15) against its acceptance
+criteria in `IMPLEMENTATION_QUEUE.md` and `RFC/0008-self-hosting-example.md`,
+within the seven pinned protected boundaries (all held as empty diffs: schema,
+compiler-production, runtime-production, CLI-surface, and event-taxonomy, plus
+no exported-log reader and no persistence). E1–E9 pass uncached at the CLI
+boundary; the example doubles as a standing regression witness for RFC-0007
+participation binding (E3/E7). No milestone is active; the RFC-0008
+implementation close review is the next governance step. The prior RFC-0007
+queue item was **implemented, drained, and closed** (2026-07-15) by the Board's
+implementation closure review
+(`docs/reviews/rfc-0007-implementation-close-review.md`, Option A).
 
 ## Current Objective
 
@@ -67,11 +76,14 @@ specification-maintenance (erratum) mechanism is adopted as a
 governance-process decision (`docs/adr/0010-erratum-mechanism.md`,
 `docs/ERRATA.md`); the Level 1 self-hosting RFC is commissioned, drafted, and
 **accepted 2026-07-15 under Option B** (`RFC/0008-self-hosting-example.md`,
-`docs/reviews/rfc-0008-board-review.md`), placing one `Not Started`
-descriptive/evidentiary example item on the queue; Level 2 (durable
-exported-log records) is deferred under the persistence gate; and Level 3
-(operative governance) is deferred to Phase 6. Phase 4 remains unopened; no
-Phase 4 work is authorized without its own RFC and ratification.
+`docs/reviews/rfc-0008-board-review.md`), placing one descriptive/evidentiary
+example item on the queue that **landed and drained 2026-07-15**
+(`SPEC/examples/genome-project.yaml` plus additive E1–E9 evidence, the seven
+protected boundaries held as empty diffs) and is now ready for its
+implementation close review; Level 2 (durable exported-log records) is deferred
+under the persistence gate; and Level 3 (operative governance) is deferred to
+Phase 6. Phase 4 remains unopened; no Phase 4 work is authorized without its
+own RFC and ratification.
 
 ## Active Architectural Decision
 
@@ -128,17 +140,18 @@ Describe a company once. Compile it into an autonomous organization.
 
 ## Next Expected Deliverable
 
-The **RFC-0008 implementation** — the single descriptive/evidentiary
-self-hosting example plus its additive CLI-boundary evidence, now the one
-`Not Started` engineering item on `IMPLEMENTATION_QUEUE.md` (accepted
-2026-07-15 under Option B, `RFC/0008-self-hosting-example.md`,
-`docs/reviews/rfc-0008-board-review.md`) — is the next expected deliverable. It
-ships within the RFC's fixed scope: structure-only example, agent-scoped
-`queue-discipline`, top-of-file non-normative marking, the seven protected
-boundaries held as empty diffs, uncached evidence, no language/schema/compiler/
-runtime/CLI/test-contract change beyond the additive cases. The Phase 4 opening
-RFC follows per the adopted Option A sequencing (`docs/PRODUCT_STRATEGY.md`) and
-remains uncommissioned.
+The **RFC-0008 implementation close review** — the Board's ratification that the
+shipped `SPEC/examples/genome-project.yaml` and its E1–E9 evidence meet the
+accepted Definition of Done, mirroring the RFC-0007 closure precedent
+(`docs/reviews/rfc-0007-implementation-close-review.md`) — is the next expected
+deliverable. The implementation itself is **complete and drained** (2026-07-15,
+`RFC/0008-self-hosting-example.md`, `docs/reviews/rfc-0008-board-review.md`):
+the structure-only example ships with agent-scoped `queue-discipline`, a
+top-of-file non-normative marking, the seven protected boundaries held as empty
+diffs, uncached E1–E9 evidence, and no language/schema/compiler/runtime/CLI/
+test-contract change beyond the additive cases. The Phase 4 opening RFC follows
+per the adopted Option A sequencing (`docs/PRODUCT_STRATEGY.md`) and remains
+uncommissioned.
 
 ## Completed RFCs
 
