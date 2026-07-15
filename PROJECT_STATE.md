@@ -27,10 +27,10 @@ RFC-0007 implementation item landed, was drained, and RFC-0007 was
 **closed complete 2026-07-15** by the Board's implementation closure
 review (Option A, `docs/reviews/rfc-0007-implementation-close-review.md`).
 No engineering item is queued. The Level 1 self-hosting RFC was commissioned
-2026-07-15 (drafting authorized, not yet drafted —
-`docs/reviews/maintenance-self-hosting-disposition-packet.md`);
-commissioning adds no queue item until the RFC is approved. The Phase 4
-opening RFC remains uncommissioned.
+2026-07-15 (`docs/reviews/maintenance-self-hosting-disposition-packet.md`) and
+is now **drafted as `RFC/0008-self-hosting-example.md` (Draft — under
+Architecture Board review, 2026-07-15)**; it adds no queue item until it is
+accepted. The Phase 4 opening RFC remains uncommissioned.
 
 ## Current Milestone
 
@@ -80,9 +80,10 @@ specification-maintenance proposal (`docs/reviews/phase-3-close-packet.md`,
 §4) is adopted as the erratum mechanism
 (`docs/adr/0010-erratum-mechanism.md`); the self-hosting proposal's Level
 1–3 adoption recommendations (`docs/proposals/self-hosting.md`) are disposed
-severably — Level 1 commissioned as an RFC (not yet drafted), Level 2
-deferred under the persistence gate, Level 3 deferred to Phase 6. No
-architectural decision is open.
+severably — Level 1 commissioned as an RFC (now drafted as
+`RFC/0008-self-hosting-example.md`, under Board review), Level 2 deferred
+under the persistence gate, Level 3 deferred to Phase 6. No architectural
+decision is open.
 
 ## Current Blockers
 
@@ -122,12 +123,12 @@ Describe a company once. Compile it into an autonomous organization.
 ## Next Expected Deliverable
 
 The Level 1 self-hosting RFC — commissioned 2026-07-15
-(`docs/reviews/maintenance-self-hosting-disposition-packet.md`), drafting
-authorized, not yet drafted — is the next expected deliverable. It follows
-the normal lifecycle (draft → Board review → ratification → queue); no
-engineering item exists until it is approved. The Phase 4 opening RFC
-follows per the adopted Option A sequencing (`docs/PRODUCT_STRATEGY.md`) and
-remains uncommissioned.
+(`docs/reviews/maintenance-self-hosting-disposition-packet.md`) and now
+drafted as `RFC/0008-self-hosting-example.md` (Draft — under Architecture
+Board review) — is the next expected deliverable. It follows the normal
+lifecycle (draft → Board review → ratification → queue); no engineering item
+exists until it is accepted. The Phase 4 opening RFC follows per the adopted
+Option A sequencing (`docs/PRODUCT_STRATEGY.md`) and remains uncommissioned.
 
 ## Completed RFCs
 
