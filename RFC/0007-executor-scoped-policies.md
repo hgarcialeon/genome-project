@@ -2,7 +2,15 @@
 
 ## Status
 
-Accepted
+Accepted — implemented and **closed** 2026-07-15.
+
+Closed complete as implemented at commit
+`c97de3dd8d3a7e3c646586ba907c6af95897290a` under the Architecture Board's
+implementation closure review (Option A, Product Owner ratification
+2026-07-15): see `docs/reviews/rfc-0007-implementation-close-review.md`.
+Every Definition-of-Done item was re-executed uncached at that commit and
+every protected boundary verified as an empty diff. The implementation
+queue item is Done and drained (`IMPLEMENTATION_QUEUE.md`).
 
 Commissioned 2026-07-14 by the Product Owner under Option A of
 `docs/PRODUCT_STRATEGY.md` (architecture item A1), on the Gap 1

@@ -195,5 +195,6 @@ boundaries held with empty diffs: `SPEC/schema/genome.schema.json`,
 one additive case; the existing 17 tests are byte-unchanged), and the
 CLI surface (`packages/genome-cli/src/index.ts`) all unchanged; no new
 event types. Autonomy semantics were not widened and "executor" was not
-generalized beyond workflow ownership. The RFC's close review remains the
-Board's to hold on this evidence.
+generalized beyond workflow ownership. The Board's implementation closure
+review (`docs/reviews/rfc-0007-implementation-close-review.md`) ratified
+Option A on 2026-07-15, closing RFC-0007 complete on this evidence.
