@@ -26,11 +26,15 @@ No formal sprint cadence. Work proceeds RFC-by-RFC through
 RFC-0007 implementation item landed, was drained, and RFC-0007 was
 **closed complete 2026-07-15** by the Board's implementation closure
 review (Option A, `docs/reviews/rfc-0007-implementation-close-review.md`).
-No engineering item is queued. The Level 1 self-hosting RFC was commissioned
-2026-07-15 (drafting authorized, not yet drafted —
-`docs/reviews/maintenance-self-hosting-disposition-packet.md`);
-commissioning adds no queue item until the RFC is approved. The Phase 4
-opening RFC remains uncommissioned.
+The Level 1 self-hosting RFC — commissioned 2026-07-15
+(`docs/reviews/maintenance-self-hosting-disposition-packet.md`), drafted as
+`RFC/0008-self-hosting-example.md` — was **accepted 2026-07-15 under Option B**
+(`docs/reviews/rfc-0008-board-review.md`, Product Owner ratification; the five
+Board open-question dispositions folded into the RFC). Acceptance added **one
+engineering item, `Not Started`**, to `IMPLEMENTATION_QUEUE.md`: the
+descriptive/evidentiary self-hosting example plus its additive CLI-boundary
+evidence. No implementation iteration is active and the item has not been
+started. The Phase 4 opening RFC remains uncommissioned.
 
 ## Current Milestone
 
@@ -61,11 +65,13 @@ dispositions that followed were ratified by the Product Owner 2026-07-15
 (`docs/reviews/maintenance-self-hosting-disposition-packet.md`): the
 specification-maintenance (erratum) mechanism is adopted as a
 governance-process decision (`docs/adr/0010-erratum-mechanism.md`,
-`docs/ERRATA.md`); the Level 1 self-hosting RFC is commissioned (not yet
-drafted); Level 2 (durable exported-log records) is deferred under the
-persistence gate; and Level 3 (operative governance) is deferred to Phase 6.
-Phase 4 remains unopened; no Phase 4 work is authorized without its own RFC
-and ratification.
+`docs/ERRATA.md`); the Level 1 self-hosting RFC is commissioned, drafted, and
+**accepted 2026-07-15 under Option B** (`RFC/0008-self-hosting-example.md`,
+`docs/reviews/rfc-0008-board-review.md`), placing one `Not Started`
+descriptive/evidentiary example item on the queue; Level 2 (durable
+exported-log records) is deferred under the persistence gate; and Level 3
+(operative governance) is deferred to Phase 6. Phase 4 remains unopened; no
+Phase 4 work is authorized without its own RFC and ratification.
 
 ## Active Architectural Decision
 
@@ -80,9 +86,10 @@ specification-maintenance proposal (`docs/reviews/phase-3-close-packet.md`,
 §4) is adopted as the erratum mechanism
 (`docs/adr/0010-erratum-mechanism.md`); the self-hosting proposal's Level
 1–3 adoption recommendations (`docs/proposals/self-hosting.md`) are disposed
-severably — Level 1 commissioned as an RFC (not yet drafted), Level 2
-deferred under the persistence gate, Level 3 deferred to Phase 6. No
-architectural decision is open.
+severably — Level 1 commissioned, drafted, and accepted as
+`RFC/0008-self-hosting-example.md` (Option B, 2026-07-15), Level 2 deferred
+under the persistence gate, Level 3 deferred to Phase 6. No architectural
+decision is open.
 
 ## Current Blockers
 
@@ -121,12 +128,16 @@ Describe a company once. Compile it into an autonomous organization.
 
 ## Next Expected Deliverable
 
-The Level 1 self-hosting RFC — commissioned 2026-07-15
-(`docs/reviews/maintenance-self-hosting-disposition-packet.md`), drafting
-authorized, not yet drafted — is the next expected deliverable. It follows
-the normal lifecycle (draft → Board review → ratification → queue); no
-engineering item exists until it is approved. The Phase 4 opening RFC
-follows per the adopted Option A sequencing (`docs/PRODUCT_STRATEGY.md`) and
+The **RFC-0008 implementation** — the single descriptive/evidentiary
+self-hosting example plus its additive CLI-boundary evidence, now the one
+`Not Started` engineering item on `IMPLEMENTATION_QUEUE.md` (accepted
+2026-07-15 under Option B, `RFC/0008-self-hosting-example.md`,
+`docs/reviews/rfc-0008-board-review.md`) — is the next expected deliverable. It
+ships within the RFC's fixed scope: structure-only example, agent-scoped
+`queue-discipline`, top-of-file non-normative marking, the seven protected
+boundaries held as empty diffs, uncached evidence, no language/schema/compiler/
+runtime/CLI/test-contract change beyond the additive cases. The Phase 4 opening
+RFC follows per the adopted Option A sequencing (`docs/PRODUCT_STRATEGY.md`) and
 remains uncommissioned.
 
 ## Completed RFCs
