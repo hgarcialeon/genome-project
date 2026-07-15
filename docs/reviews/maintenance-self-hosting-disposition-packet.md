@@ -391,7 +391,7 @@ on Decision 1 = 1A):**
 
 ---
 
-## Explicitly not done by this packet
+## Explicitly not done by this packet *(as prepared)*
 
 - No ADR written; `docs/ERRATA.md` not created; no erratum filed.
 - No RFC drafted; no `IMPLEMENTATION_QUEUE.md` entry added.
@@ -399,3 +399,46 @@ on Decision 1 = 1A):**
 - No language, schema, compiler, runtime, or CLI change of any kind.
 - No Phase 4 work and no Phase 4 opening RFC.
 - No option applied. Every decision above awaits the Product Owner.
+
+---
+
+## Product Owner Ratification and Application (2026-07-15)
+
+The packet body above is preserved verbatim as prepared. On 2026-07-15 the
+Product Owner ratified the **recommended** disposition for all five
+severable decisions and directed that each be applied independently within
+its recorded scope. The ratifications and their application:
+
+- **Decision 1 — Maintenance mechanism: ratified (1A Adopt).** The minimal
+  specification-maintenance mechanism is adopted as a governance-process
+  decision (ADR-0007 precedent), recorded in
+  `docs/adr/0010-erratum-mechanism.md`, establishing `docs/ERRATA.md` with
+  the pinned litmus *if behavior or tests must change, it is not an
+  erratum.* No verifier subsystem; RFC/ADR lifecycle semantics unchanged
+  beyond recognizing and recording errata. **Applied.**
+- **Decision 2a — Level 1: ratified (2a-i Commission).** The Level 1
+  self-hosting RFC (next free number) is commissioned as a
+  commissioning-and-sequencing decision only, recorded in
+  `PROJECT_STATE.md`. The RFC is **not** drafted or implemented in this
+  step. **Applied (commissioning recorded).**
+- **Decision 2b — Level 2: ratified (2b-ii Defer).** The durable
+  exported-log record decision is deferred under the existing persistence
+  gate. No shipped log reader is authorized; any production path that begins
+  reading exported logs requires its own RFC. **Applied (deferral
+  recorded).**
+- **Decision 2c — Level 3: ratified (2c-i Confirm deferral).** Operative
+  repository governance by the Genome runtime is explicitly deferred to
+  Phase 6 and requires its own Phase 6 RFC; it is not authorized now.
+  **Applied (deferral recorded).**
+- **Decision 3 — Stale headers: ratified (3-i Correct to Accepted).** After
+  Decision 1 was applied, erratum entries `ERR-0001` and `ERR-0002`
+  (`docs/ERRATA.md`) corrected the `Status: Draft` headers of
+  `RFC/0000-genome.md` and `RFC/0001-language.md` to `Accepted`, anchored to
+  the ratified Phase 0 closure record
+  (`docs/reviews/phase-0-3-board-review.md`). No new "Foundational" status
+  was introduced; normative content of both RFCs is unchanged. **Applied.**
+
+State reconciliation (`PROJECT_STATE.md`, `IMPLEMENTATION_QUEUE.md`) and
+`pnpm check-state` accompany this application in the same change. No
+language, compiler, runtime, schema, CLI, or test change was made; Phase 4
+was not opened and the Level 1 RFC was not drafted.

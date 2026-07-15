@@ -198,3 +198,17 @@ event types. Autonomy semantics were not widened and "executor" was not
 generalized beyond workflow ownership. The Board's implementation closure
 review (`docs/reviews/rfc-0007-implementation-close-review.md`) ratified
 Option A on 2026-07-15, closing RFC-0007 complete on this evidence.
+
+The 2026-07-15 Product Owner dispositions
+(`docs/reviews/maintenance-self-hosting-disposition-packet.md`) **add no
+engineering item to this queue**. The specification-maintenance (erratum)
+mechanism was adopted as a governance-process decision
+(`docs/adr/0010-erratum-mechanism.md`, `docs/ERRATA.md`) — a
+documentation/process change, not queued work. The Level 1 self-hosting RFC
+was commissioned but not approved; per this queue's entry rules nothing
+enters until it is ratified. Level 2 (durable exported-log records) is
+deferred under the persistence gate, and Level 3 (operative governance) is
+deferred to Phase 6 — neither is queued work. No production language,
+compiler, runtime, schema, CLI, or test change accompanies these
+dispositions; the RFC-0000/RFC-0001 status corrections were zero-behavioral-change
+errata (`ERR-0001`, `ERR-0002`).

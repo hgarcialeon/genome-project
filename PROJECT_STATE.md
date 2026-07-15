@@ -26,8 +26,11 @@ No formal sprint cadence. Work proceeds RFC-by-RFC through
 RFC-0007 implementation item landed, was drained, and RFC-0007 was
 **closed complete 2026-07-15** by the Board's implementation closure
 review (Option A, `docs/reviews/rfc-0007-implementation-close-review.md`).
-No engineering item is queued. The Phase 4 opening RFC remains
-uncommissioned.
+No engineering item is queued. The Level 1 self-hosting RFC was commissioned
+2026-07-15 (drafting authorized, not yet drafted —
+`docs/reviews/maintenance-self-hosting-disposition-packet.md`);
+commissioning adds no queue item until the RFC is approved. The Phase 4
+opening RFC remains uncommissioned.
 
 ## Current Milestone
 
@@ -53,10 +56,16 @@ implementation landed and drained to the amended Definition of Done — the
 nine evidence cases passing uncached, the protected boundaries held — and
 RFC-0007 was **closed complete 2026-07-15** by the Board's implementation
 closure review (Option A ratified,
-`docs/reviews/rfc-0007-implementation-close-review.md`). The next acts
-under Option A are the severable dispositions below, at the Product
-Owner's direction. Phase 4 remains unopened; no Phase 4 work is
-authorized without its own RFC and ratification.
+`docs/reviews/rfc-0007-implementation-close-review.md`). The severable
+dispositions that followed were ratified by the Product Owner 2026-07-15
+(`docs/reviews/maintenance-self-hosting-disposition-packet.md`): the
+specification-maintenance (erratum) mechanism is adopted as a
+governance-process decision (`docs/adr/0010-erratum-mechanism.md`,
+`docs/ERRATA.md`); the Level 1 self-hosting RFC is commissioned (not yet
+drafted); Level 2 (durable exported-log records) is deferred under the
+persistence gate; and Level 3 (operative governance) is deferred to Phase 6.
+Phase 4 remains unopened; no Phase 4 work is authorized without its own RFC
+and ratification.
 
 ## Active Architectural Decision
 
@@ -64,13 +73,16 @@ None open. RFC-0007 was decided 2026-07-14 (Option A ratified,
 `docs/reviews/rfc-0007-board-review.md`; ADR-0009). The Board's
 Language Complexity Budget recommendation is recorded as non-binding
 review guidance only (Product Owner disposition, 2026-07-14) — not a
-standing governance requirement. Still
-awaiting their own dispositions (sequenced next under the adopted
-Option A of the product strategy): the specification-maintenance proposal
-(`docs/reviews/phase-3-close-packet.md`, §4) and the self-hosting
-proposal's Level 1–3 adoption recommendations
-(`docs/proposals/self-hosting.md`), which the ratified evidence review
-left severable.
+standing governance requirement. The dispositions previously awaited are
+now made (Product Owner, 2026-07-15,
+`docs/reviews/maintenance-self-hosting-disposition-packet.md`): the
+specification-maintenance proposal (`docs/reviews/phase-3-close-packet.md`,
+§4) is adopted as the erratum mechanism
+(`docs/adr/0010-erratum-mechanism.md`); the self-hosting proposal's Level
+1–3 adoption recommendations (`docs/proposals/self-hosting.md`) are disposed
+severably — Level 1 commissioned as an RFC (not yet drafted), Level 2
+deferred under the persistence gate, Level 3 deferred to Phase 6. No
+architectural decision is open.
 
 ## Current Blockers
 
@@ -87,6 +99,8 @@ None.
 - Mechanical state check: ✅ established (`scripts/check-state.mjs`, in CI)
 - Product Strategy: ✅ adopted — Option A, 2026-07-14
   (`docs/PRODUCT_STRATEGY.md`)
+- Specification-maintenance mechanism: ✅ established — erratum registry
+  adopted 2026-07-15 (`docs/adr/0010-erratum-mechanism.md`, `docs/ERRATA.md`)
 
 ## Current North Star
 
@@ -107,13 +121,13 @@ Describe a company once. Compile it into an autonomous organization.
 
 ## Next Expected Deliverable
 
-None queued. RFC-0007 is closed complete (2026-07-15). Per the adopted
-Option A sequencing (`docs/PRODUCT_STRATEGY.md`), the next candidates are
-the severable dispositions — the specification-maintenance disposition
-(Phase 3 close packet §4) and the self-hosting Level 1 disposition — with
-the Phase 4 opening RFC thereafter, each at the Product Owner's
-direction. None is authorized as work until the Product Owner commissions
-it.
+The Level 1 self-hosting RFC — commissioned 2026-07-15
+(`docs/reviews/maintenance-self-hosting-disposition-packet.md`), drafting
+authorized, not yet drafted — is the next expected deliverable. It follows
+the normal lifecycle (draft → Board review → ratification → queue); no
+engineering item exists until it is approved. The Phase 4 opening RFC
+follows per the adopted Option A sequencing (`docs/PRODUCT_STRATEGY.md`) and
+remains uncommissioned.
 
 ## Completed RFCs
 
