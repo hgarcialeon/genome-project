@@ -86,7 +86,11 @@ export const edgesOf = (graph: OrganizationGraph): GraphEdge[] => Object.values(
  * - `approves`: agent principal → policy (human principals are recorded in the
  *   policy node's attributes; humans are not graph nodes in v0.1).
  * - `requires`: governed workflow/agent → policy, from the policy's declared
- *   scope (`appliesTo`, RFC-0003/ADR-0004).
+ *   scope (`appliesTo`, RFC-0003/ADR-0004). An agent-scoped entry binds the
+ *   agent's *participation* (RFC-0007/ADR-0009): the agent → policy edge for
+ *   the runs it initiates (retained), plus one workflow → policy edge per
+ *   workflow that agent executes (in v0.1, owns) so operator-initiated runs
+ *   of its work are gated too — derived at compile time, deduplicated by id.
  * - `uses`: company → integration.
  * - `measures`: metric → company.
  * The remaining relationship types (`triggers`, `depends_on`) are part of the
@@ -151,6 +155,9 @@ export function buildGraph(ast: GenomeAst, genomeRevision: string): Organization
   }
 
   const workflowNodeIds = new Map<string, string>();
+  // Workflow node ids per owner agent reference, in document order — the
+  // pinned order the RFC-0007 participation binding derives edges in.
+  const ownedWorkflowIdsByAgent = new Map<string, string[]>();
 
   // Validated owners (semantic rules 3 and 5) must survive into the graph so
   // the runtime model can see them (RFC-0003, "derived only from the graph").
@@ -170,7 +177,21 @@ export function buildGraph(ast: GenomeAst, genomeRevision: string): Organization
     addEdge(workflowId, "belongs_to", companyId);
     workflowNodeIds.set(workflow.id, workflowId);
     addOwnerEdge(workflow.owner, workflowId);
+    if (workflow.owner !== undefined) {
+      const owned = ownedWorkflowIdsByAgent.get(workflow.owner) ?? [];
+      owned.push(workflowId);
+      ownedWorkflowIdsByAgent.set(workflow.owner, owned);
+    }
   }
+
+  // A governed node requires a policy at most once, even when several scope
+  // entries resolve to it (e.g. a policy applied to both an agent and one of
+  // its owned workflows explicitly — RFC-0007 dedup, no double-gating).
+  const addRequiresEdge = (from: string, policyId: string): void => {
+    if (!adjacency[from].some((edge) => edge.type === "requires" && edge.to === policyId)) {
+      addEdge(from, "requires", policyId);
+    }
+  };
 
   for (const policy of ast.policies) {
     const humanPrincipals = policy.requiresApprovalFrom.filter((p) => p.startsWith("human:"));
@@ -189,9 +210,21 @@ export function buildGraph(ast: GenomeAst, genomeRevision: string): Organization
     // Policy scope: dotted entries are agent references, single segments are
     // workflow ids (SPEC/language.md, Policy Scope).
     for (const entry of policy.appliesTo) {
-      const governedId = entry.includes(".") ? agentNodeIds.get(entry) : workflowNodeIds.get(entry);
-      if (governedId !== undefined) {
-        addEdge(governedId, "requires", policyId);
+      if (entry.includes(".")) {
+        const agentId = agentNodeIds.get(entry);
+        if (agentId === undefined) continue;
+        // Participation binding (RFC-0007/ADR-0009). (a) the agent's own
+        // initiations — the existing edge, retained; (b) every workflow the
+        // agent executes (v0.1: owns), in document order, deduplicated.
+        addRequiresEdge(agentId, policyId);
+        for (const ownedWorkflowId of ownedWorkflowIdsByAgent.get(entry) ?? []) {
+          addRequiresEdge(ownedWorkflowId, policyId);
+        }
+      } else {
+        const workflowId = workflowNodeIds.get(entry);
+        if (workflowId !== undefined) {
+          addRequiresEdge(workflowId, policyId);
+        }
       }
     }
   }

@@ -367,3 +367,104 @@ describe("genome run", () => {
     expect(strip(invoke().stdout)).toEqual(strip(invoke().stdout));
   });
 });
+
+/**
+ * RFC-0007 / ADR-0009: participation binding at the CLI boundary. The Gap 1
+ * fixture is the reconstructed self-hosting mis-model — an agent-scoped policy
+ * naming a supervised agent that owns the workflow — which ran ungated (exit 0)
+ * before this change and now parks deny-safe (exit 3). Cases 3 (initiator half,
+ * runtime suite) and 7 (inert diagnostic, compiler suite) live where the
+ * behavior is reachable; the remaining acceptance cases are here.
+ */
+describe("participation binding (RFC-0007 / ADR-0009)", () => {
+  const CLOCK = "2026-07-14T00:00:00.000Z";
+  const exportDir = mkdtempSync(join(tmpdir(), "genome-participation-"));
+
+  const requestedCount = (stdout: string): number =>
+    stdout.split("\n").filter((line) => line.includes("approval.requested")).length;
+
+  it("case 1 — operator-initiated Gap 1 fixture, no grant, parks deny-safe at exit 3", () => {
+    const result = genome("run", fixture("participation-gap1.yaml"), "--workflow", "implement-queue-item");
+    expect(result.status).toBe(3);
+    expect(result.stdout).toContain("approval.requested");
+    expect(result.stdout).toContain("pending approvals: human:product-owner");
+    // Deny-safe: no step executed.
+    expect(result.stdout).not.toContain("workflow.completed");
+  });
+
+  it("case 2 — the same fixture completes with the matching grant, attributed in the log", () => {
+    const result = genome(
+      "run",
+      fixture("participation-gap1.yaml"),
+      "--workflow",
+      "implement-queue-item",
+      "--grant",
+      "human:product-owner",
+    );
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain("approval.granted human:product-owner");
+    expect(result.stdout).toContain("Run run-1: completed");
+  });
+
+  it("case 4 — a policy on the agent and its owned workflow gates exactly once (no double-gating)", () => {
+    const parked = genome("run", fixture("participation-double.yaml"), "--workflow", "implement-queue-item");
+    expect(parked.status).toBe(3);
+    expect(requestedCount(parked.stdout)).toBe(1);
+    expect(parked.stdout).toContain("pending approvals: human:product-owner");
+
+    const granted = genome(
+      "run",
+      fixture("participation-double.yaml"),
+      "--workflow",
+      "implement-queue-item",
+      "--grant",
+      "human:product-owner",
+    );
+    expect(granted.status).toBe(0);
+    expect(granted.stdout).toContain("Run run-1: completed");
+  });
+
+  it("case 5 — the corrected workaround (workflow-scoped) parks identically", () => {
+    const result = genome("run", fixture("participation-workaround.yaml"), "--workflow", "implement-queue-item");
+    expect(result.status).toBe(3);
+    expect(requestedCount(result.stdout)).toBe(1);
+    expect(result.stdout).toContain("pending approvals: human:product-owner");
+  });
+
+  it("case 6 — genome graph shows derived workflow→policy edges in deterministic, pinned order", () => {
+    const result = genome("graph", fixture("participation-order.yaml"));
+    expect(result.status).toBe(0);
+    const graph = JSON.parse(result.stdout) as { edges: Array<{ from: string; to: string; type: string }> };
+    const derived = graph.edges
+      .filter((edge) => edge.type === "requires" && edge.to === "policy:oversight" && edge.from.startsWith("workflow:"))
+      .map((edge) => edge.from);
+    expect(derived).toEqual(["workflow:alpha", "workflow:beta", "workflow:gamma"]);
+    // The retained initiator edge is present alongside the derived ones.
+    expect(graph.edges).toContainEqual({ from: "agent:engineering.lead", to: "policy:oversight", type: "requires" });
+  });
+
+  it("case 9 — a gated run is byte-identical across invocations under --clock", () => {
+    const invoke = (exportPath: string) =>
+      genome(
+        "run",
+        fixture("participation-gap1.yaml"),
+        "--workflow",
+        "implement-queue-item",
+        "--grant",
+        "human:product-owner",
+        "--json",
+        "--clock",
+        CLOCK,
+        "--export-log",
+        exportPath,
+      );
+    const first = invoke(join(exportDir, "participation-1.ndjson"));
+    const second = invoke(join(exportDir, "participation-2.ndjson"));
+    expect(first.status).toBe(0);
+    expect(second.status).toBe(0);
+    expect(second.stdout).toBe(first.stdout);
+    expect(readFileSync(join(exportDir, "participation-2.ndjson"), "utf8")).toBe(
+      readFileSync(join(exportDir, "participation-1.ndjson"), "utf8"),
+    );
+  });
+});

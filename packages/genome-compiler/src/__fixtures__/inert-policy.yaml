@@ -1,0 +1,20 @@
+# RFC-0007 evidence case 7: a policy applying only to a manual, workflow-less
+# agent can never gate a run under participation semantics — the extended
+# unbound-policy warning fires (warning severity, still compiles).
+genomeVersion: 0.1
+
+company:
+  name: Inert Policy Fixture
+
+departments:
+  operations:
+    agents:
+      idle-bot:
+        role: Idle Coordinator
+
+policies:
+  never-binds:
+    appliesTo:
+      - operations.idle-bot
+    requiresApprovalFrom:
+      - human:someone

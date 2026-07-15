@@ -1,0 +1,35 @@
+# RFC-0007 evidence case 6 (amendment 3): an agent owning several workflows —
+# `genome graph` must show the derived workflow -> policy requires edges in a
+# deterministic, pinned order (document order), not merely their presence.
+genomeVersion: 0.1
+
+company:
+  name: Participation Order Fixture
+
+departments:
+  engineering:
+    agents:
+      lead:
+        role: Lead
+        autonomy: supervised
+
+workflows:
+  alpha:
+    owner: engineering.lead
+    steps:
+      - one
+  beta:
+    owner: engineering.lead
+    steps:
+      - one
+  gamma:
+    owner: engineering.lead
+    steps:
+      - one
+
+policies:
+  oversight:
+    appliesTo:
+      - engineering.lead
+    requiresApprovalFrom:
+      - human:director

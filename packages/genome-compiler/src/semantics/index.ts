@@ -12,8 +12,9 @@
  *   5. No dangling references in `workflows`, `objectives`, or `metrics`.
  * Plus the RFC-0003 / ADR-0004 policy-scope rule:
  *   6. `policy.*.appliesTo` entries resolve to an existing workflow (single
- *      segment) or agent (dotted reference); a policy without `appliesTo` is
- *      unbound and produces a warning, not an error.
+ *      segment) or agent (dotted reference); a policy without `appliesTo`, or
+ *      one binding only `manual` agents that own no workflow (RFC-0007), is
+ *      inert and produces a warning, not an error.
  */
 
 import type { GenomeAst } from "../ast/index.js";
@@ -142,6 +143,42 @@ export function validateSemantics(ast: GenomeAst): Diagnostic[] {
       } else if (!workflowIds.has(entry)) {
         error(6, path, `'${entry}' does not resolve to an existing workflow`);
       }
+    }
+  }
+
+  // Rule 6 (extended, RFC-0007/ADR-0009) — the unbound-policy warning also
+  // covers the one provably-inert bound shape: a policy whose `appliesTo`
+  // resolves *only* to `manual` agents that own no workflow. Such an agent
+  // neither initiates a run (manual) nor, owning nothing, executes one, so the
+  // policy can never gate anything under participation semantics. Warning
+  // severity, pinned forever: declaring ahead of wiring is legitimate.
+  const ownersOfWorkflows = new Set(ast.workflows.map((w) => w.owner).filter((o): o is string => o !== undefined));
+  const agentAutonomy = new Map<string, string | undefined>();
+  for (const department of ast.departments) {
+    for (const agent of department.agents) {
+      agentAutonomy.set(`${department.id}.${agent.id}`, agent.autonomy);
+    }
+    for (const team of department.teams) {
+      for (const agent of team.agents) {
+        agentAutonomy.set(`${department.id}.${team.id}.${agent.id}`, agent.autonomy);
+      }
+    }
+  }
+  for (const policy of ast.policies) {
+    if (policy.appliesTo.length === 0) continue; // the empty case warned above
+    const inert = policy.appliesTo.every((entry) => {
+      if (!entry.includes(".") || !agentIndex.has(entry)) return false; // a workflow, or a dangling ref (already an error)
+      if (ownersOfWorkflows.has(entry)) return false; // owns work → executor binding can gate
+      return (agentAutonomy.get(entry) ?? "manual") === "manual"; // manual (default) → cannot initiate
+    });
+    if (inert) {
+      diagnostics.push({
+        stage: "semantic",
+        severity: "warning",
+        rule: 6,
+        path: `policies.${policy.id}`,
+        message: `unbound policy: '${policy.id}' applies only to manual agents that own no workflow and can never gate a run`,
+      });
     }
   }
 

@@ -170,6 +170,64 @@ describe("semantic validation (RFC-0002 v0.1 rules)", () => {
   });
 });
 
+describe("participation binding (RFC-0007 / ADR-0009)", () => {
+  const compileOk = (relativePath: string): CompileSuccess => {
+    const result = compileFixture(relativePath);
+    expect(result.ok).toBe(true);
+    return result as CompileSuccess;
+  };
+
+  it("derives an executor edge from an owned workflow to an agent-scoped policy, keeping the initiator edge", () => {
+    const { graph } = compileOk("./__fixtures__/participation-binding.yaml");
+    const requires = edgesOf(graph).filter((edge) => edge.type === "requires" && edge.to === "policy:queue-discipline");
+
+    // (a) initiator binding — retained; (b) executor binding — derived.
+    expect(requires).toContainEqual({
+      from: "agent:engineering.engineering-agent",
+      to: "policy:queue-discipline",
+      type: "requires",
+    });
+    expect(requires).toContainEqual({
+      from: "workflow:implement-queue-item",
+      to: "policy:queue-discipline",
+      type: "requires",
+    });
+  });
+
+  it("derives an edge for every owned workflow in deterministic document order (amendment 3)", () => {
+    const { graph } = compileOk("./__fixtures__/participation-order.yaml");
+    const derived = edgesOf(graph)
+      .filter((edge) => edge.type === "requires" && edge.to === "policy:oversight" && edge.from.startsWith("workflow:"))
+      .map((edge) => edge.from);
+
+    expect(derived).toEqual(["workflow:alpha", "workflow:beta", "workflow:gamma"]);
+  });
+
+  it("deduplicates: a policy on an agent and its owned workflow yields one edge (no double-gating)", () => {
+    const { graph } = compileOk("./__fixtures__/participation-double.yaml");
+    const workflowEdges = edgesOf(graph).filter(
+      (edge) =>
+        edge.type === "requires" && edge.from === "workflow:implement-queue-item" && edge.to === "policy:queue-discipline",
+    );
+
+    expect(workflowEdges).toHaveLength(1);
+  });
+
+  it("warns, not errors, for a policy binding only manual workflow-less agents (inert)", () => {
+    const result = compileFixture("./__fixtures__/inert-policy.yaml");
+
+    expect(result.ok).toBe(true);
+    expect((result as CompileSuccess).diagnostics).toEqual([
+      expect.objectContaining({
+        rule: 6,
+        severity: "warning",
+        path: "policies.never-binds",
+        message: expect.stringContaining("can never gate a run"),
+      }),
+    ]);
+  });
+});
+
 describe("organization graph", () => {
   it("links the hierarchy with belongs_to edges", () => {
     const { graph } = compileExample();

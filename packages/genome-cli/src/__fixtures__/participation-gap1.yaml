@@ -1,0 +1,29 @@
+# RFC-0007 evidence case 1: the reconstructed Gap 1 fixture. An agent-scoped
+# policy names a supervised agent that OWNS the workflow. Pre-RFC this ran
+# ungated under operator initiation (exit 0, zero approval events); the
+# participation binding now parks it deny-safe at exit 3.
+genomeVersion: 0.1
+
+company:
+  name: Self-Hosting Gap Fixture
+
+departments:
+  engineering:
+    agents:
+      engineering-agent:
+        role: Engineering Agent
+        autonomy: supervised
+
+workflows:
+  implement-queue-item:
+    owner: engineering.engineering-agent
+    steps:
+      - implement
+      - validate
+
+policies:
+  queue-discipline:
+    appliesTo:
+      - engineering.engineering-agent
+    requiresApprovalFrom:
+      - human:product-owner
