@@ -33,6 +33,7 @@ Claude Code or any engineering agent should consume this queue instead of acting
 | High | RFC-0006 implementation: `@genome/adapter-reference` package + CLI `genome run` + eight CLI-boundary tests | RFC-0006 / ADR-0008 | Engineering | Done |
 | High | Phase 3 close review (erratum disposition + phase closure) | RFC-0006 evidence | Architecture Board | Done |
 | High | Self-hosting evidence classification (Board review + ratification) | `docs/proposals/self-hosting.md` | Architecture Board | Done |
+| High | RFC-0007 implementation: participation-binding derivation in `genome-compiler` + inert-policy diagnostic + `SPEC/language.md` Policy Scope wording + the nine amended evidence cases | RFC-0007 / ADR-0009 | Engineering | Not Started |
 | Low | Office View prototype | Organization Graph | Office Team | Not Started |
 
 ## Current Engineering Rule
@@ -149,3 +150,27 @@ is the attributed `approval.granted` event. The Phase 3 close review
 `docs/reviews/phase-3-close-board-review.md`) approved that erratum as a
 normative correction with zero behavioral change, applied it to the RFC,
 and closed Phase 3 on the re-verified evidence.
+
+RFC-0007 — Executor-Scoped Policies was accepted 2026-07-14 under
+Option A with five amendments
+(`docs/reviews/rfc-0007-board-review.md`, Product Owner ratification
+recorded there; `docs/adr/0009-participation-scoped-policies.md`). It
+authorizes one implementation item with the amended RFC's Definition of
+Done as its scope: the participation-binding derivation in
+`packages/genome-compiler` (agent-scoped `appliesTo` entries yield
+workflow→policy `requires` edges for every workflow owned by the named
+agent, in a deterministic pinned order; the existing agent→policy edge
+is retained), the extended unbound-policy diagnostic (warning severity,
+pinned forever), the `SPEC/language.md` Policy Scope wording from the
+RFC's §3 (including the normative autonomy/policy boundary sentence),
+and the nine amended evidence cases — including the reconstructed Gap 1
+fixture now parking at exit 3, the Condition 5 regression case, and the
+additive runtime-suite case covering the previously untested
+initiating-agent binding path. Protected boundaries: no schema change
+(`SPEC/schema/genome.schema.json` diff empty), no runtime production
+source change (`git diff` under `packages/genome-runtime` empty except
+additive cases in `runtime.test.ts`; the existing 17 tests
+byte-unchanged), no CLI surface change (commands, options, exit codes,
+output contracts), no new event types. A discovered need for a runtime
+source change stops work and returns to the Board. Evidence must be
+uncached (`pnpm test -- --force`).
