@@ -424,3 +424,49 @@ input only):**
   untouched. No deliverable status changed; no state restated (Rule 8).
 - **No language, schema, compiler, runtime, or CLI change of any kind.**
 - **No option applied.** Every disposition above awaits the Product Owner.
+
+---
+
+## Product Owner Disposition (2026-07-15)
+
+The packet body above is preserved verbatim as prepared. On 2026-07-15 the
+Product Owner approved this packet and adopted **Candidate C — Edit-and-see** as
+the planned opening milestone for Phase 4, recorded as **product input only**.
+
+**Recorded disposition (verbatim):**
+
+> As Product Owner, I record that the planned opening milestone for Phase 4,
+> when the phase is opened by its own RFC, is edit-and-see: a Studio surface
+> with a code editor, inline schema validation, a live Organization Graph, and
+> the organization tree as a secondary projection, built as a projection over
+> the shipped validate/graph/inspect surfaces with an empty
+> compiler/runtime/schema/CLI protected diff. Runtime logs are deferred to a
+> second Phase 4 milestone, gated on the event-persistence disposition. This
+> records product intent only; it opens no phase, commissions no RFC, adds no
+> queue item, and modifies no roadmap or state document. The Phase 4 opening
+> RFC, commissioned separately per adopted Option A after the RFC-0008 example
+> lands, owns the Studio boundary decision and may refine this milestone within
+> its review.
+
+**What this disposition does and does not do.** Consistent with the statement
+above and the packet's standing constraints:
+
+- **Adopts** Candidate C as the *planned* opening milestone — **product input
+  only**. The recommendation and the packet body are unchanged by this adoption;
+  nothing here overrides `ROADMAP.md`, `PROJECT_STATE.md`, or any ratified
+  decision.
+- **Opens no phase.** Phase 4 remains unopened; opening it requires its own RFC,
+  Board review, and ratification (Governance Rule 2).
+- **Commissions and drafts no RFC.** The Phase 4 opening RFC is not commissioned
+  by this disposition; per adopted Option A it follows the RFC-0008 example.
+- **Adds no queue item and modifies no state document.** `PROJECT_STATE.md`,
+  `ROADMAP.md`, and `IMPLEMENTATION_QUEUE.md` are untouched; no current state is
+  restated here (Governance Rule 8).
+- **Implements no Studio** and changes **no** language, schema, compiler,
+  runtime, CLI, event taxonomy, or test.
+- **Defers runtime logs** to a second Phase 4 milestone, gated on the
+  event-persistence disposition, exactly as the recommendation states.
+
+The Phase 4 opening RFC, when commissioned separately, owns the Studio boundary
+decision (A3) and may refine this milestone within its own review.
+`pnpm check-state` accompanies this change and remains green.
