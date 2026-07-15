@@ -19,6 +19,7 @@ import { describe, expect, it } from "vitest";
 const CLI = fileURLToPath(new URL("./index.ts", import.meta.url));
 const TSX = fileURLToPath(new URL("../node_modules/.bin/tsx", import.meta.url));
 const VALID_EXAMPLE = fileURLToPath(new URL("../../../SPEC/examples/company.yaml", import.meta.url));
+const SELF_HOSTING_EXAMPLE = fileURLToPath(new URL("../../../SPEC/examples/genome-project.yaml", import.meta.url));
 
 const fixture = (name: string): string => fileURLToPath(new URL(`./__fixtures__/${name}`, import.meta.url));
 
@@ -466,5 +467,193 @@ describe("participation binding (RFC-0007 / ADR-0009)", () => {
     expect(readFileSync(join(exportDir, "participation-2.ndjson"), "utf8")).toBe(
       readFileSync(join(exportDir, "participation-1.ndjson"), "utf8"),
     );
+  });
+});
+
+/**
+ * RFC-0008: the self-hosting example (SPEC/examples/genome-project.yaml) — the
+ * project's own durable structure driven through the shipped v0.1 stack. These
+ * are the accepted acceptance cases E1–E9, all at the CLI subprocess boundary,
+ * additive only. The example doubles as a standing regression witness for
+ * RFC-0007 participation binding: E3's derived `implement-queue-item →
+ * queue-discipline` edge and the E7 executor gate both come from the single
+ * agent-scoped `queue-discipline` policy, with no per-workflow workaround.
+ */
+describe("self-hosting example (RFC-0008)", () => {
+  const CLOCK = "2026-07-15T00:00:00.000Z";
+
+  type GraphJson = {
+    nodes: Array<{ id: string; type: string }>;
+    edges: Array<{ from: string; to: string; type: string }>;
+  };
+
+  /** Events from `--json` stdout: every line but the final-state line. */
+  const events = (stdout: string): RuntimeEvent[] =>
+    stdout
+      .trim()
+      .split("\n")
+      .slice(0, -1)
+      .map((line) => JSON.parse(line) as RuntimeEvent);
+
+  const finalLine = (stdout: string): { finalState: Record<string, unknown>; exitCode: number } =>
+    JSON.parse(stdout.trim().split("\n").at(-1)!);
+
+  const requestedCount = (stdout: string): number =>
+    stdout.split("\n").filter((line) => line.includes("approval.requested")).length;
+
+  it("E1 — validates against the schema (exit 0)", () => {
+    const result = genome("validate", SELF_HOSTING_EXAMPLE);
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain("is a valid Genome document");
+  });
+
+  it("E2 — compiles to the Organization Graph (exit 0, no diagnostic)", () => {
+    const result = genome("graph", SELF_HOSTING_EXAMPLE);
+    expect(result.status).toBe(0);
+    // E3: no unbound/inert-policy warning on stderr — both policies are bound.
+    expect(result.stderr).toBe("");
+    const graph = JSON.parse(result.stdout) as GraphJson;
+    expect(Array.isArray(graph.nodes)).toBe(true);
+    expect(Array.isArray(graph.edges)).toBe(true);
+  });
+
+  it("E3 — the graph has the modeled nodes and exactly the four requires edges", () => {
+    const result = genome("graph", SELF_HOSTING_EXAMPLE);
+    expect(result.status).toBe(0);
+    const graph = JSON.parse(result.stdout) as GraphJson;
+
+    const counts = graph.nodes.reduce<Record<string, number>>((acc, node) => {
+      acc[node.type] = (acc[node.type] ?? 0) + 1;
+      return acc;
+    }, {});
+    // Company, both departments, three agents, three workflows, two policies
+    // (plus the integration, objective, two metrics, four memory stores).
+    expect(counts).toEqual({
+      Company: 1,
+      Department: 2,
+      Agent: 3,
+      Workflow: 3,
+      Policy: 2,
+      Integration: 1,
+      Objective: 1,
+      Metric: 2,
+      MemoryStore: 4,
+    });
+
+    const requires = graph.edges
+      .filter((edge) => edge.type === "requires")
+      .map((edge) => `${edge.from} -> ${edge.to}`)
+      .sort();
+    expect(requires).toEqual(
+      [
+        "agent:engineering.engineering-agent -> policy:queue-discipline",
+        // RFC-0007-derived: the agent owns implement-queue-item, so its
+        // participation gates that workflow through the one agent-scoped policy.
+        "workflow:implement-queue-item -> policy:queue-discipline",
+        "workflow:phase-transition-review -> policy:ratification",
+        "workflow:rfc-lifecycle -> policy:ratification",
+      ].sort(),
+    );
+  });
+
+  it("E4 — rfc-lifecycle parks deny-safe without the grant (exit 3, 0 steps)", () => {
+    const result = genome("run", SELF_HOSTING_EXAMPLE, "--workflow", "rfc-lifecycle");
+    expect(result.status).toBe(3);
+    expect(requestedCount(result.stdout)).toBe(1);
+    expect(result.stdout).toContain("approval.requested policy:ratification");
+    expect(result.stdout).toContain("pending approvals: human:product-owner");
+    expect(result.stdout).toContain("completed steps: 0");
+    expect(result.stdout).not.toContain("workflow.completed");
+  });
+
+  it("E5 — rfc-lifecycle completes with the Product Owner grant (exit 0)", () => {
+    const result = genome(
+      "run",
+      SELF_HOSTING_EXAMPLE,
+      "--workflow",
+      "rfc-lifecycle",
+      "--grant",
+      "human:product-owner",
+      "--clock",
+      CLOCK,
+      "--json",
+    );
+    expect(result.status).toBe(0);
+    expect(finalLine(result.stdout)).toEqual({
+      finalState: { runId: "run-1", status: "completed", completedSteps: 5, pendingApprovals: [] },
+      exitCode: 0,
+    });
+  });
+
+  it("E6 — the grant is recorded as an attributed approval.granted before any step", () => {
+    const result = genome(
+      "run",
+      SELF_HOSTING_EXAMPLE,
+      "--workflow",
+      "rfc-lifecycle",
+      "--grant",
+      "human:product-owner",
+      "--clock",
+      CLOCK,
+      "--json",
+    );
+    expect(result.status).toBe(0);
+    const log = events(result.stdout);
+    const granted = log.find((event) => event.type === "approval.granted");
+    expect(granted?.source).toBe("human:product-owner");
+    expect(granted?.payload.principal).toBe("human:product-owner");
+    // Deny-safe ordering: the grant is attributed before the first step event.
+    const firstStep = log.find((event) => event.type.startsWith("agent.task."));
+    expect(granted!.id).toBeLessThan(firstStep!.id);
+  });
+
+  it("E7 — implement-queue-item parks via the executor gate (RFC-0007 witness, exit 3)", () => {
+    const result = genome("run", SELF_HOSTING_EXAMPLE, "--workflow", "implement-queue-item");
+    expect(result.status).toBe(3);
+    // Exactly one approval, raised through the agent-scoped queue-discipline
+    // policy that binds the owned workflow — no per-workflow enumeration.
+    expect(requestedCount(result.stdout)).toBe(1);
+    expect(result.stdout).toContain("approval.requested policy:queue-discipline");
+    expect(result.stdout).toContain("pending approvals: human:product-owner");
+    expect(result.stdout).toContain("completed steps: 0");
+  });
+
+  it("E8 — implement-queue-item completes once the executor gate is satisfied (exit 0)", () => {
+    const result = genome(
+      "run",
+      SELF_HOSTING_EXAMPLE,
+      "--workflow",
+      "implement-queue-item",
+      "--grant",
+      "human:product-owner",
+      "--clock",
+      CLOCK,
+      "--json",
+    );
+    expect(result.status).toBe(0);
+    expect(finalLine(result.stdout)).toEqual({
+      finalState: { runId: "run-1", status: "completed", completedSteps: 5, pendingApprovals: [] },
+      exitCode: 0,
+    });
+  });
+
+  it("E9 — a granted rfc-lifecycle run is byte-identical across invocations under --clock", () => {
+    const invoke = () =>
+      genome(
+        "run",
+        SELF_HOSTING_EXAMPLE,
+        "--workflow",
+        "rfc-lifecycle",
+        "--grant",
+        "human:product-owner",
+        "--clock",
+        CLOCK,
+        "--json",
+      );
+    const first = invoke();
+    const second = invoke();
+    expect(first.status).toBe(0);
+    expect(second.status).toBe(0);
+    expect(second.stdout).toBe(first.stdout);
   });
 });

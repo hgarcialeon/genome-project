@@ -34,7 +34,7 @@ Claude Code or any engineering agent should consume this queue instead of acting
 | High | Phase 3 close review (erratum disposition + phase closure) | RFC-0006 evidence | Architecture Board | Done |
 | High | Self-hosting evidence classification (Board review + ratification) | `docs/proposals/self-hosting.md` | Architecture Board | Done |
 | High | RFC-0007 implementation: participation-binding derivation in `genome-compiler` + inert-policy diagnostic + `SPEC/language.md` Policy Scope wording + the nine amended evidence cases | RFC-0007 / ADR-0009 | Engineering | Done |
-| Medium | RFC-0008 implementation: the self-hosting example file SPEC/examples/genome-project.yaml (structure-only, agent-scoped `queue-discipline`, top-of-file non-normative marking) + additive CLI-boundary evidence E1–E9; seven protected boundaries held; state reconciled | RFC-0008 (`RFC/0008-self-hosting-example.md`) | Engineering | Not Started |
+| Medium | RFC-0008 implementation: the self-hosting example file SPEC/examples/genome-project.yaml (structure-only, agent-scoped `queue-discipline`, top-of-file non-normative marking) + additive CLI-boundary evidence E1–E9; seven protected boundaries held; state reconciled | RFC-0008 (`RFC/0008-self-hosting-example.md`) | Engineering | Done |
 | Low | Office View prototype | Organization Graph | Office Team | Not Started |
 
 ## Current Engineering Rule
@@ -230,3 +230,28 @@ the one example file and the only test diff additive, all evidence uncached,
 and `PROJECT_STATE.md`/`IMPLEMENTATION_QUEUE.md` reconciled per Rule 8. No ADR
 is required (the RFC makes no architectural decision) and no `ROADMAP.md`
 deliverable row is added (Board disposition OQ5). Phase 4 is not opened.
+
+The RFC-0008 item was drained 2026-07-15. `SPEC/examples/genome-project.yaml`
+ships as the single canonical, structure-only self-describing example: the two
+Board roles modeled `manual`, the engineering agent `supervised`, the three
+governance workflows (`rfc-lifecycle`, `implement-queue-item`,
+`phase-transition-review`), and the two deny-safe policies (`ratification`
+workflow-scoped, `queue-discipline` **agent-scoped**), with a top-of-file
+non-normative-for-governance marking and no field that restates mutable state.
+The nine evidence cases E1–E9 pass uncached at the CLI subprocess boundary,
+added additively to `packages/genome-cli/src/cli.test.ts` (35 → 44 CLI tests):
+schema validation (E1), compilation with no inert-policy diagnostic (E2), the
+19-node / 31-edge graph with exactly the four `requires` edges including the
+RFC-0007-derived `implement-queue-item → queue-discipline` (E3), deny-safe
+parking on both the ratification (E4) and executor (E7) paths, completion on
+both once granted (E5, E8), the attributed `approval.granted` record (E6), and
+byte-determinism under `--clock` (E9). E7/E3 make the example a standing
+regression witness for RFC-0007 participation binding — the executor gate binds
+through the single agent-scoped policy, with the old per-workflow workaround
+retired. The seven protected boundaries held with empty diffs: no change to
+`SPEC/schema/genome.schema.json`, `packages/genome-compiler/src`,
+`packages/genome-runtime/src`, `packages/genome-cli/src/index.ts`, or the event
+taxonomy; no exported-log reader; no persistence. The only production diff is
+the one example file; the only test diff is the additive E1–E9 block. RFC-0008
+is ready for its implementation close review (the RFC-0007 closure precedent);
+current state lives in `PROJECT_STATE.md`.

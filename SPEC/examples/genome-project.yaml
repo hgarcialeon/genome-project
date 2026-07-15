@@ -1,0 +1,113 @@
+# Genome self-hosting example — a projection of the Genome project's durable
+# organizational structure. NON-NORMATIVE FOR GOVERNANCE: the governance
+# documents (docs/CONSTITUTION.md, docs/GOVERNANCE.md, docs/ARCHITECT.md) are
+# authoritative; PROJECT_STATE.md is the source of current project state. This
+# file describes structure only and must never restate current state
+# (phase, milestone, queue, blockers). See RFC-0008.
+genomeVersion: 0.1
+
+company:
+  name: Genome Project
+  mission: Describe a company once. Compile it into an autonomous organization.
+  timezone: UTC
+
+departments:
+  governance:
+    mission: Keep decisions documented, reviewed, and reproducible beyond any individual contributor or conversation.
+    agents:
+      chief-architect:
+        role: Chief Architect
+        autonomy: manual
+        skills:
+          - architecture-review
+          - specification-writing
+          - boundary-analysis
+      lead-engineer:
+        role: Lead Engineer
+        autonomy: manual
+        skills:
+          - implementation-review
+          - evidence-verification
+          - delivery-feasibility
+
+  engineering:
+    mission: Implement approved work from the Implementation Queue.
+    agents:
+      engineering-agent:
+        role: Engineering Agent
+        autonomy: supervised
+        skills:
+          - typescript
+          - compiler-construction
+          - runtime-implementation
+          - cli-boundary-testing
+
+workflows:
+  rfc-lifecycle:
+    owner: governance.chief-architect
+    trigger: manual
+    steps:
+      - draft
+      - board-review
+      - ratify
+      - record-adr
+      - queue-work
+
+  implement-queue-item:
+    owner: engineering.engineering-agent
+    trigger: manual
+    steps:
+      - bootstrap
+      - implement
+      - test-uncached
+      - reconcile-state
+      - merge
+
+  phase-transition-review:
+    owner: governance.chief-architect
+    trigger: manual
+    steps:
+      - prepare-packet
+      - board-review
+      - ratify
+      - apply-closure
+
+policies:
+  ratification:
+    appliesTo:
+      - rfc-lifecycle
+      - phase-transition-review
+    requiresApprovalFrom:
+      - human:product-owner
+
+  queue-discipline:
+    appliesTo:
+      - engineering.engineering-agent
+    requiresApprovalFrom:
+      - human:product-owner
+
+integrations:
+  github:
+    type: source-control
+    provider: github
+
+memory:
+  retention: long-term
+  stores:
+    - rfcs
+    - adrs
+    - board-reviews
+    - retrospectives
+
+objectives:
+  north-star:
+    description: Genome becomes the declarative language for autonomous organizations.
+    owner: governance.chief-architect
+
+metrics:
+  uncached-suite-green:
+    type: quality
+    owner: engineering.engineering-agent
+  state-consistency:
+    type: governance
+    owner: governance.lead-engineer
