@@ -1,0 +1,28 @@
+# RFC-0007 evidence case 4: one policy applied to BOTH the agent and its owned
+# workflow explicitly (the current workaround). Dedup by id means one
+# approval.requested per policy — one grant drains it, no double-gating.
+genomeVersion: 0.1
+
+company:
+  name: Double Gating Fixture
+
+departments:
+  engineering:
+    agents:
+      engineering-agent:
+        role: Engineering Agent
+        autonomy: supervised
+
+workflows:
+  implement-queue-item:
+    owner: engineering.engineering-agent
+    steps:
+      - implement
+
+policies:
+  queue-discipline:
+    appliesTo:
+      - engineering.engineering-agent
+      - implement-queue-item
+    requiresApprovalFrom:
+      - human:product-owner

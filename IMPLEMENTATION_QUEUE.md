@@ -33,7 +33,7 @@ Claude Code or any engineering agent should consume this queue instead of acting
 | High | RFC-0006 implementation: `@genome/adapter-reference` package + CLI `genome run` + eight CLI-boundary tests | RFC-0006 / ADR-0008 | Engineering | Done |
 | High | Phase 3 close review (erratum disposition + phase closure) | RFC-0006 evidence | Architecture Board | Done |
 | High | Self-hosting evidence classification (Board review + ratification) | `docs/proposals/self-hosting.md` | Architecture Board | Done |
-| High | RFC-0007 implementation: participation-binding derivation in `genome-compiler` + inert-policy diagnostic + `SPEC/language.md` Policy Scope wording + the nine amended evidence cases | RFC-0007 / ADR-0009 | Engineering | Not Started |
+| High | RFC-0007 implementation: participation-binding derivation in `genome-compiler` + inert-policy diagnostic + `SPEC/language.md` Policy Scope wording + the nine amended evidence cases | RFC-0007 / ADR-0009 | Engineering | Done |
 | Low | Office View prototype | Organization Graph | Office Team | Not Started |
 
 ## Current Engineering Rule
@@ -174,3 +174,27 @@ byte-unchanged), no CLI surface change (commands, options, exit codes,
 output contracts), no new event types. A discovered need for a runtime
 source change stops work and returns to the Board. Evidence must be
 uncached (`pnpm test -- --force`).
+
+The RFC-0007 item was drained 2026-07-15. The participation binding
+landed entirely at the compiler boundary: `packages/genome-compiler`
+graph construction now derives, for each agent-scoped `appliesTo` entry,
+one workflow→policy `requires` edge per workflow owned by that agent —
+in document (pinned) order, deduplicated by id — alongside the retained
+agent→policy edge; the unbound-policy diagnostic was extended to the
+inert manual, workflow-less shape (warning); and `SPEC/language.md`
+Policy Scope carries the accepted §3 wording with the normative
+autonomy/policy boundary sentence. The nine amended evidence cases pass
+uncached: cases 1–2, 4–6, 8–9 at the CLI subprocess boundary
+(`packages/genome-cli/src/cli.test.ts`), case 3 as the additive
+runtime-suite case closing the previously untested initiating-agent half
+of the policy union (`packages/genome-runtime/src/runtime.test.ts`), and
+case 7 as the compiler diagnostic
+(`packages/genome-compiler/src/compiler.test.ts`). The protected
+boundaries held with empty diffs: `SPEC/schema/genome.schema.json`,
+`packages/genome-runtime` production source (`runtime.test.ts` gained the
+one additive case; the existing 17 tests are byte-unchanged), and the
+CLI surface (`packages/genome-cli/src/index.ts`) all unchanged; no new
+event types. Autonomy semantics were not widened and "executor" was not
+generalized beyond workflow ownership. The Board's implementation closure
+review (`docs/reviews/rfc-0007-implementation-close-review.md`) ratified
+Option A on 2026-07-15, closing RFC-0007 complete on this evidence.

@@ -335,3 +335,61 @@ describe("the log and replay (RFC-0003 constraint 3, RFC-0004 ordering)", () => 
     expect(replay(shuffled)).toEqual(replay(runtime.events()));
   });
 });
+
+// Additive coverage authorized by RFC-0007 (amendments 1–2, Board review
+// Finding 1): the *initiator* half of the runtime's policy union
+// (runtime/index.ts:126) — an agent-scoped policy gating a run the governed
+// agent initiates of a workflow it does not own — was exercised by no prior
+// test at any boundary and is unreachable from `genome run` (which initiates
+// as human:operator). Production runtime source is unchanged; this only adds a
+// case, leaving the existing 17 tests byte-identical (Definition of Done 6).
+describe("initiator binding (RFC-0007 / ADR-0009)", () => {
+  // `lead` (autonomous, so no supervised floor confounds the gate) is governed
+  // by an agent-scoped policy but owns nothing; `execute-task` is owned by
+  // `worker` and carries no policy of its own. When `lead` initiates it, the
+  // sole gate is `lead`'s policy, via the retained binding (a).
+  const initiatorModel = (): RuntimeModel =>
+    compileModel(
+      [
+        "genomeVersion: 0.1",
+        "company:",
+        "  name: Initiator Binding Fixture",
+        "departments:",
+        "  engineering:",
+        "    agents:",
+        "      lead:",
+        "        role: Lead",
+        "        autonomy: autonomous",
+        "      worker:",
+        "        role: Worker",
+        "        autonomy: supervised",
+        "workflows:",
+        "  execute-task:",
+        "    owner: engineering.worker",
+        "    steps:",
+        "      - one",
+        "policies:",
+        "  lead-oversight:",
+        "    appliesTo:",
+        "      - engineering.lead",
+        "    requiresApprovalFrom:",
+        "      - human:director",
+      ].join("\n"),
+    );
+
+  it("gates a run a governed agent initiates of a workflow it does not own", () => {
+    const runtime = createRuntime({ model: initiatorModel(), clock: CLOCK });
+
+    const started = runtime.startWorkflow("execute-task", "engineering.lead");
+    expect(started).toEqual({ ok: true, runId: "run-1", status: "pending-approval" });
+
+    const request = runtime.events()[0];
+    expect(request.type).toBe("approval.requested");
+    expect(request.source).toBe("policy:lead-oversight");
+    expect(request.payload.principals).toEqual(["human:director"]);
+
+    // The declared principal drains the gate; the run then proceeds.
+    const granted = runtime.submitApproval("run-1", "human:director", true);
+    expect(granted).toEqual({ ok: true, runId: "run-1", status: "running" });
+  });
+});

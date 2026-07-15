@@ -1,0 +1,34 @@
+# RFC-0007 amendment 3: derived workflow -> policy edges must appear in a
+# deterministic, pinned order (document order of owned workflows).
+genomeVersion: 0.1
+
+company:
+  name: Participation Order Fixture
+
+departments:
+  engineering:
+    agents:
+      lead:
+        role: Lead
+        autonomy: supervised
+
+workflows:
+  alpha:
+    owner: engineering.lead
+    steps:
+      - one
+  beta:
+    owner: engineering.lead
+    steps:
+      - one
+  gamma:
+    owner: engineering.lead
+    steps:
+      - one
+
+policies:
+  oversight:
+    appliesTo:
+      - engineering.lead
+    requiresApprovalFrom:
+      - human:director

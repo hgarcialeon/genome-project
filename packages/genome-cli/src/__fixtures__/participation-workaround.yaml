@@ -1,0 +1,27 @@
+# RFC-0007 evidence case 5: the corrected workaround shape — the policy is
+# restated workflow-scoped only. No agent-scoped entry, so the change derives
+# nothing; the run parks deny-safe exactly as before and after the RFC.
+genomeVersion: 0.1
+
+company:
+  name: Workaround Fixture
+
+departments:
+  engineering:
+    agents:
+      engineering-agent:
+        role: Engineering Agent
+        autonomy: supervised
+
+workflows:
+  implement-queue-item:
+    owner: engineering.engineering-agent
+    steps:
+      - implement
+
+policies:
+  queue-discipline:
+    appliesTo:
+      - implement-queue-item
+    requiresApprovalFrom:
+      - human:product-owner

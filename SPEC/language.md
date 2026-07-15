@@ -175,13 +175,19 @@ Semantics:
 
 - A policy applying to a **workflow** gates initiation of that workflow: an
   approval from each declared principal must exist before the workflow starts.
-- A policy applying to an **agent** gates every workflow initiation by that
-  agent.
+- A policy applying to an **agent** gates every run that agent participates
+  in: every workflow initiation *by* that agent, and every initiation *of* a
+  workflow that agent executes (in v0.1, a workflow whose `owner` resolves to
+  that agent) — whoever initiates it. Autonomy levels are unaffected: they
+  continue to govern only the agent's own initiative (see Agent Autonomy
+  Levels).
 - `appliesTo` entries are policy-declared **checkpoints** in the sense of the
   autonomy semantics above.
 - `appliesTo` is optional in v0.1. A policy without it declares an approval
   requirement bound to no action; compilers should surface an *unbound
-  policy* diagnostic (warning).
+  policy* diagnostic (warning). The same warning covers a policy that binds
+  only `manual` agents owning no workflow — under participation semantics such
+  a policy can never gate a run.
 
 ## Workflow Triggers
 

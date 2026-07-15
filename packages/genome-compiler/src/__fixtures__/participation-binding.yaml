@@ -1,0 +1,28 @@
+# RFC-0007: an agent-scoped policy naming an agent that owns a workflow.
+# The compiler must derive a workflow -> policy `requires` edge (executor
+# binding) in addition to the retained agent -> policy edge (initiator binding).
+genomeVersion: 0.1
+
+company:
+  name: Participation Fixture
+
+departments:
+  engineering:
+    agents:
+      engineering-agent:
+        role: Engineering Agent
+        autonomy: supervised
+
+workflows:
+  implement-queue-item:
+    owner: engineering.engineering-agent
+    steps:
+      - implement
+      - validate
+
+policies:
+  queue-discipline:
+    appliesTo:
+      - engineering.engineering-agent
+    requiresApprovalFrom:
+      - human:product-owner
