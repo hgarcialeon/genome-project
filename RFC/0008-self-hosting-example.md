@@ -2,7 +2,17 @@
 
 ## Status
 
-**Accepted — 2026-07-15.**
+**Accepted — implemented and closed 2026-07-15.**
+
+Closed complete as implemented at commit
+`f07e5f32b06fa92bcf35db0c19965c7bdb6e85cc` under the Architecture Board's
+implementation closure review (Option A, Product Owner ratification
+2026-07-15): see `docs/reviews/rfc-0008-implementation-close-review.md`. Every
+Definition-of-Done item was re-executed uncached at that commit and every
+protected boundary verified as an empty diff; the shipped
+`SPEC/examples/genome-project.yaml` is byte-for-byte the accepted Appendix
+document. The implementation queue item is Done and drained
+(`IMPLEMENTATION_QUEUE.md`).
 
 Accepted under **Option B** (accept with amendments) by the Architecture
 Board's review (`docs/reviews/rfc-0008-board-review.md`), ratified by the
