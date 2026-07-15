@@ -2,7 +2,18 @@
 
 ## Status
 
-Draft — submitted for Architecture Board review.
+**Accepted — 2026-07-15.**
+
+Accepted under **Option B** (accept with amendments) by the Architecture
+Board's review (`docs/reviews/rfc-0008-board-review.md`), ratified by the
+Product Owner 2026-07-15. The Board re-executed every material claim uncached
+and confirmed it; the **five open-question dispositions** recorded in that
+review are folded into this RFC (see "Resolved open questions (Board
+dispositions)" below). The amendments change no example content, no evidence
+case (E1–E9), and no protected boundary; the language-complexity budget stays
+zero. The single implementation item is queued in `IMPLEMENTATION_QUEUE.md`
+(Not Started); no example file, evidence, or production/test code is created by
+this acceptance.
 
 Commissioned 2026-07-15 by the Product Owner under Decision 2a (Option 2a-i)
 of `docs/reviews/maintenance-self-hosting-disposition-packet.md`, itself the
@@ -333,38 +344,47 @@ Done means: the example ships, the evidence protects it, the boundaries held,
 and the state documents reconcile — with no language, schema, compiler,
 runtime, or CLI change.
 
-## Open questions requiring Architecture Board disposition
+## Resolved open questions (Board dispositions, ratified 2026-07-15)
 
-1. **Policy modeling of commissioning discipline.** This RFC models
-   `queue-discipline` **agent-scoped**, leveraging RFC-0007 participation
-   binding (retiring the proposal's workflow-scoped Gap 1 workaround). Confirm
-   the agent-scoped form is the one to ship, or direct that the example
-   additionally document the workflow-scoped variant for contrast.
-2. **Example file name and extension.** `genome-project.yaml` (matches the
-   shipped `company.yaml`) vs. `genome-project.genome.yaml` (matches
-   `SPEC/language.md`'s recommended extension). Should the extension
-   convention be reconciled project-wide, or is matching `company.yaml`
-   sufficient here?
-3. **Non-normative marking mechanism.** How should "non-normative for
-   governance" be recorded so it is durable and discoverable — a header
-   comment in the YAML, a note in `SPEC/language.md`'s examples reference, a
-   `README` in `SPEC/examples/`, or a line in `ROADMAP.md`? (The RFC
-   recommends a top-of-file comment plus a one-line pointer from wherever
-   examples are indexed; the Board should pick the canonical marking.)
-4. **Divergence-control discipline.** The example is a projection of the
-   governance docs and can go stale. Confirm the mitigation is **review
-   discipline only** (governance-doc changes trigger a re-check of the
-   example), with **no** mechanical verifier — a verifier would be a new
-   reader of governance docs and a larger commitment (and, if it ever read an
-   exported log, a Level-2 persistence-gate trip). Recorded so the "no
-   verifier" choice is deliberate, matching ADR-0010's reasoning about not
-   minting subsystems.
-5. **Roadmap placement.** Should the shipped example be recorded anywhere on
-   `ROADMAP.md` (e.g. as a small capability/dogfooding example under a
-   capability track), or does it live entirely under this RFC with no roadmap
-   deliverable row? (The disposition packet flagged at most a "small
-   capability-roadmap example"; the Board should decide whether even that is
-   warranted.)
+The Architecture Board decided all five open questions in
+`docs/reviews/rfc-0008-board-review.md`; the Product Owner ratified them under
+Option B. They are folded here as binding for the implementation. Three confirm
+the draft (OQ1, OQ2, OQ4); two refine or select (OQ3, OQ5). **None changes the
+example content, the evidence set (E1–E9), or any protected boundary.**
+
+1. **Policy modeling of commissioning discipline — agent-scoped (confirmed).**
+   The example ships `queue-discipline` **agent-scoped**
+   (`appliesTo: [engineering.engineering-agent]`), relying on the accepted
+   RFC-0007 participation binding to gate the owned `implement-queue-item`
+   workflow; this retires the proposal's per-workflow Gap 1 workaround and
+   makes the example a regression witness for RFC-0007. The workflow-scoped
+   contrast lives in prose (this RFC / the proposal), **not** in the canonical
+   example.
+2. **Example file name and extension — `genome-project.yaml` (confirmed).**
+   The canonical file is `SPEC/examples/genome-project.yaml`, matching the
+   shipped `company.yaml` convention. Reconciling `SPEC/language.md`'s
+   *recommended* `*.genome.yaml` extension project-wide is **out of scope** for
+   this RFC (a candidate future editorial cleanup, plausibly an erratum).
+3. **Non-normative marking mechanism — top-of-file comment, no verifier
+   (refined).** The **top-of-file YAML comment is the canonical, binding
+   marking** (it travels with the file and states both the governance-authority
+   and the structure-only constraints, as shown in the Appendix). **No separate
+   index file and no mechanical verifier are created** — a verifier would be a
+   new reader of the governance docs and a larger commitment than the risk
+   warrants (ADR-0010 reasoning), and any verifier that ever read an exported
+   log would trip the persistence gate. The acceptance record pins the
+   distinction: the example is **normative for the language/toolchain** (a
+   tested example that must keep compiling and running) and **non-normative for
+   the project's governance** (it governs nothing — the governance documents
+   do).
+4. **Divergence-control discipline — review discipline only (confirmed).**
+   Governance-structure changes trigger a manual re-check of the example; there
+   is **no** mechanical verifier, matching ADR-0010's minimalism and the
+   proposal's Risk-2 mitigation.
+5. **Roadmap placement — no `ROADMAP.md` deliverable row (selected).** The
+   example is not a phase deliverable; it is shipped by this accepted RFC and
+   tracked, on acceptance, via `IMPLEMENTATION_QUEUE.md` like any RFC item. No
+   capability track is invented and phase accounting is unchanged.
 
 ## Explicitly not authorized / not done by this RFC
 

@@ -34,6 +34,7 @@ Claude Code or any engineering agent should consume this queue instead of acting
 | High | Phase 3 close review (erratum disposition + phase closure) | RFC-0006 evidence | Architecture Board | Done |
 | High | Self-hosting evidence classification (Board review + ratification) | `docs/proposals/self-hosting.md` | Architecture Board | Done |
 | High | RFC-0007 implementation: participation-binding derivation in `genome-compiler` + inert-policy diagnostic + `SPEC/language.md` Policy Scope wording + the nine amended evidence cases | RFC-0007 / ADR-0009 | Engineering | Done |
+| Medium | RFC-0008 implementation: the self-hosting example file SPEC/examples/genome-project.yaml (structure-only, agent-scoped `queue-discipline`, top-of-file non-normative marking) + additive CLI-boundary evidence E1–E9; seven protected boundaries held; state reconciled | RFC-0008 (`RFC/0008-self-hosting-example.md`) | Engineering | Not Started |
 | Low | Office View prototype | Organization Graph | Office Team | Not Started |
 
 ## Current Engineering Rule
@@ -212,3 +213,20 @@ deferred to Phase 6 — neither is queued work. No production language,
 compiler, runtime, schema, CLI, or test change accompanies these
 dispositions; the RFC-0000/RFC-0001 status corrections were zero-behavioral-change
 errata (`ERR-0001`, `ERR-0002`).
+
+RFC-0008 — Self-Hosting Example was accepted 2026-07-15 under Option B
+(`docs/reviews/rfc-0008-board-review.md`, Product Owner ratification;
+`RFC/0008-self-hosting-example.md`), which added the one **Not Started**
+item above. Its scope is fixed by the accepted RFC and the five folded
+open-question dispositions: ship a single canonical, structure-only
+self-describing example under `SPEC/examples/` (name per RFC-0008 §3;
+`queue-discipline` bound **agent-scoped**, relying on the shipped RFC-0007
+participation binding; a top-of-file non-normative-for-governance marking, no
+verifier) plus the additive CLI-boundary evidence cases E1–E9. Acceptance
+requires the seven protected boundaries to hold as empty diffs — no schema,
+compiler-semantic, runtime-production, CLI-surface, or event-taxonomy change,
+no exported-log reader, no persistence — with the only production diff being
+the one example file and the only test diff additive, all evidence uncached,
+and `PROJECT_STATE.md`/`IMPLEMENTATION_QUEUE.md` reconciled per Rule 8. No ADR
+is required (the RFC makes no architectural decision) and no `ROADMAP.md`
+deliverable row is added (Board disposition OQ5). Phase 4 is not opened.
