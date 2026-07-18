@@ -578,3 +578,81 @@ ratification text is given for each.
 - **No language, schema, compiler, runtime, CLI, event-taxonomy, or test
   change** of any kind.
 - **No option applied.** Every disposition above awaits the Product Owner.
+
+---
+
+## Product Owner Disposition (2026-07-18)
+
+The amendment body above is preserved verbatim as prepared. On 2026-07-18 the
+Product Owner **ratified Option A** and adopted **Governed Authoring** as the
+**planned opening experience** for Phase 4, recorded as **product input only**.
+This disposition extends the previously adopted Candidate C — Edit-and-see
+(2026-07-15) — with **ephemeral, in-process governed execution**, and supersedes
+Candidate C *as the planned opening milestone*. The original Phase 4 Planning
+Packet (`docs/reviews/phase-4-planning-packet.md`) and its recorded 2026-07-15
+disposition are preserved unchanged.
+
+**Recorded disposition (verbatim):**
+
+> As Product Owner, I ratify Option A. Adopt Governed Authoring as the planned
+> opening experience for Phase 4, exactly as proposed in this amendment. This
+> ratification extends the previously adopted Candidate C — Edit-and-see — with
+> ephemeral, in-process governed execution.
+
+**The adopted opening experience includes:**
+
+- a code editor for Genome documents;
+- inline validation;
+- a live Organization Graph as the defining visualization;
+- an organization tree as a secondary projection;
+- ephemeral execution of an existing Genome workflow;
+- a visible live event stream;
+- deny-safe parking when approval is absent;
+- explicit grant by the required principal;
+- attributed `approval.granted` evidence;
+- continuation and completion after approval.
+
+**The canonical demonstration is:**
+
+- **document:** `SPEC/examples/genome-project.yaml`
+- **workflow:** `rfc-lifecycle`
+- **experience:** edit → graph update → run → park → grant → complete
+
+**The following boundaries remain explicit (as adopted):**
+
+- events are ephemeral and may be discarded on refresh or close;
+- no exported-log reader is authorized;
+- no durable event history is authorized;
+- no persistence behavior is authorized;
+- no operative repository governance is authorized;
+- no provider adapter or trigger auto-initiation is authorized;
+- the future Phase 4 opening RFC owns the Studio-to-runtime boundary design;
+- Studio remains a view and must not reimplement compiler or runtime semantics.
+
+**What this disposition does and does not do.** Consistent with the ratification
+statement and the amendment's standing constraints:
+
+- **Adopts** Governed Authoring as the *planned* opening experience — **product
+  input only**. The recommendation and the amendment body are unchanged by this
+  adoption; nothing here overrides `ROADMAP.md`, `PROJECT_STATE.md`, or any
+  ratified decision.
+- **Supersedes** Candidate C as the *planned* opening milestone, while preserving
+  the original planning packet and its 2026-07-15 disposition unchanged.
+- **Opens no phase.** Phase 4 remains positioned-but-unopened; opening it requires
+  its own RFC, Board review, and ratification (Governance Rule 2).
+- **Commissions and drafts no RFC.** The Phase 4 opening RFC is not commissioned
+  by this disposition; per adopted Option A it follows the closed RFC-0008.
+- **Prepares no roadmap revision proposal.**
+- **Adds no queue item and modifies no state document.** `PROJECT_STATE.md`,
+  `ROADMAP.md`, `PRODUCT_STRATEGY.md`, and `IMPLEMENTATION_QUEUE.md` are
+  untouched; no current state is restated here (Governance Rule 8). This
+  disposition changes no state `PROJECT_STATE.md` owns.
+- **Implements no Studio** and changes **no** language, schema, compiler, runtime,
+  CLI, event taxonomy, ADR, RFC, SPEC, source, or test.
+- **Authorizes no exported-log reader, no durable history, and no persistence**;
+  execution and events remain ephemeral and in-process, exactly as the amendment
+  bounds them.
+
+The Phase 4 opening RFC, when commissioned separately, owns the
+Studio-to-runtime boundary decision (A3) and may refine this experience within
+its own review. `pnpm check-state` accompanies this change and remains green.
