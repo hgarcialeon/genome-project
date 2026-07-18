@@ -641,3 +641,90 @@ are **separate ratified acts**; this disposition performs none of them.
   planning-packet and Governed Authoring-amendment precedent, Rule 8 does not
   require recording a planning/strategy document's preparation.
 - **`pnpm check-state`** accompanies this change and remains green.
+
+---
+
+## Product Owner Disposition (2026-07-18)
+
+The proposal body above — including §7's three options and §8's recommendation
+together with its strongest counter-argument — is **preserved verbatim as
+prepared**. On 2026-07-18 the Product Owner **adopted Option B — Autonomy
+First** as the **adopted strategic sequencing direction** for the Genome
+roadmap. This is a **strategic sequencing decision only**: it does **not** open
+Phase 4, does **not** commission the Phase 4 opening RFC, does **not** authorize
+implementation, and does **not** by itself authorize provider-adapter, trigger,
+persistence, simulation, or self-improvement work.
+
+**Recorded disposition (verbatim):**
+
+> As Product Owner, I adopt **Option B — Autonomy First** from this proposal.
+> This is a strategic sequencing decision. It does not open Phase 4, does not
+> commission the Phase 4 opening RFC, does not authorize implementation, and
+> does not directly authorize provider adapters, triggers, persistence,
+> simulation, or self-improvement work.
+
+### The adopted direction
+
+1. **Phase 4 remains the next phase and opens with Governed Authoring** (as
+   already adopted, `docs/reviews/phase-4-planning-packet-amendment.md`): author
+   a Genome document; validate it; see the live Organization Graph; inspect the
+   organization tree; execute an existing workflow ephemerally; observe
+   deny-safe parking; grant approval; observe attributed completion.
+
+2. **After the Governed Authoring milestone, the autonomy spine is prioritized
+   ahead of a standalone Office View phase**, in dependency order and each still
+   behind its own gate:
+   - first real provider adapter;
+   - trigger-driven initiation;
+   - durable evidence and observability, when justified by their first consumer;
+   - simulation, when its prerequisites and product boundary are defined;
+   - controlled self-improvement, only after those foundations exist.
+
+3. **Office View is not cancelled or de-scoped.** Its current standalone Phase 5
+   position is **no longer presumed** to be the next phase after Studio. Its
+   final disposition — standalone phase, Studio projection, or later capability
+   — must be **proposed separately and governed** before `ROADMAP.md` is
+   changed.
+
+4. **All existing architecture and governance gates are preserved:**
+   - provider adapters require their own accepted contract and evidence;
+   - trigger auto-initiation requires an RFC;
+   - exported-log readers and durable event persistence remain gated;
+   - simulation must not be treated as free or implied by deterministic replay;
+   - workflow control flow, concurrency, and human-member modeling retain their
+     recorded evidence gates;
+   - self-improvement remains dependent on durable observation, proposal,
+     validation, and promotion contracts.
+
+### What this disposition does and does not do
+
+- **Adopts** Option B as the **adopted strategic sequencing direction** —
+  strategic intent only. The proposal body, its recommendation, and its
+  strongest counter-argument (§8) are unchanged by this adoption; nothing here
+  overrides `ROADMAP.md`, `docs/PRODUCT_STRATEGY.md`, `PROJECT_STATE.md`, or any
+  ratified decision.
+- **Changes strategic sequencing only.** It does **not** by itself rewrite
+  `ROADMAP.md` or `docs/PRODUCT_STRATEGY.md`. Re-sequencing the committed phases
+  in `ROADMAP.md` remains a **separate ratified act** (Option B's stated
+  governance action), to be prepared and brought for ratification on its own;
+  this disposition performs none of it.
+- **Opens no phase.** Phase 4 remains positioned-but-unopened; opening it
+  requires its own RFC, Board review, and Product Owner ratification (Governance
+  Rule 2).
+- **Commissions and drafts no RFC.** The Phase 4 opening RFC is not commissioned
+  by this disposition; per adopted strategy Option A it follows the closed
+  RFC-0008. No adapter, trigger, persistence, simulation, or Office View RFC is
+  prepared.
+- **Adds no queue item and modifies no state document.** `PROJECT_STATE.md`,
+  `ROADMAP.md`, `docs/PRODUCT_STRATEGY.md`, and `IMPLEMENTATION_QUEUE.md` are
+  untouched; no current state is restated here (Governance Rule 8). This
+  disposition advances no governance lifecycle and changes no state
+  `PROJECT_STATE.md` owns, so — consistent with the Phase 4 planning-packet and
+  Governed Authoring-amendment precedent — Rule 8 requires no `PROJECT_STATE.md`
+  entry to record it.
+- **Implements nothing** and changes **no** language, schema, compiler, runtime,
+  CLI, event taxonomy, ADR, RFC, SPEC, source, or test.
+
+Every capability named in the adopted direction remains RFC-gated and evidence-
+gated exactly as recorded above. `pnpm check-state` accompanies this change and
+remains green.
