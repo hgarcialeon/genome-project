@@ -144,7 +144,12 @@ The **RFC-0008 implementation close review** — the Board's ratification that t
 shipped `SPEC/examples/genome-project.yaml` and its E1–E9 evidence meet the
 accepted Definition of Done, mirroring the RFC-0007 closure precedent
 (`docs/reviews/rfc-0007-implementation-close-review.md`) — is the next expected
-deliverable. The implementation itself is **complete and drained** (2026-07-15,
+deliverable. That close-review record is now **prepared and pending Product
+Owner ratification** (`docs/reviews/rfc-0008-implementation-close-review.md`):
+the Board re-executed the accepted evidence at merged `main` and recommends
+Option A (close as implemented), but **applies nothing** — RFC-0008 remains
+**not yet closed** and absent from the Completed RFCs table until ratification.
+The implementation itself is **complete and drained** (2026-07-15,
 `RFC/0008-self-hosting-example.md`, `docs/reviews/rfc-0008-board-review.md`):
 the structure-only example ships with agent-scoped `queue-discipline`, a
 top-of-file non-normative marking, the seven protected boundaries held as empty
