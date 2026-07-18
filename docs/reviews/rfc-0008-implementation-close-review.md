@@ -2,26 +2,31 @@
 
 ## Status
 
-**Draft close review — prepared for Product Owner ratification. No option
-applied.** The Architecture Board re-executed every material claim of the
-accepted RFC-0008 (`RFC/0008-self-hosting-example.md`) and its acceptance
-review (`docs/reviews/rfc-0008-board-review.md`) against the **merged `main`
-commit `3eb12aa`** (the example itself landed at `f07e5f3`, merged via PR #19),
-answered the closure questions, reviewed the Language Complexity Budget, and
-recommends a disposition below — but **applies nothing**: no RFC edit, no
-`PROJECT_STATE.md` closure entry, no Completed-RFCs table row, no
-`IMPLEMENTATION_QUEUE.md` change, no code/test/SPEC change, no ADR, no Phase 4
-action. Ratification is the Product Owner's act; the exact statement is at the
-end.
+**Ratified — Option A, Product Owner, 2026-07-18.** RFC-0008 — Self-Hosting
+Example is **closed, complete as implemented**, merged to `main` at `3eb12aa`
+(example commit `f07e5f3`, base `92872ca`). The Product Owner accepts the
+Architecture Board's closure findings exactly as recorded below and directs
+that the closure be applied: `RFC/0008-self-hosting-example.md` is marked
+accepted — implemented and closed; `PROJECT_STATE.md` records the closure
+(removing "close review pending" and adding the Completed-RFCs row citing this
+review); the `IMPLEMENTATION_QUEUE.md` item remains Done and drained. No
+implementation, `SPEC`, compiler, runtime, schema, CLI, test, or event change is
+made; no ADR is created (the RFC makes no architectural decision); Phase 4 is
+not opened and no further RFC is drafted by this step. The Language Complexity
+Budget remains **non-binding review evidence and guidance**. This ratification
+is the authoritative Product Owner closure act for merged repository history; the
+prior stranded review on `claude/genome-bootstrap-verify-znm590` and its claimed
+2026-07-15 ratification are treated as **recovered evidence only** and carry no
+applied decision. **The review below is preserved as written at review time.**
 
-This record is prepared under the Product Owner's Decision 1 (this session),
+This record was prepared under the Product Owner's Decision 1 (this session),
 which directs the outstanding RFC-0008 implementation closure be completed
 using the RFC-0007 closure precedent
 (`docs/reviews/rfc-0007-implementation-close-review.md`), re-executing the
 accepted evidence at the merged `main` commit, without reimplementing or
 modifying RFC-0008.
 
-Review held 2026-07-18.
+Review held 2026-07-18; ratified 2026-07-18.
 
 ## Recovered prior draft (evidence only — not an applied decision)
 

@@ -36,9 +36,12 @@ self-hosting example plus its additive CLI-boundary evidence. That item
 **landed and was drained 2026-07-15**: `SPEC/examples/genome-project.yaml`
 ships as the single canonical, structure-only example, its nine evidence cases
 E1–E9 pass uncached at the CLI boundary, and the seven protected boundaries
-held as empty diffs. RFC-0008 is **ready for its implementation close review**
-(not yet closed — the RFC-0007 closure precedent). No implementation iteration
-is active. The Phase 4 opening RFC remains uncommissioned.
+held as empty diffs. RFC-0008 was **closed complete 2026-07-18** by the Board's
+implementation closure review (Option A,
+`docs/reviews/rfc-0008-implementation-close-review.md`, Product Owner
+ratification) on evidence re-executed uncached at merged `main`. No
+implementation iteration is active. The Phase 4 opening RFC remains
+uncommissioned.
 
 ## Current Milestone
 
@@ -51,9 +54,10 @@ within the seven pinned protected boundaries (all held as empty diffs: schema,
 compiler-production, runtime-production, CLI-surface, and event-taxonomy, plus
 no exported-log reader and no persistence). E1–E9 pass uncached at the CLI
 boundary; the example doubles as a standing regression witness for RFC-0007
-participation binding (E3/E7). No milestone is active; the RFC-0008
-implementation close review is the next governance step. The prior RFC-0007
-queue item was **implemented, drained, and closed** (2026-07-15) by the Board's
+participation binding (E3/E7). RFC-0008 was **closed complete 2026-07-18**
+(Option A, `docs/reviews/rfc-0008-implementation-close-review.md`). No milestone
+is active and no governance close-out is pending. The prior RFC-0007 queue item
+was **implemented, drained, and closed** (2026-07-15) by the Board's
 implementation closure review
 (`docs/reviews/rfc-0007-implementation-close-review.md`, Option A).
 
@@ -79,11 +83,12 @@ governance-process decision (`docs/adr/0010-erratum-mechanism.md`,
 `docs/reviews/rfc-0008-board-review.md`), placing one descriptive/evidentiary
 example item on the queue that **landed and drained 2026-07-15**
 (`SPEC/examples/genome-project.yaml` plus additive E1–E9 evidence, the seven
-protected boundaries held as empty diffs) and is now ready for its
-implementation close review; Level 2 (durable exported-log records) is deferred
-under the persistence gate; and Level 3 (operative governance) is deferred to
-Phase 6. Phase 4 remains unopened; no Phase 4 work is authorized without its
-own RFC and ratification.
+protected boundaries held as empty diffs) and was **closed complete 2026-07-18**
+(Option A, `docs/reviews/rfc-0008-implementation-close-review.md`); Level 2
+(durable exported-log records) is deferred under the persistence gate; and Level
+3 (operative governance) is deferred to Phase 6. With RFC-0008 closed, **no
+implementation objective is active**. Phase 4 remains unopened; no Phase 4 work
+is authorized without its own RFC and ratification.
 
 ## Active Architectural Decision
 
@@ -140,23 +145,18 @@ Describe a company once. Compile it into an autonomous organization.
 
 ## Next Expected Deliverable
 
-The **RFC-0008 implementation close review** — the Board's ratification that the
-shipped `SPEC/examples/genome-project.yaml` and its E1–E9 evidence meet the
-accepted Definition of Done, mirroring the RFC-0007 closure precedent
-(`docs/reviews/rfc-0007-implementation-close-review.md`) — is the next expected
-deliverable. That close-review record is now **prepared and pending Product
-Owner ratification** (`docs/reviews/rfc-0008-implementation-close-review.md`):
-the Board re-executed the accepted evidence at merged `main` and recommends
-Option A (close as implemented), but **applies nothing** — RFC-0008 remains
-**not yet closed** and absent from the Completed RFCs table until ratification.
-The implementation itself is **complete and drained** (2026-07-15,
-`RFC/0008-self-hosting-example.md`, `docs/reviews/rfc-0008-board-review.md`):
-the structure-only example ships with agent-scoped `queue-discipline`, a
-top-of-file non-normative marking, the seven protected boundaries held as empty
-diffs, uncached E1–E9 evidence, and no language/schema/compiler/runtime/CLI/
-test-contract change beyond the additive cases. The Phase 4 opening RFC follows
-per the adopted Option A sequencing (`docs/PRODUCT_STRATEGY.md`) and remains
-uncommissioned.
+With **RFC-0008 closed complete 2026-07-18**
+(`docs/reviews/rfc-0008-implementation-close-review.md`, Option A), no
+governance close-out is pending and no implementation objective is active. Under
+the adopted Option A sequencing (`docs/PRODUCT_STRATEGY.md`) the **Phase 4
+opening RFC** follows, but it remains **uncommissioned**: the Product Owner is
+weighing strategic reconsideration ahead of it (an accepted Board strategic
+report recommends extending the Phase 4 opening milestone from "edit-and-see" to
+"governed authoring" and revisiting roadmap sequencing). A Phase 4 Planning
+Packet amendment and a separate roadmap revision proposal are anticipated under
+separate Product Owner authorization before the opening RFC is commissioned.
+Phase 4 stays positioned but unopened; opening it requires its own RFC, Board
+review, and ratification (Governance Rule 2).
 
 ## Completed RFCs
 
@@ -168,6 +168,7 @@ uncommissioned.
 | RFC-0005 — Genome Diff | Accepted 2026-07-13, `docs/reviews/RFC-0005-board-decision.md` | `docs/adr/0006-genome-diff-contract.md` | Drained |
 | RFC-0006 — Reference Adapter & `genome run` | Accepted 2026-07-13 (Option B), `docs/reviews/rfc-0006-board-review.md`; case-4 erratum applied 2026-07-13 per the Phase 3 close review | `docs/adr/0008-reference-execution-contract.md` | Drained |
 | RFC-0007 — Executor-Scoped Policies | Accepted 2026-07-14 (Option A, five amendments applied), `docs/reviews/rfc-0007-board-review.md`; closed complete 2026-07-15, `docs/reviews/rfc-0007-implementation-close-review.md` | `docs/adr/0009-participation-scoped-policies.md` | Drained (closed 2026-07-15) |
+| RFC-0008 — Self-Hosting Example | Accepted 2026-07-15 (Option B), `docs/reviews/rfc-0008-board-review.md`; closed complete 2026-07-18, `docs/reviews/rfc-0008-implementation-close-review.md` | None required | Drained (closed 2026-07-18) |
 
 Definition-of-Done evidence for each lives in its board decision document.
 One evidence gap found by the 2026-07-13 audit is now closed: the RFC-0005
