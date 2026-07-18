@@ -64,10 +64,12 @@ no exported-log reader and no persistence). E1–E9 pass uncached at the CLI
 boundary; the example doubles as a standing regression witness for RFC-0007
 participation binding (E3/E7). RFC-0008 was **closed complete 2026-07-18**
 (Option A, `docs/reviews/rfc-0008-implementation-close-review.md`). No
-implementation milestone is active; the active governance milestone is the
-**Architecture Board review of the `RFC/0009-phase-4-governed-authoring.md`
-Draft** — the commissioned Phase 4 opening RFC (Governed Authoring, Milestone 1)
-— which opens Phase 4 only on Board acceptance and Product Owner ratification.
+implementation milestone is active; the active governance milestone is
+**Product Owner ratification of `RFC/0009-phase-4-governed-authoring.md`** — the
+commissioned Phase 4 opening RFC (Governed Authoring, Milestone 1) — following
+the Architecture Board review held 2026-07-18
+(`docs/reviews/rfc-0009-board-review.md`, recommend Option B). Phase 4 opens only
+on that ratification.
 The prior RFC-0007 queue item was **implemented, drained, and closed**
 (2026-07-15) by the Board's implementation closure review
 (`docs/reviews/rfc-0007-implementation-close-review.md`, Option A).
@@ -117,9 +119,13 @@ ratification.
 
 **One open: `RFC/0009-phase-4-governed-authoring.md` (Draft, 2026-07-18).** The
 commissioned Phase 4 opening RFC defines the Studio boundary (strategy move A3)
-and scopes the Governed Authoring Milestone 1; it is under Architecture Board
-review and awaits Product Owner ratification. Its acceptance would open Phase 4
-for Milestone 1 only. RFC-0007 was decided 2026-07-14 (Option A ratified,
+and scopes the Governed Authoring Milestone 1. The Architecture Board review has
+been **held (2026-07-18, `docs/reviews/rfc-0009-board-review.md`)**: every
+material claim re-executed uncached and confirmed, and the Board **recommends
+Option B — accept with four clarifying amendments** (scope, canonical demo,
+evidence set, and protected boundaries unchanged), **awaiting Product Owner
+ratification**. Its acceptance (Option A or B) would open Phase 4 for Milestone 1
+only. RFC-0007 was decided 2026-07-14 (Option A ratified,
 `docs/reviews/rfc-0007-board-review.md`; ADR-0009). The Board's
 Language Complexity Budget recommendation is recorded as non-binding
 review guidance only (Product Owner disposition, 2026-07-14) — not a
@@ -157,7 +163,9 @@ None.
   2026-07-18 (`docs/reviews/phase-4-planning-packet-amendment.md`, Option A);
   product input only, phase not opened
 - Phase 4 opening RFC: 🚧 Draft — `RFC/0009-phase-4-governed-authoring.md`,
-  commissioned 2026-07-18, under Architecture Board review
+  commissioned 2026-07-18; Architecture Board review held 2026-07-18
+  (`docs/reviews/rfc-0009-board-review.md`, recommend Option B — accept with
+  amendments), awaiting Product Owner ratification
 - Specification-maintenance mechanism: ✅ established — erratum registry
   adopted 2026-07-15 (`docs/adr/0010-erratum-mechanism.md`, `docs/ERRATA.md`)
 
@@ -188,10 +196,12 @@ Planning Packet amendment adopting **Governed Authoring** and the separate
 **roadmap revision proposal** adopting **Option B — Autonomy First** are both
 merged and disposed (2026-07-18). Under the adopted Option A sequencing
 (`docs/PRODUCT_STRATEGY.md`) the **Phase 4 opening RFC** has now been
-commissioned and drafted as `RFC/0009-phase-4-governed-authoring.md` (Draft).
-The next expected deliverable is therefore the **Architecture Board review of
-RFC-0009 and its Product Owner ratification**; ratification would open Phase 4
-for the Governed Authoring Milestone 1 only and add one implementation item to
+commissioned and drafted as `RFC/0009-phase-4-governed-authoring.md` (Draft), and
+the Architecture Board review has been held (2026-07-18,
+`docs/reviews/rfc-0009-board-review.md`, recommend Option B — accept with
+amendments). The next expected deliverable is therefore the **Product Owner
+ratification of RFC-0009**; ratification (Option A or B) would open Phase 4 for
+the Governed Authoring Milestone 1 only and add one implementation item to
 `IMPLEMENTATION_QUEUE.md`. Until then Phase 4 stays positioned but unopened, and
 opening it requires that RFC's acceptance and ratification (Governance Rule 2).
 Re-sequencing `ROADMAP.md` per adopted Option B remains a separate ratified act,
