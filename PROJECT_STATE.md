@@ -8,21 +8,20 @@ Consistency with the repository is checked by `pnpm check-state` in CI.
 
 ## Current Phase
 
-Phase 4 — Studio Prototype (named as next; **not started**). Phases 0–3
-are closed: Phases 0–2 by the 2026-07-13 phase transition review
-(`docs/reviews/phase-0-3-board-review.md`), Phase 3 by the Phase 3 close
-review the same day (`docs/reviews/phase-3-close-board-review.md`,
+Phase 4 — Studio Prototype: **Open for Milestone 1 — Governed Authoring — only**
+(opened 2026-07-18). Phases 0–3 are closed: Phases 0–2 by the 2026-07-13 phase
+transition review (`docs/reviews/phase-0-3-board-review.md`), Phase 3 by the
+Phase 3 close review the same day (`docs/reviews/phase-3-close-board-review.md`,
 Option B ratified by the Product Owner) on CLI-boundary evidence, with
-the RFC-0006 case-4 erratum applied first. Naming Phase 4 as current is
-a statement of position, not a work authorization: opening Phase 4
-requires its own RFC, Architecture Board review, and Product Owner
-ratification (Governance Rule 2). That opening RFC has now been
-**commissioned and drafted** as `RFC/0009-phase-4-governed-authoring.md`
-(Draft, 2026-07-18), which would open Phase 4 for its Governed Authoring
-Milestone 1 only — but **drafting opens nothing**: Phase 4 stays
-positioned-but-unopened until the RFC is accepted by the Board and
-ratified by the Product Owner. Event persistence remains assigned to
-a later phase, gated on the first consumer requiring a durable log.
+the RFC-0006 case-4 erratum applied first. Phase 4 was opened by the acceptance
+and Product Owner ratification of `RFC/0009-phase-4-governed-authoring.md`
+(**Accepted 2026-07-18 under Option B** — accept with four clarifying amendments
+applied; Board review `docs/reviews/rfc-0009-board-review.md`, Product Owner
+ratification recorded there; Governance Rule 2). The opening authorizes
+**Milestone 1 (Governed Authoring) only**; the remaining Phase 4 deliverable that
+carries an architecture gate (durable runtime logs) stays a later milestone,
+unopened. Event persistence remains assigned to a later phase, gated on the first
+consumer requiring a durable log.
 
 ## Current Iteration
 
@@ -44,12 +43,13 @@ E1–E9 pass uncached at the CLI boundary, and the seven protected boundaries
 held as empty diffs. RFC-0008 was **closed complete 2026-07-18** by the Board's
 implementation closure review (Option A,
 `docs/reviews/rfc-0008-implementation-close-review.md`, Product Owner
-ratification) on evidence re-executed uncached at merged `main`. No
-implementation iteration is active. The Phase 4 opening RFC has been
-**commissioned and drafted** (2026-07-18) as
-`RFC/0009-phase-4-governed-authoring.md` (Draft, awaiting Board review and
-Product Owner ratification); no implementation item enters
-`IMPLEMENTATION_QUEUE.md` unless and until that RFC is ratified.
+ratification) on evidence re-executed uncached at merged `main`. The Phase 4
+opening RFC `RFC/0009-phase-4-governed-authoring.md` was **accepted 2026-07-18
+under Option B** (`docs/reviews/rfc-0009-board-review.md`, Product Owner
+ratification), opening Phase 4 for Milestone 1 and adding exactly one engineering
+item to `IMPLEMENTATION_QUEUE.md` — the **Studio Milestone 1 — Governed
+Authoring** implementation (Not Started). The current implementation iteration is
+that Milestone-1 item; no Studio code has yet been written.
 
 ## Current Milestone
 
@@ -63,13 +63,19 @@ compiler-production, runtime-production, CLI-surface, and event-taxonomy, plus
 no exported-log reader and no persistence). E1–E9 pass uncached at the CLI
 boundary; the example doubles as a standing regression witness for RFC-0007
 participation binding (E3/E7). RFC-0008 was **closed complete 2026-07-18**
-(Option A, `docs/reviews/rfc-0008-implementation-close-review.md`). No
-implementation milestone is active; the active governance milestone is
-**Product Owner ratification of `RFC/0009-phase-4-governed-authoring.md`** — the
-commissioned Phase 4 opening RFC (Governed Authoring, Milestone 1) — following
-the Architecture Board review held 2026-07-18
-(`docs/reviews/rfc-0009-board-review.md`, recommend Option B). Phase 4 opens only
-on that ratification.
+(Option A, `docs/reviews/rfc-0008-implementation-close-review.md`). The active
+milestone is now **Studio Milestone 1 — Governed Authoring**, authorized by the
+acceptance of `RFC/0009-phase-4-governed-authoring.md` (Option B, 2026-07-18) and
+queued as a single Not-Started item in `IMPLEMENTATION_QUEUE.md`. Its scope is
+fixed by the accepted (amended) RFC: a Studio surface providing a code editor,
+inline validation, a live Organization Graph, an organization tree, ephemeral
+governed execution, a live session event stream, deny-safe park, explicit grant,
+attributed approval, and completion — demonstrated on
+`SPEC/examples/genome-project.yaml` via `rfc-lifecycle` — built strictly as a
+projection/interaction layer (Principle 5) with the nine protected boundaries
+held. Close requires uncached executable conformance **and** a recorded
+reviewer-walkthrough product-acceptance record (RFC-0009 §14, Amendment 4). No
+Studio code has yet been written.
 The prior RFC-0007 queue item was **implemented, drained, and closed**
 (2026-07-15) by the Board's implementation closure review
 (`docs/reviews/rfc-0007-implementation-close-review.md`, Option A).
@@ -108,24 +114,31 @@ Authoring** was adopted as Phase 4's planned opening experience
 (`docs/proposals/roadmap-revision.md`), keeping Phase 4 next and opening with
 Governed Authoring, then prioritizing the autonomy spine ahead of a standalone
 Office View phase. Neither disposition opened a phase, commissioned an RFC, added
-a queue item, or modified `ROADMAP.md`/`docs/PRODUCT_STRATEGY.md`. With RFC-0008
-closed, **no implementation objective is active**; the current objective is to
-carry the commissioned `RFC/0009-phase-4-governed-authoring.md` Draft through
-Architecture Board review toward Product Owner ratification. Phase 4 remains
-unopened; no Phase 4 work is authorized without that RFC's acceptance and
-ratification.
+a queue item, or modified `ROADMAP.md`/`docs/PRODUCT_STRATEGY.md`. On that basis
+the **Phase 4 opening RFC** `RFC/0009-phase-4-governed-authoring.md` was
+commissioned, drafted, Board-reviewed, and **accepted 2026-07-18 under Option B**
+(accept with four clarifying amendments applied;
+`docs/reviews/rfc-0009-board-review.md`, Product Owner ratification). That
+acceptance **opened Phase 4 for Milestone 1 — Governed Authoring — only** and
+added one implementation item to `IMPLEMENTATION_QUEUE.md`. **The current
+objective is to implement Studio Milestone 1 (Governed Authoring)** to the
+accepted RFC's Definition of Done — a projection/interaction layer over the
+shipped compiler targets and the ephemeral runtime event stream (Principle 5),
+with the nine protected boundaries held and a recorded product-acceptance
+walkthrough required to close. No Studio code has yet been written; only
+Milestone 1 is authorized. Re-sequencing `ROADMAP.md` per adopted Option B
+remains a separate ratified act, not yet performed.
 
 ## Active Architectural Decision
 
-**One open: `RFC/0009-phase-4-governed-authoring.md` (Draft, 2026-07-18).** The
-commissioned Phase 4 opening RFC defines the Studio boundary (strategy move A3)
-and scopes the Governed Authoring Milestone 1. The Architecture Board review has
-been **held (2026-07-18, `docs/reviews/rfc-0009-board-review.md`)**: every
-material claim re-executed uncached and confirmed, and the Board **recommends
-Option B — accept with four clarifying amendments** (scope, canonical demo,
-evidence set, and protected boundaries unchanged), **awaiting Product Owner
-ratification**. Its acceptance (Option A or B) would open Phase 4 for Milestone 1
-only. RFC-0007 was decided 2026-07-14 (Option A ratified,
+None open. `RFC/0009-phase-4-governed-authoring.md` — the Phase 4 opening RFC
+defining the Studio boundary (strategy move A3) and scoping the Governed
+Authoring Milestone 1 — was **accepted 2026-07-18 under Option B** (accept with
+four clarifying amendments applied; `docs/reviews/rfc-0009-board-review.md`, every
+material claim re-executed uncached and confirmed, Product Owner ratification
+recorded there). Its acceptance opened Phase 4 for Milestone 1 only; no ADR is
+required (the RFC decides a view boundary and makes no language/compiler/runtime
+change). RFC-0007 was decided 2026-07-14 (Option A ratified,
 `docs/reviews/rfc-0007-board-review.md`; ADR-0009). The Board's
 Language Complexity Budget recommendation is recorded as non-binding
 review guidance only (Product Owner disposition, 2026-07-14) — not a
@@ -138,8 +151,8 @@ specification-maintenance proposal (`docs/reviews/phase-3-close-packet.md`,
 1–3 adoption recommendations (`docs/proposals/self-hosting.md`) are disposed
 severably — Level 1 commissioned, drafted, and accepted as
 `RFC/0008-self-hosting-example.md` (Option B, 2026-07-15), Level 2 deferred
-under the persistence gate, Level 3 deferred to Phase 6. The only open
-architectural decision is the RFC-0009 Draft noted above.
+under the persistence gate, Level 3 deferred to Phase 6. No architectural
+decision is open; RFC-0009 is decided (accepted) as noted above.
 
 ## Current Blockers
 
@@ -160,12 +173,13 @@ None.
   2026-07-18 (`docs/proposals/roadmap-revision.md`); strategic intent only,
   `ROADMAP.md` re-sequencing reserved as a separate ratified act (not yet done)
 - Phase 4 planned opening experience: ✅ adopted — Governed Authoring,
-  2026-07-18 (`docs/reviews/phase-4-planning-packet-amendment.md`, Option A);
-  product input only, phase not opened
-- Phase 4 opening RFC: 🚧 Draft — `RFC/0009-phase-4-governed-authoring.md`,
-  commissioned 2026-07-18; Architecture Board review held 2026-07-18
-  (`docs/reviews/rfc-0009-board-review.md`, recommend Option B — accept with
-  amendments), awaiting Product Owner ratification
+  2026-07-18 (`docs/reviews/phase-4-planning-packet-amendment.md`, Option A)
+- Phase 4 opening RFC: ✅ Accepted — `RFC/0009-phase-4-governed-authoring.md`,
+  Option B (accept with four amendments applied), 2026-07-18
+  (`docs/reviews/rfc-0009-board-review.md`, Product Owner ratification)
+- Phase 4: 🚧 **Open for Milestone 1 — Governed Authoring — only** (2026-07-18);
+  one Milestone-1 implementation item queued (Not Started); durable runtime logs
+  remain a later, unopened Phase 4 milestone
 - Specification-maintenance mechanism: ✅ established — erratum registry
   adopted 2026-07-15 (`docs/adr/0010-erratum-mechanism.md`, `docs/ERRATA.md`)
 
@@ -195,17 +209,19 @@ strategic reconsideration once anticipated here has been made: the Phase 4
 Planning Packet amendment adopting **Governed Authoring** and the separate
 **roadmap revision proposal** adopting **Option B — Autonomy First** are both
 merged and disposed (2026-07-18). Under the adopted Option A sequencing
-(`docs/PRODUCT_STRATEGY.md`) the **Phase 4 opening RFC** has now been
-commissioned and drafted as `RFC/0009-phase-4-governed-authoring.md` (Draft), and
-the Architecture Board review has been held (2026-07-18,
-`docs/reviews/rfc-0009-board-review.md`, recommend Option B — accept with
-amendments). The next expected deliverable is therefore the **Product Owner
-ratification of RFC-0009**; ratification (Option A or B) would open Phase 4 for
-the Governed Authoring Milestone 1 only and add one implementation item to
-`IMPLEMENTATION_QUEUE.md`. Until then Phase 4 stays positioned but unopened, and
-opening it requires that RFC's acceptance and ratification (Governance Rule 2).
-Re-sequencing `ROADMAP.md` per adopted Option B remains a separate ratified act,
-not yet performed.
+(`docs/PRODUCT_STRATEGY.md`) the **Phase 4 opening RFC**
+`RFC/0009-phase-4-governed-authoring.md` was commissioned, drafted,
+Board-reviewed, and **accepted 2026-07-18 under Option B**
+(`docs/reviews/rfc-0009-board-review.md`, Product Owner ratification), which
+**opened Phase 4 for Milestone 1 — Governed Authoring — only** and added one
+implementation item to `IMPLEMENTATION_QUEUE.md`. The next expected deliverable
+is therefore the **implementation of Studio Milestone 1 (Governed Authoring)** to
+the accepted RFC's Definition of Done, followed by its Board implementation close
+review — which requires both uncached executable conformance and a recorded
+product-acceptance walkthrough (RFC-0009 §14). Only Milestone 1 is authorized;
+durable runtime logs remain a later, unopened Phase 4 milestone. Re-sequencing
+`ROADMAP.md` per adopted Option B remains a separate ratified act, not yet
+performed.
 
 ## Completed RFCs
 

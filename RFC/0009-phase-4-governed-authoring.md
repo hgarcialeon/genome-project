@@ -2,23 +2,35 @@
 
 ## Status
 
-**Draft.** Commissioned 2026-07-18 by the Product Owner as the Phase 4 opening
-RFC, following the closed RFC-0008 (`docs/reviews/rfc-0008-implementation-close-review.md`,
-Option A) per adopted strategy Option A sequencing (`docs/PRODUCT_STRATEGY.md`
-§7). This draft is submitted for Architecture Board review and Product Owner
-ratification.
+**Accepted — Option B (accept with amendments), Product Owner, 2026-07-18.**
+Commissioned 2026-07-18 by the Product Owner as the Phase 4 opening RFC,
+following the closed RFC-0008
+(`docs/reviews/rfc-0008-implementation-close-review.md`, Option A) per adopted
+strategy Option A sequencing (`docs/PRODUCT_STRATEGY.md` §7). Reviewed by the
+Architecture Board 2026-07-18 (`docs/reviews/rfc-0009-board-review.md`), which
+re-executed every material claim uncached and recommended **Option B — accept
+with four clarifying amendments**. The Product Owner ratified Option B
+2026-07-18; the four amendments are applied in this document (ephemeral session
+boundary as the normative invariant — §4; additive public application interfaces
+permitted and not counted as semantic changes — §4/§11; `runtimeModelTarget`
+named in the compiler-integration section — §5; product-acceptance evidence
+classed as a recorded reviewer walkthrough, not a CI gate — §10.1/§14). The
+amendments change no milestone scope, no canonical demo, no evidence case, and no
+protected boundary. The Board's resolutions of the six open questions (§15) are
+recorded in the review and are binding as classified there.
 
-**Drafting this RFC opens nothing.** Phase 4 is currently *positioned but
-unopened* (`PROJECT_STATE.md`; `ROADMAP.md`). Only **acceptance by the
-Architecture Board and ratification by the Product Owner** authorize opening
-Phase 4, and then **for Milestone 1 (Governed Authoring) only**. Implementation
-begins only after that acceptance; no implementation is performed or authorized
-by this document, and no `IMPLEMENTATION_QUEUE.md` item is added until the RFC is
-ratified.
+**Acceptance opens Phase 4 for Milestone 1 (Governed Authoring) only.** As of
+this ratification, Phase 4 is **Open for Milestone 1** (`PROJECT_STATE.md`), and
+exactly one Milestone-1 implementation item is added to
+`IMPLEMENTATION_QUEUE.md`. No Studio code is implemented by this acceptance; the
+remaining Phase 4 deliverable that carries an architecture gate (durable runtime
+logs) stays a later milestone (§12), unopened and undesigned here.
 
 This RFC **defines the Studio boundary and scopes the first Phase 4 milestone.
-It implements nothing** and authorizes no language, schema, compiler, runtime,
-or CLI change.
+Acceptance authorizes implementation of Milestone 1 only** and authorizes no
+language, schema, compiler-semantic, runtime-semantic, or event-taxonomy change
+(§11). The Language Complexity Budget (§16) remains non-binding review evidence
+and guidance; this acceptance does not promote it to a standing requirement.
 
 ## Commissioning and authority
 
@@ -169,24 +181,36 @@ the view.
 
 ## 4. Runtime integration
 
-**Authorized for Milestone 1: ephemeral, in-process execution only.** Studio
-invokes the runtime in the same process as the authoring session and subscribes
-to the live event stream; it persists nothing.
+**Authorized for Milestone 1: ephemeral, session-scoped execution.** *(Amendment
+1 — Board review, ratified Option B 2026-07-18.)* The **normative invariant is
+the ephemeral session boundary**, not the process topology: execution state and
+events are session-scoped and may be discarded when the session ends, no durable
+history is promised, no exported-log reader is introduced, and no persistence
+gate is crossed. **"In-process" is the reference mechanism** — the natural way to
+achieve the invariant on the shipped stack, in which Studio invokes the runtime
+in the same process and subscribes to the live event stream — but it is **not** a
+required browser/process topology; the browser-only vs. local-companion choice is
+an implementation matter (§15, OQ1) provided the invariant below holds.
 
-Definitions (binding for this milestone):
+The accepted invariant (binding for this milestone):
 
-- The event stream exists **only for the active Studio session**.
-- Refresh or close **may discard** it; nothing is retained.
-- **No durable history is promised** by this surface.
-- **No exported-log reader is introduced** — no shipped code path reads a
-  committed or exported NDJSON log.
-- **No persistence gate is crossed** — the ephemeral, in-process variant is the
-  exact form the planning packet and strategy identify as *not* tripping the
-  persistence gate (`docs/reviews/phase-4-planning-packet.md`, "The runtime-logs
-  gate"; `docs/PRODUCT_STRATEGY.md` §6.2 C4). A durable/exported-log reader is a
+- execution state and events are **session-scoped**;
+- they **may be discarded when the session ends** (e.g. on refresh or close);
+  nothing is retained;
+- **no durable history is promised** by this surface;
+- **no exported-log reader is introduced** — no shipped code path reads a
+  committed or exported NDJSON log;
+- **no persistence gate is crossed** — the ephemeral form is the exact variant
+  the planning packet and strategy identify as *not* tripping the persistence
+  gate (`docs/reviews/phase-4-planning-packet.md`, "The runtime-logs gate";
+  `docs/PRODUCT_STRATEGY.md` §6.2 C4). A durable/exported-log reader is a
   *different* capability and remains gated behind the event-persistence RFC (A5;
-  ADR-0008 §5; RFC-0008 "What this RFC authorizes and prohibits").
-- **No production path reads committed or exported NDJSON.**
+  ADR-0008 §5; RFC-0008 "What this RFC authorizes and prohibits");
+- **no production path reads committed or exported NDJSON.**
+
+Wherever ephemeral session state lives (browser tab, a local companion, or an
+application service), it must be **in-memory, session-scoped, and discardable**,
+and `state() == replay(log)` must hold **within the session** (§15, OQ3).
 
 **The exact accepted runtime surface Studio may consume.** The behavior Studio
 needs already ships and is regression-protected; Milestone 1 composes it exactly
@@ -211,17 +235,26 @@ injected `clock`) are **RFC-0004/ADR-0005 and must not change**. Studio consumes
 this surface; it does not reach around the adapter seam and does not reimplement
 any of it.
 
-**On new boundaries.** The premise of this milestone is that the shipped public
-exports above are **sufficient** to build ephemeral governed execution as a
-composition over them, with an empty runtime-semantics diff — the
-RFC-0006/0007/0008 precedent applied to a view. If, during Board review or
-implementation, an existing public boundary proves insufficient, this RFC allows
-proposing the **smallest possible new adapter/interface boundary** to expose
-already-accepted behavior — **but no change to runtime semantics** is permitted
-under it. Any need to change runtime semantics stops the work and returns to the
-Board (§11). Whether Studio consumes these packages directly or through a
-dedicated application service is an implementation-boundary question left open
-for the Board (§15), not a semantic change.
+**On new boundaries (Amendment 2 — Board review, ratified Option B 2026-07-18).**
+The premise of this milestone is that the shipped public exports above are
+**sufficient** to build ephemeral governed execution as a composition over them,
+with an empty runtime-semantics diff — the RFC-0006/0007/0008 precedent applied
+to a view. Direct package consumption is acceptable for this first consumer, and
+no heavier boundary is mandated (§15, OQ2). A **minimal Studio
+application-service seam, or thin re-exports of already-accepted compiler/runtime
+behavior, are permitted**, and such additive public application interfaces **do
+not count as language, compiler-semantic, runtime-semantic, schema, or
+event-taxonomy changes**, provided they:
+
+- add no new business semantics;
+- do not reinterpret existing compiler outputs or runtime events;
+- do not own policy or workflow decisions;
+- preserve the protected boundaries recorded in §11.
+
+**Any interface that changes semantics, events, persistence, or execution
+behavior must stop the work and return to the Architecture Board** (§11). Whether
+Studio consumes the packages directly or through such a seam is an
+implementation-boundary choice (§15, OQ2), not a semantic change.
 
 ## 5. Compiler integration
 
@@ -240,6 +273,13 @@ fixed set):
 - **Organization tree / inspect projection:** `inspectTarget(graph)` — the
   hierarchy-and-counts summary the CLI `genome inspect --json` surfaces, rendered
   as a secondary projection beside the graph.
+- **Runtime model:** `runtimeModelTarget(graph)` *(Amendment 3 — Board review,
+  ratified Option B 2026-07-18)* — the compiler-facing target that produces the
+  normative `RuntimeModel` (ADR-0005) the runtime consumes for the ephemeral
+  governed run (§4). It is a pure function of the Organization Graph and is named
+  here alongside the validation, graph, and inspect targets to list the full
+  compiler-target set the milestone uses; it introduces no compiler semantic
+  change.
 
 **No compiler semantic change is expected.** The graph and inspect projections
 already carry everything the milestone renders; the participation binding
@@ -399,6 +439,16 @@ These operationalize the "first five minutes" and failure modes in the planning
 packet and its amendment; a milestone that ships the features but earns none of
 these convictions has not shipped the product outcome.
 
+**This is product-acceptance evidence, not a CI gate (Amendment 4 — Board review,
+ratified Option B 2026-07-18).** Product acceptance is a **recorded reviewer
+walkthrough** against the six conclusions above — a human acceptance record — and
+is explicitly **not** a mechanical CI requirement and **not** subjective
+usability research. Repository health, unit tests, and CLI/executable
+conformance (§10.2) are **necessary but not sufficient** to close Milestone 1;
+the milestone close review must additionally include a recorded reviewer
+walkthrough covering the first-five-minutes experience and these product success
+criteria (§14).
+
 ### 10.2 Executable evidence
 
 At the appropriate boundary (compiler-target projections and the runtime
@@ -442,10 +492,19 @@ verifiable diff or absence:
 - **no trigger behavior** (explicit initiation only).
 
 **If implementation requires crossing any one of these boundaries, it must stop
-and return to the Architecture Board.** The narrow, Board-reviewable exception
-contemplated in §4 (the smallest new adapter/interface boundary exposing
-already-accepted runtime behavior, with **no** semantic change) is the only
-movement permitted without a return, and only if the Board approves it at review.
+and return to the Architecture Board.**
+
+**Additive public application interfaces are permitted and are not semantic
+changes (Amendment 2 — Board review, ratified Option B 2026-07-18).** A minimal
+Studio application-service seam, or thin re-exports of already-accepted
+compiler/runtime behavior (§4), do **not** count against the schema,
+language-semantic, compiler-semantic, runtime-semantic, or event-taxonomy
+boundaries above, **provided** they add no new business semantics, do not
+reinterpret existing compiler outputs or runtime events, do not own policy or
+workflow decisions, and preserve every protected boundary in this list. Any
+interface that changes semantics, events, persistence, or execution behavior is
+**not** covered by this allowance and must stop the work and return to the
+Architecture Board.
 
 ## 12. Milestone 2 (recorded, not designed)
 
@@ -531,12 +590,19 @@ runs):
 7. **No persistence behavior** — an explicit check that nothing durable is
    written or read by any shipped path.
 
-8. **Explicit product acceptance evidence** for the first-five-minutes journey
-   (§10.1) — recorded product-outcome evidence, not only a feature checklist.
+8. **Explicit product-acceptance evidence** for the first-five-minutes journey
+   (§10.1) — *(Amendment 4 — Board review, ratified Option B 2026-07-18)* a
+   **recorded reviewer walkthrough** covering the first-five-minutes experience
+   and the six product success criteria (§10.1), **not** a CI gate and **not**
+   subjective usability research. Items 1–7 (repository health, protected-boundary
+   evidence, executable conformance, and the canonical demonstration) are
+   **necessary but not sufficient** to close Milestone 1; the milestone close
+   review must additionally carry this recorded walkthrough.
 
 Done means: the milestone ships as a projection/interaction layer, the demo and
-projections are protected by uncached evidence, every §11 boundary held, and the
-state documents reconcile — with no language, schema, compiler-semantic,
+projections are protected by uncached evidence, every §11 boundary held, the
+recorded product-acceptance walkthrough is in the close review, and the state
+documents reconcile — with no language, schema, compiler-semantic,
 runtime-semantic, or event-taxonomy change.
 
 ## 15. Open questions for the Architecture Board

@@ -35,6 +35,7 @@ Claude Code or any engineering agent should consume this queue instead of acting
 | High | Self-hosting evidence classification (Board review + ratification) | `docs/proposals/self-hosting.md` | Architecture Board | Done |
 | High | RFC-0007 implementation: participation-binding derivation in `genome-compiler` + inert-policy diagnostic + `SPEC/language.md` Policy Scope wording + the nine amended evidence cases | RFC-0007 / ADR-0009 | Engineering | Done |
 | Medium | RFC-0008 implementation: the self-hosting example file SPEC/examples/genome-project.yaml (structure-only, agent-scoped `queue-discipline`, top-of-file non-normative marking) + additive CLI-boundary evidence E1–E9; seven protected boundaries held; state reconciled | RFC-0008 (`RFC/0008-self-hosting-example.md`) | Engineering | Done |
+| High | RFC-0009 Studio Milestone 1 — Governed Authoring: a Studio surface (code editor, inline validation, live Organization Graph, organization tree, ephemeral governed execution, live session event stream, deny-safe park, explicit grant, attributed approval, completion) built strictly as a projection/interaction layer over the shipped compiler targets (`compile`/`graphTarget`/`inspectTarget`/`runtimeModelTarget`) and the ephemeral in-process runtime event stream (`createRuntime`/`subscribe`, `@genome/adapter-reference`); canonical demo `SPEC/examples/genome-project.yaml` via `rfc-lifecycle`; nine protected boundaries held; close requires uncached executable conformance **and** a recorded product-acceptance walkthrough (RFC-0009 §14) | RFC-0009 (`RFC/0009-phase-4-governed-authoring.md`) | Engineering | Not Started |
 | Low | Office View prototype | Organization Graph | Office Team | Not Started |
 
 ## Current Engineering Rule
@@ -257,3 +258,37 @@ was **closed complete 2026-07-18** by the Board's implementation closure review
 (Option A, `docs/reviews/rfc-0008-implementation-close-review.md`, Product Owner
 ratification); the queue item remains Done and drained. Current state lives in
 `PROJECT_STATE.md`.
+
+RFC-0009 — Phase 4 Governed Authoring was **accepted 2026-07-18 under Option B**
+(accept with four clarifying amendments applied;
+`docs/reviews/rfc-0009-board-review.md`, Product Owner ratification;
+`RFC/0009-phase-4-governed-authoring.md`), which **opened Phase 4 for Milestone 1
+only** and added the one **Not Started** item above. Its scope is fixed by the
+accepted (amended) RFC: a Studio surface — code editor, inline validation, a live
+Organization Graph (the defining visualization), an organization tree, ephemeral
+governed execution, a live session event stream, deny-safe park, explicit grant,
+attributed approval, and completion — demonstrated on
+`SPEC/examples/genome-project.yaml` via the `rfc-lifecycle` workflow, built
+strictly as a projection/interaction layer that owns no business logic
+(Constitution Principle 5). It consumes only shipped surfaces: the compiler
+targets `compile` (diagnostics), `graphTarget`, `inspectTarget`, and
+`runtimeModelTarget`; and the runtime's ephemeral, in-process execution and
+append-only event stream via `createRuntime`/`subscribe` and
+`@genome/adapter-reference` (the reference adapter only — no provider precedent).
+The normative runtime invariant is the **ephemeral session boundary** (Amendment
+1): session-scoped state and events, discardable on session end, no durable
+history, no exported-log reader, no persistence gate crossed; "in-process" is the
+reference mechanism, not a required topology. Additive public application
+interfaces (a minimal Studio application-service seam or thin re-exports of
+already-accepted behavior) are permitted and do not count as
+semantic/schema/event changes provided they add no new semantics, reinterpret no
+outputs or events, own no policy or workflow decisions, and preserve the
+protected boundaries (Amendment 2). Acceptance requires the nine protected
+boundaries to hold (no schema, language-semantic, compiler-semantic,
+production-runtime-semantic, or event-taxonomy change; no durable-log reader; no
+persistence; no provider integration; no trigger behavior), all evidence
+uncached, and — beyond executable conformance and the canonical demo — a
+**recorded product-acceptance walkthrough** of the first-five-minutes experience
+and product success criteria to close (Amendment 4; RFC-0009 §14). Milestone 2
+(durable runtime logs) is not opened or designed; the adopted Option B autonomy
+spine is not commissioned. Current state lives in `PROJECT_STATE.md`.

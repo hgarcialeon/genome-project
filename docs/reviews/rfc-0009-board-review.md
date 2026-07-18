@@ -2,14 +2,17 @@
 
 ## Status
 
-**Draft Board review — recommendation recorded, awaiting Product Owner
-ratification.** This is the Phase 4 *opening* architecture review. The Board
-recommends **Option B — accept with amendments** (see "Decision options"). No
-option is applied here; Phase 4 is **not** opened, no queue item is added, and
-the RFC is **not** modified by this review. Ratification is the Product Owner's
-act.
+**Ratified — Option B (accept with amendments), Product Owner, 2026-07-18.** This
+is the Phase 4 *opening* architecture review. The Board recommended **Option B —
+accept with four clarifying amendments**; the Product Owner ratified Option B on
+2026-07-18. The four amendments have been applied to
+`RFC/0009-phase-4-governed-authoring.md`, which is now **Accepted**, and **Phase
+4 is Open for Milestone 1 (Governed Authoring) only**; exactly one Milestone-1
+implementation item has been added to `IMPLEMENTATION_QUEUE.md`. The Product
+Owner ratification record is at the end of this document; **the Board review
+below is preserved as written at review time.**
 
-Review held 2026-07-18.
+Review held 2026-07-18; ratified 2026-07-18.
 
 ## Instrument and scope
 
@@ -454,3 +457,77 @@ Until step 2, Phase 4 stays positioned-but-unopened and the queue gains nothing.
 - `PROJECT_STATE.md` is reconciled only to record that this Board review has been
   held and its recommendation stands pending ratification (Rule 8);
   `pnpm check-state` remains green.
+
+## Product Owner Ratification (2026-07-18)
+
+The Board review above is **preserved verbatim as recorded at review time**. On
+2026-07-18 the Product Owner **ratified Option B** and accepted RFC-0009 — Phase
+4 Governed Authoring with the four amendments exactly as recorded above, opening
+**Phase 4 for Milestone 1 — Governed Authoring — only** after the amendments are
+applied.
+
+**Recorded ratification (verbatim):**
+
+> As Product Owner, I ratify Option B for RFC-0009. Accept RFC-0009 with the four
+> amendments exactly as recorded in `docs/reviews/rfc-0009-board-review.md`. This
+> ratification opens Phase 4 for Milestone 1 — Governed Authoring — only after
+> the amendments are applied. Apply no design changes beyond those four
+> amendments.
+
+**The four amendments as ratified** (applied to
+`RFC/0009-phase-4-governed-authoring.md`; scope, canonical demo, evidence set,
+and protected boundaries unchanged):
+
+1. **Ephemeral session boundary.** The ephemeral session boundary is the
+   normative invariant; "in-process" remains the reference mechanism, not a
+   required browser/process topology. The accepted invariant: execution state and
+   events are session-scoped; they may be discarded when the session ends; no
+   durable history is promised; no exported-log reader is introduced; no
+   persistence gate is crossed. (RFC §4.)
+2. **Additive public application interfaces.** A minimal Studio
+   application-service seam or thin re-exports of already-accepted
+   compiler/runtime behavior are permitted and do **not** count as language,
+   compiler-semantic, runtime-semantic, schema, or event-taxonomy changes,
+   provided they add no new business semantics, do not reinterpret existing
+   outputs or events, do not own policy or workflow decisions, and preserve the
+   protected boundaries. Any interface that changes semantics, events,
+   persistence, or execution behavior must return to the Architecture Board.
+   (RFC §4, §11.)
+3. **Compiler integration.** `runtimeModelTarget` is named explicitly in the
+   compiler-integration section alongside the accepted validation, graph, and
+   inspect targets. (RFC §5.)
+4. **Product-acceptance evidence.** Product acceptance is a recorded reviewer
+   walkthrough, not a CI gate; repository health, unit tests, and CLI evidence are
+   necessary but not sufficient to close Milestone 1; the milestone close review
+   must include a recorded reviewer walkthrough covering the first-five-minutes
+   experience and the product success criteria. (RFC §10.1, §14.)
+
+**What this ratification does:**
+
+- **Accepts** RFC-0009 under Option B with the four amendments applied;
+  `RFC/0009-phase-4-governed-authoring.md` is marked **Accepted** with this review
+  and this ratification referenced.
+- **Opens Phase 4 for Milestone 1 (Governed Authoring) only** — recorded in
+  `PROJECT_STATE.md`.
+- **Adds exactly one accepted Milestone-1 implementation item** to
+  `IMPLEMENTATION_QUEUE.md`, scoped to the accepted RFC's Definition of Done.
+- **Preserves the adopted scope** (code editor; inline validation; live
+  Organization Graph; organization tree; ephemeral governed execution; live
+  session event stream; deny-safe park; explicit grant; attributed approval;
+  completion; canonical self-hosting demonstration) and **all exclusions** (no
+  durable logs; no exported-log reader; no persistence; no provider-specific
+  adapter; no trigger auto-initiation; no external side effects; no operative
+  repository governance; no branching or concurrency; no Office View; no
+  Marketplace; no simulation; no self-improvement).
+
+**What this ratification does not do:**
+
+- **Implements no Studio.** No Studio code, framework, process model, or transport
+  is created by this act; implementation follows from the queued Milestone-1 item.
+- **Modifies no `ROADMAP.md` or `docs/PRODUCT_STRATEGY.md`.** The Option B —
+  Autonomy First `ROADMAP.md` re-sequencing remains a separate ratified act.
+- **Changes no language, schema, compiler, runtime, CLI, event taxonomy, ADR, or
+  test.** The Language Complexity Budget remains non-binding review guidance and
+  is not promoted to a standing requirement by this step.
+
+`pnpm check-state` accompanies this change and remains green.
