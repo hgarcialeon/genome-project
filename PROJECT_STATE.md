@@ -1,6 +1,6 @@
 # Genome Project State
 
-Last Updated: 2026-07-15
+Last Updated: 2026-07-18
 
 This file is the **only** source for current project state (Governance
 Rule 8). Other documents point here; none may restate what this file owns.
@@ -16,7 +16,12 @@ Option B ratified by the Product Owner) on CLI-boundary evidence, with
 the RFC-0006 case-4 erratum applied first. Naming Phase 4 as current is
 a statement of position, not a work authorization: opening Phase 4
 requires its own RFC, Architecture Board review, and Product Owner
-ratification (Governance Rule 2). Event persistence remains assigned to
+ratification (Governance Rule 2). That opening RFC has now been
+**commissioned and drafted** as `RFC/0009-phase-4-governed-authoring.md`
+(Draft, 2026-07-18), which would open Phase 4 for its Governed Authoring
+Milestone 1 only — but **drafting opens nothing**: Phase 4 stays
+positioned-but-unopened until the RFC is accepted by the Board and
+ratified by the Product Owner. Event persistence remains assigned to
 a later phase, gated on the first consumer requiring a durable log.
 
 ## Current Iteration
@@ -40,8 +45,11 @@ held as empty diffs. RFC-0008 was **closed complete 2026-07-18** by the Board's
 implementation closure review (Option A,
 `docs/reviews/rfc-0008-implementation-close-review.md`, Product Owner
 ratification) on evidence re-executed uncached at merged `main`. No
-implementation iteration is active. The Phase 4 opening RFC remains
-uncommissioned.
+implementation iteration is active. The Phase 4 opening RFC has been
+**commissioned and drafted** (2026-07-18) as
+`RFC/0009-phase-4-governed-authoring.md` (Draft, awaiting Board review and
+Product Owner ratification); no implementation item enters
+`IMPLEMENTATION_QUEUE.md` unless and until that RFC is ratified.
 
 ## Current Milestone
 
@@ -55,10 +63,13 @@ compiler-production, runtime-production, CLI-surface, and event-taxonomy, plus
 no exported-log reader and no persistence). E1–E9 pass uncached at the CLI
 boundary; the example doubles as a standing regression witness for RFC-0007
 participation binding (E3/E7). RFC-0008 was **closed complete 2026-07-18**
-(Option A, `docs/reviews/rfc-0008-implementation-close-review.md`). No milestone
-is active and no governance close-out is pending. The prior RFC-0007 queue item
-was **implemented, drained, and closed** (2026-07-15) by the Board's
-implementation closure review
+(Option A, `docs/reviews/rfc-0008-implementation-close-review.md`). No
+implementation milestone is active; the active governance milestone is the
+**Architecture Board review of the `RFC/0009-phase-4-governed-authoring.md`
+Draft** — the commissioned Phase 4 opening RFC (Governed Authoring, Milestone 1)
+— which opens Phase 4 only on Board acceptance and Product Owner ratification.
+The prior RFC-0007 queue item was **implemented, drained, and closed**
+(2026-07-15) by the Board's implementation closure review
 (`docs/reviews/rfc-0007-implementation-close-review.md`, Option A).
 
 ## Current Objective
@@ -86,13 +97,29 @@ example item on the queue that **landed and drained 2026-07-15**
 protected boundaries held as empty diffs) and was **closed complete 2026-07-18**
 (Option A, `docs/reviews/rfc-0008-implementation-close-review.md`); Level 2
 (durable exported-log records) is deferred under the persistence gate; and Level
-3 (operative governance) is deferred to Phase 6. With RFC-0008 closed, **no
-implementation objective is active**. Phase 4 remains unopened; no Phase 4 work
-is authorized without its own RFC and ratification.
+3 (operative governance) is deferred to Phase 6. Two Product Owner product/
+strategy dispositions have since been recorded (both 2026-07-18): **Governed
+Authoring** was adopted as Phase 4's planned opening experience
+(`docs/reviews/phase-4-planning-packet-amendment.md`, Option A), superseding the
+2026-07-15 Candidate C — Edit-and-see disposition as the *planned* milestone; and
+**Option B — Autonomy First** was adopted as strategic sequencing direction
+(`docs/proposals/roadmap-revision.md`), keeping Phase 4 next and opening with
+Governed Authoring, then prioritizing the autonomy spine ahead of a standalone
+Office View phase. Neither disposition opened a phase, commissioned an RFC, added
+a queue item, or modified `ROADMAP.md`/`docs/PRODUCT_STRATEGY.md`. With RFC-0008
+closed, **no implementation objective is active**; the current objective is to
+carry the commissioned `RFC/0009-phase-4-governed-authoring.md` Draft through
+Architecture Board review toward Product Owner ratification. Phase 4 remains
+unopened; no Phase 4 work is authorized without that RFC's acceptance and
+ratification.
 
 ## Active Architectural Decision
 
-None open. RFC-0007 was decided 2026-07-14 (Option A ratified,
+**One open: `RFC/0009-phase-4-governed-authoring.md` (Draft, 2026-07-18).** The
+commissioned Phase 4 opening RFC defines the Studio boundary (strategy move A3)
+and scopes the Governed Authoring Milestone 1; it is under Architecture Board
+review and awaits Product Owner ratification. Its acceptance would open Phase 4
+for Milestone 1 only. RFC-0007 was decided 2026-07-14 (Option A ratified,
 `docs/reviews/rfc-0007-board-review.md`; ADR-0009). The Board's
 Language Complexity Budget recommendation is recorded as non-binding
 review guidance only (Product Owner disposition, 2026-07-14) — not a
@@ -105,8 +132,8 @@ specification-maintenance proposal (`docs/reviews/phase-3-close-packet.md`,
 1–3 adoption recommendations (`docs/proposals/self-hosting.md`) are disposed
 severably — Level 1 commissioned, drafted, and accepted as
 `RFC/0008-self-hosting-example.md` (Option B, 2026-07-15), Level 2 deferred
-under the persistence gate, Level 3 deferred to Phase 6. No architectural
-decision is open.
+under the persistence gate, Level 3 deferred to Phase 6. The only open
+architectural decision is the RFC-0009 Draft noted above.
 
 ## Current Blockers
 
@@ -123,6 +150,14 @@ None.
 - Mechanical state check: ✅ established (`scripts/check-state.mjs`, in CI)
 - Product Strategy: ✅ adopted — Option A, 2026-07-14
   (`docs/PRODUCT_STRATEGY.md`)
+- Strategic sequencing direction: ✅ adopted — Option B "Autonomy First",
+  2026-07-18 (`docs/proposals/roadmap-revision.md`); strategic intent only,
+  `ROADMAP.md` re-sequencing reserved as a separate ratified act (not yet done)
+- Phase 4 planned opening experience: ✅ adopted — Governed Authoring,
+  2026-07-18 (`docs/reviews/phase-4-planning-packet-amendment.md`, Option A);
+  product input only, phase not opened
+- Phase 4 opening RFC: 🚧 Draft — `RFC/0009-phase-4-governed-authoring.md`,
+  commissioned 2026-07-18, under Architecture Board review
 - Specification-maintenance mechanism: ✅ established — erratum registry
   adopted 2026-07-15 (`docs/adr/0010-erratum-mechanism.md`, `docs/ERRATA.md`)
 
@@ -147,16 +182,20 @@ Describe a company once. Compile it into an autonomous organization.
 
 With **RFC-0008 closed complete 2026-07-18**
 (`docs/reviews/rfc-0008-implementation-close-review.md`, Option A), no
-governance close-out is pending and no implementation objective is active. Under
-the adopted Option A sequencing (`docs/PRODUCT_STRATEGY.md`) the **Phase 4
-opening RFC** follows, but it remains **uncommissioned**: the Product Owner is
-weighing strategic reconsideration ahead of it (an accepted Board strategic
-report recommends extending the Phase 4 opening milestone from "edit-and-see" to
-"governed authoring" and revisiting roadmap sequencing). A Phase 4 Planning
-Packet amendment and a separate roadmap revision proposal are anticipated under
-separate Product Owner authorization before the opening RFC is commissioned.
-Phase 4 stays positioned but unopened; opening it requires its own RFC, Board
-review, and ratification (Governance Rule 2).
+governance close-out is pending and no implementation objective is active. The
+strategic reconsideration once anticipated here has been made: the Phase 4
+Planning Packet amendment adopting **Governed Authoring** and the separate
+**roadmap revision proposal** adopting **Option B — Autonomy First** are both
+merged and disposed (2026-07-18). Under the adopted Option A sequencing
+(`docs/PRODUCT_STRATEGY.md`) the **Phase 4 opening RFC** has now been
+commissioned and drafted as `RFC/0009-phase-4-governed-authoring.md` (Draft).
+The next expected deliverable is therefore the **Architecture Board review of
+RFC-0009 and its Product Owner ratification**; ratification would open Phase 4
+for the Governed Authoring Milestone 1 only and add one implementation item to
+`IMPLEMENTATION_QUEUE.md`. Until then Phase 4 stays positioned but unopened, and
+opening it requires that RFC's acceptance and ratification (Governance Rule 2).
+Re-sequencing `ROADMAP.md` per adopted Option B remains a separate ratified act,
+not yet performed.
 
 ## Completed RFCs
 
