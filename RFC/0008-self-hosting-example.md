@@ -2,7 +2,13 @@
 
 ## Status
 
-**Accepted — 2026-07-15.**
+**Accepted — implemented and closed.** Accepted 2026-07-15 (Option B);
+implementation merged to `main` at `3eb12aa` (example commit `f07e5f3`);
+**closed complete 2026-07-18** by the Board's implementation closure review
+(`docs/reviews/rfc-0008-implementation-close-review.md`, Option A ratified by
+the Product Owner) on re-executed uncached evidence — the shipped
+`SPEC/examples/genome-project.yaml` byte-identical to the appendix below, E1–E9
+green at the CLI boundary, and all seven protected boundaries empty.
 
 Accepted under **Option B** (accept with amendments) by the Architecture
 Board's review (`docs/reviews/rfc-0008-board-review.md`), ratified by the

@@ -253,5 +253,7 @@ retired. The seven protected boundaries held with empty diffs: no change to
 `packages/genome-runtime/src`, `packages/genome-cli/src/index.ts`, or the event
 taxonomy; no exported-log reader; no persistence. The only production diff is
 the one example file; the only test diff is the additive E1–E9 block. RFC-0008
-is ready for its implementation close review (the RFC-0007 closure precedent);
-current state lives in `PROJECT_STATE.md`.
+was **closed complete 2026-07-18** by the Board's implementation closure review
+(Option A, `docs/reviews/rfc-0008-implementation-close-review.md`, Product Owner
+ratification); the queue item remains Done and drained. Current state lives in
+`PROJECT_STATE.md`.
