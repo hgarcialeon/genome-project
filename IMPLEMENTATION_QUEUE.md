@@ -35,7 +35,7 @@ Claude Code or any engineering agent should consume this queue instead of acting
 | High | Self-hosting evidence classification (Board review + ratification) | `docs/proposals/self-hosting.md` | Architecture Board | Done |
 | High | RFC-0007 implementation: participation-binding derivation in `genome-compiler` + inert-policy diagnostic + `SPEC/language.md` Policy Scope wording + the nine amended evidence cases | RFC-0007 / ADR-0009 | Engineering | Done |
 | Medium | RFC-0008 implementation: the self-hosting example file SPEC/examples/genome-project.yaml (structure-only, agent-scoped `queue-discipline`, top-of-file non-normative marking) + additive CLI-boundary evidence E1–E9; seven protected boundaries held; state reconciled | RFC-0008 (`RFC/0008-self-hosting-example.md`) | Engineering | Done |
-| High | RFC-0009 Studio Milestone 1 — Governed Authoring: a Studio surface (code editor, inline validation, live Organization Graph, organization tree, ephemeral governed execution, live session event stream, deny-safe park, explicit grant, attributed approval, completion) built strictly as a projection/interaction layer over the shipped compiler targets (`compile`/`graphTarget`/`inspectTarget`/`runtimeModelTarget`) and the ephemeral in-process runtime event stream (`createRuntime`/`subscribe`, `@genome/adapter-reference`); canonical demo `SPEC/examples/genome-project.yaml` via `rfc-lifecycle`; nine protected boundaries held; close requires uncached executable conformance **and** a recorded product-acceptance walkthrough (RFC-0009 §14) | RFC-0009 (`RFC/0009-phase-4-governed-authoring.md`) | Engineering | Not Started |
+| High | RFC-0009 Studio Milestone 1 — Governed Authoring: a Studio surface (code editor, inline validation, live Organization Graph, organization tree, ephemeral governed execution, live session event stream, deny-safe park, explicit grant, attributed approval, completion) built strictly as a projection/interaction layer over the shipped compiler targets (`compile`/`graphTarget`/`inspectTarget`/`runtimeModelTarget`) and the ephemeral in-process runtime event stream (`createRuntime`/`subscribe`, `@genome/adapter-reference`); canonical demo `SPEC/examples/genome-project.yaml` via `rfc-lifecycle`; nine protected boundaries held; close requires uncached executable conformance **and** a recorded product-acceptance walkthrough (RFC-0009 §14); acceptance floor for this item — WCAG 2.2 AA, browser-first topology behind a compatibility spike, direct package consumption — recorded under "Milestone-1 acceptance floor" below | RFC-0009 (`RFC/0009-phase-4-governed-authoring.md`) | Engineering | Not Started |
 | Low | Office View prototype | Organization Graph | Office Team | Not Started |
 
 ## Current Engineering Rule
@@ -292,3 +292,50 @@ uncached, and — beyond executable conformance and the canonical demo — a
 and product success criteria to close (Amendment 4; RFC-0009 §14). Milestone 2
 (durable runtime logs) is not opened or designed; the adopted Option B autonomy
 spine is not commissioned. Current state lives in `PROJECT_STATE.md`.
+
+### Milestone-1 acceptance floor (Product Owner disposition, 2026-09-12)
+
+Recorded here, on the authorized item, because RFC-0009 delegates the concrete
+accessibility target to item acceptance (Board resolution of open question 6)
+and leaves topology and consumption pattern as implementation choices (open
+questions 1–3). This disposition fixes them for Milestone 1 only. It changes no
+RFC, opens no milestone, and adds no deliverable: every RFC-0009 protected
+boundary and Definition-of-Done item stands unchanged.
+
+**Accessibility target — WCAG 2.2 AA** for the Studio surface. This is a
+product acceptance target, **not** a claim of formal external certification. At
+minimum, Milestone-1 acceptance must demonstrate:
+
+- keyboard operability for all essential interactions;
+- visible focus;
+- accessible names/labels for interactive controls;
+- AA contrast for essential UI and state indicators;
+- diagnostics and errors programmatically associated with the relevant content;
+- no essential interaction requiring pointer-only input.
+
+**Topology — browser-first.** Before substantive UI work, a minimal
+compatibility spike must prove the accepted surfaces are consumable in a browser
+application: `@genome/compiler` (including `graphTarget`, `inspectTarget`, and
+`runtimeModelTarget`), `@genome/runtime` (`createRuntime`/`subscribe`), and
+`@genome/adapter-reference`. The spike must not change compiler or runtime
+semantics, add persistence, introduce a server merely to bypass a browser
+incompatibility, or fork/reproduce Genome semantics in the UI. If browser
+consumption is blocked by a concrete dependency or runtime assumption, work
+stops and the exact incompatibility is reported before any local-companion
+topology is chosen. Browser-first is an implementation choice, not a new
+language or architecture contract.
+
+**Consumption — direct package consumption** for this first Studio consumer. No
+Studio application-service layer is introduced preemptively; a thin additive
+boundary may follow later only on a demonstrated consumer need and only within
+RFC-0009 Amendment 2.
+
+**Product acceptance.** The Lead Engineer prepares and records the walkthrough
+evidence; the Product Owner conducts the Milestone-1 product acceptance. At
+milestone-close time — and not before — the record is created at
+docs/reviews/phase-4-m1-product-acceptance.md, covering: the commit under
+review; the canonical scenario; the first-five-minutes journey; each RFC-0009
+§10.1 product success criterion; accessibility acceptance evidence; screenshots
+or other durable evidence where useful; observed defects or caveats; and the
+Product Owner disposition. This walkthrough is **not** a CI gate (RFC-0009
+Amendment 4).
