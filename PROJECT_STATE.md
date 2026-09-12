@@ -1,6 +1,6 @@
 # Genome Project State
 
-Last Updated: 2026-07-18
+Last Updated: 2026-09-12
 
 This file is the **only** source for current project state (Governance
 Rule 8). Other documents point here; none may restate what this file owns.
@@ -126,8 +126,12 @@ accepted RFC's Definition of Done — a projection/interaction layer over the
 shipped compiler targets and the ephemeral runtime event stream (Principle 5),
 with the nine protected boundaries held and a recorded product-acceptance
 walkthrough required to close. No Studio code has yet been written; only
-Milestone 1 is authorized. Re-sequencing `ROADMAP.md` per adopted Option B
-remains a separate ratified act, not yet performed.
+Milestone 1 is authorized. Re-sequencing `ROADMAP.md` per adopted Option B was
+**performed 2026-09-12** (Product Owner direction) as the separate ratified act
+that disposition reserved: the autonomy substrate now holds the Phase 5 slot,
+Self-Improvement remains Phase 6, and Office View is recorded as a future
+capability whose placement is governed separately — not cancelled, not
+de-scoped. The reconciliation commissioned nothing and changed no gate.
 
 ## Active Architectural Decision
 
@@ -170,8 +174,9 @@ None.
 - Product Strategy: ✅ adopted — Option A, 2026-07-14
   (`docs/PRODUCT_STRATEGY.md`)
 - Strategic sequencing direction: ✅ adopted — Option B "Autonomy First",
-  2026-07-18 (`docs/proposals/roadmap-revision.md`); strategic intent only,
-  `ROADMAP.md` re-sequencing reserved as a separate ratified act (not yet done)
+  2026-07-18 (`docs/proposals/roadmap-revision.md`); the reserved `ROADMAP.md`
+  re-sequencing was applied 2026-09-12 (Product Owner direction), commissioning
+  no autonomy work
 - Phase 4 planned opening experience: ✅ adopted — Governed Authoring,
   2026-07-18 (`docs/reviews/phase-4-planning-packet-amendment.md`, Option A)
 - Phase 4 opening RFC: ✅ Accepted — `RFC/0009-phase-4-governed-authoring.md`,
@@ -220,8 +225,8 @@ the accepted RFC's Definition of Done, followed by its Board implementation clos
 review — which requires both uncached executable conformance and a recorded
 product-acceptance walkthrough (RFC-0009 §14). Only Milestone 1 is authorized;
 durable runtime logs remain a later, unopened Phase 4 milestone. Re-sequencing
-`ROADMAP.md` per adopted Option B remains a separate ratified act, not yet
-performed.
+`ROADMAP.md` per adopted Option B was performed 2026-09-12 and is no longer
+outstanding; it commissioned no autonomy work and opened no phase.
 
 ## Completed RFCs
 
