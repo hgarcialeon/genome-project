@@ -63,3 +63,32 @@ pointer back to the entry.
   `docs/reviews/maintenance-self-hosting-disposition-packet.md`, Decision 3);
   Architecture Board (sign-off).
 - **Date:** 2026-07-15
+
+## ERR-0003 — ROADMAP Phase 4 editor deliverable named a framework
+
+- **Affected document:** `ROADMAP.md`
+- **Affected section:** `## Phase 4 — Studio Prototype`, deliverable table
+- **Before:** the deliverable read `Monaco editor for Genome YAML`, with the
+  note "Requires the Phase 4 RFC".
+- **After:** the deliverable reads `Genome document editor`, with the note
+  "Product-level deliverable per RFC/0009-phase-4-governed-authoring.md §8.1;
+  no editor framework is prescribed (ERR-0003)".
+- **Reason:** the row named a specific editor framework as the deliverable,
+  contradicting the accepted Phase 4 opening RFC. `RFC/0009-phase-4-governed-authoring.md`
+  §8 states the deliverables are product-level and that "**No framework choice
+  is prescribed.** This RFC does not mandate Monaco, React, any rendering
+  framework, any process model, or any transport." The roadmap wording predates
+  that acceptance (2026-07-18) and would have read as a standing framework
+  requirement for Milestone 1. Corrected to the RFC's product-level wording — a
+  Genome document editor — leaving the framework an implementation choice. The
+  note's stale precondition ("Requires the Phase 4 RFC") is replaced by the
+  citation to the RFC that now exists and is accepted.
+- **No behavioral change:** confirmed. No test, contract, event, or exit code
+  moves; the deliverable's status is unchanged (**Not Started**), no deliverable
+  is added, removed, de-scoped, or reclassified, and no RFC, ADR, or SPEC
+  normative content changes. The correction is roadmap wording only.
+- **Approving roles:** Product Owner (disposition, 2026-09-12 — "Correct the
+  current 'Monaco editor for Genome YAML' wording through ERR-0003 … a
+  zero-behavior-change documentation correction"); Architecture Board
+  (sign-off).
+- **Date:** 2026-09-12

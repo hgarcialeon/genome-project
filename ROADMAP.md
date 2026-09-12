@@ -94,7 +94,7 @@ Goal: create an Organization IDE.
 
 | Deliverable | Status | Evidence / Notes |
 |-------------|--------|------------------|
-| Monaco editor for Genome YAML | Not Started | Requires the Phase 4 RFC |
+| Genome document editor | Not Started | Product-level deliverable per `RFC/0009-phase-4-governed-authoring.md` §8.1; no editor framework is prescribed (ERR-0003) |
 | Schema validation | Not Started | |
 | Live preview | Not Started | |
 | Organization tree | Not Started | |
