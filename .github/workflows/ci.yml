@@ -28,6 +28,11 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
+      # Includes @genome/browser-conformance, which bundles the accepted
+      # packages for a browser and compares the result against Node
+      # (ADR-0011). It needs a Chromium — preinstalled on GitHub-hosted Ubuntu
+      # runners — and fails rather than skips when none is found. Set
+      # GENOME_CHROMIUM to point at a browser on other runners.
       - name: Test
         run: pnpm test
 
