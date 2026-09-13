@@ -1,7 +1,7 @@
 # Architecture Board — Phase 4 Milestone 1 Implementation-Close Review
 
-**Status: Board recommendation recorded. NOT ratified. Milestone 1 is NOT
-closed.**
+**Status: RATIFIED by the Product Owner, 2026-09-13 — Option B. Milestone 1 is
+CLOSED / COMPLETE.**
 
 Held 2026-09-13. Artifact under review:
 `docs/reviews/phase-4-m1-implementation-close-packet.md`.
@@ -9,10 +9,12 @@ Implementation/evidence commit: **`28f0b53`**.
 
 Board (`docs/GOVERNANCE.md`): Product Owner, Chief Architect, Lead Engineer.
 
-**The Board recommends; it does not close.** No implementation code was modified,
-no F1–F4 finding was fixed, no roadmap item moved to Done, and Milestone 2 was
-not opened. Material claims were **re-executed**, including an independent
-eight-step browser re-run of the remediation journey (§2).
+**The Board recommends; it does not close.** §§1–15 are the review as held —
+at review time no implementation code was modified, no F1–F4 finding was fixed,
+no roadmap item moved to Done, and Milestone 2 was not opened. Material claims
+were **re-executed**, including an independent eight-step browser re-run of the
+remediation journey (§2). The Product Owner's decision is recorded in **§16:
+RATIFIED 2026-09-13 — Option B**, which applied the closure.
 
 ---
 
@@ -525,3 +527,95 @@ record.**
 *(Not preselected. Nothing in this review is applied: Milestone 1 is not closed,
 no roadmap item is Done, no queue item was added, and Milestone 2 is not
 opened.)*
+
+---
+
+## 16. Product Owner ratification — RATIFIED
+
+**Product Owner disposition: RATIFIED — 2026-09-13 — Option B (close Milestone 1
+with the required durable follow-up record).** Recorded verbatim:
+
+> As Product Owner, I ratify Option B from
+> `docs/reviews/phase-4-m1-implementation-close-review.md`.
+>
+> Close Phase 4 Milestone 1 — Governed Authoring — with the required durable
+> follow-up record.
+>
+> Apply the Board recommendation exactly.
+>
+> **Product Owner disposition**
+>
+> I ratify that:
+>
+> - Milestone 1 — Governed Authoring is COMPLETE.
+> - The Product Owner disposition remains Accepted with follow-ups.
+> - The original product-acceptance rejection remains part of the historical
+>   record and was resolved by RFC-0010 remediation.
+> - RFC-0010 implementation satisfies its accepted Definition of Done.
+> - Protected architectural boundaries remain intact.
+> - F1–F4 are non-blocking follow-ups and do not prevent Milestone 1 closure.
+>
+> **Required follow-up record**
+>
+> Before applying M1 closure, add exactly one durable implementation/backlog item
+> covering F1–F4.
+>
+> Do not create four separate items.
+>
+> The item should be Studio-local and must not expand RFC-0010 semantics.
+>
+> Include:
+>
+> F1 — Source navigation
+> Add a discoverable "View change in source" affordance after successful visual
+> authoring so the canonical Genome source is easier to reach.
+>
+> F2 — Stale authoring confirmation
+> Clear or invalidate the "Added &lt;agent&gt;" confirmation when a later source edit
+> means that statement no longer describes the current document.
+>
+> Do not determine this by reparsing YAML in Studio.
+>
+> F3 — Projection-status wording
+> Replace ambiguous wording such as "Everything below was compiled..." with copy
+> that explicitly identifies the projections/state being described.
+>
+> F4 — Escape cancellation
+> Allow Escape to dismiss/cancel the Add agent interaction if consistent with the
+> existing interaction model, restoring focus predictably and making no source
+> change.
+>
+> Classify this as one low-priority Studio follow-up item.
+>
+> It is NOT required to be implemented before M1 closes.
+>
+> **Stop condition**
+>
+> After M1 closure: STOP. Do not automatically start Milestone 2, Runtime Logs,
+> Autonomy Substrate, provider adapters, triggers, persistence, Office View,
+> Marketplace, simulation, or additional semantic-authoring operations.
+>
+> No new implementation work is authorized by this ratification.
+
+### 16.1 Applied
+
+In the order the ratification required — the follow-up record first, then
+closure:
+
+| Act | Result |
+|---|---|
+| Follow-up record | **One** `Low` / Not Started item added to `IMPLEMENTATION_QUEUE.md` covering F1–F4, Studio-local, stating it expands no RFC-0010 semantics |
+| Milestone-1 queue item (RFC-0009) | **Done** |
+| RFC-0010 queue item | **Done** |
+| `ROADMAP.md` — Genome document editor, Schema validation, Live preview, Organization tree | **Done** |
+| `ROADMAP.md` — Runtime logs | **Not Started**, unchanged |
+| Phase 4 | **Remains open**; no Phase 4 milestone is currently authorized |
+| Milestone 2 | **Unopened** |
+| Autonomy Substrate · Office View · Marketplace · simulation · persistence · providers · triggers | **Not authorized** |
+
+No implementation code was modified by the closure. The acceptance and review
+history is preserved intact: the first rejected walkthrough, the RFC-0010
+remediation chain, the Accepted-with-follow-ups walkthrough, and this Board
+review all stand as written.
+
+**Phase 4 Milestone 1 — Governed Authoring is CLOSED COMPLETE, 2026-09-13.**
