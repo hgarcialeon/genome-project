@@ -19,7 +19,7 @@ closes Phase 4. Those acts follow acceptance, not this record.
 |---|---|
 | Repository | `hgarcialeon/genome-project` |
 | Branch | `claude/fervent-hypatia-9ul9ed` |
-| **Commit under review** | `PIN-COMMIT-UNDER-REVIEW` |
+| **Commit under review** | `4bc643dfb8d8375c74d3b2495e122ddf7bdf23a1` |
 | Base of record | merged `main` at `5996adf` plus the Checkpoint-7 evidence commit |
 | Date prepared | 2026-09-13 |
 
@@ -133,7 +133,7 @@ Ctrl+Enter to compile. Confirm you always know where focus is.
 | Browser | headless **Chromium** (`/opt/pw-browsers/chromium-1194/chrome-linux/chrome`) driven directly over CDP |
 | Viewport | **1440 × 900**, `deviceScaleFactor: 2` (images are 2880 px wide) |
 | Capture mode | full-page (`captureBeyondViewport`), so images are taller than the viewport |
-| Commit rendered | `PIN-COMMIT-UNDER-REVIEW` |
+| Commit rendered | `4bc643dfb8d8375c74d3b2495e122ddf7bdf23a1` |
 | Document / workflow | `SPEC/examples/genome-project.yaml` / `rfc-lifecycle` |
 | Reproduce with | `pnpm --filter @genome/studio build && node scripts/capture-acceptance-evidence.mjs` |
 
@@ -232,7 +232,34 @@ All re-executed **uncached from a clean state** (caches removed) at the commit
 under review.
 
 ```
-PIN-HEALTH-RESULTS
+$ pnpm check-state
+check-state: project state documents are consistent with the repository.
+
+$ pnpm typecheck
+ Tasks:    7 successful, 7 total
+Cached:    0 cached, 7 total
+
+$ pnpm test -- --force
+@genome/adapter-reference   Test Files  1 passed (1)    Tests    7 passed (7)
+@genome/browser-conformance Test Files  1 passed (1)    Tests   11 passed (11)
+@genome/cli                 Test Files  1 passed (1)    Tests   44 passed (44)
+@genome/compiler            Test Files  5 passed (5)    Tests   60 passed (60)
+@genome/runtime             Test Files  1 passed (1)    Tests   18 passed (18)
+@genome/schema              Test Files  1 passed (1)    Tests    4 passed (4)
+@genome/studio              Test Files 10 passed (10)   Tests  110 passed (110)
+                                                        TOTAL  254 passed (254)
+ Tasks:    7 successful, 7 total
+Cached:    0 cached, 7 total          <- uncached, as RFC-0009 §14 requires
+
+$ pnpm build
+@genome/studio:build: vite v6.4.3 building for production...
+@genome/studio:build: 288 modules transformed
+@genome/studio:build: dist/index.html                 0.40 kB
+@genome/studio:build: dist/assets/index-*.css        11.29 kB
+@genome/studio:build: dist/assets/index-*.js        300.32 kB
+@genome/studio:build: ✓ built in 1.81s
+ Tasks:    1 successful, 1 total
+Cached:    0 cached, 1 total
 ```
 
 ## 11. Product Owner walkthrough checklist
