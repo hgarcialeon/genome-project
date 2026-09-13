@@ -285,14 +285,18 @@ remediation implementation is authorized. The rejection authorizes no Milestone
   discoverability blocker (`docs/reviews/phase-4-m1-product-acceptance.md`
   §12); the remediation architecture is **ratified** (Option C, amendments
   A1–A8, 2026-09-13) and commissioned
-  `RFC/0010-semantic-authoring-operations.md` (**Draft**, awaiting Board review),
-  scoped to a single `add-agent` operation; durable runtime logs remain a later,
+  `RFC/0010-semantic-authoring-operations.md` (**Draft**, Board-reviewed
+  2026-09-13, awaiting Product Owner ratification), scoped to a single
+  `add-agent` operation; durable runtime logs remain a later,
   unopened Phase 4 milestone
 - Milestone-1 authoring remediation: ✅ architecture ratified — Option C
   (toolchain-owned semantic authoring), amendments A1–A8, 2026-09-13
   (`docs/reviews/phase-4-m1-authoring-remediation-board-review.md`);
   commissioned `RFC/0010-semantic-authoring-operations.md` — 📝 **Draft**,
-  awaiting Architecture Board review; no implementation authorized
+  **Architecture Board review held 2026-09-13**
+  (`docs/reviews/rfc-0010-board-review.md`, recommending Option B — accept with
+  amendments A1–A12), **awaiting Product Owner ratification**; no implementation
+  authorized
 - Specification-maintenance mechanism: ✅ established — erratum registry
   adopted 2026-07-15 (`docs/adr/0010-erratum-mechanism.md`, `docs/ERRATA.md`)
 
@@ -334,9 +338,15 @@ rejected** on the authoring discoverability blocker. That Board recommendation �
 toolchain-owned authoring capability in a new package rather than a compiler
 target — was **ratified by the Product Owner on 2026-09-13 with amendments
 A1–A8**, resolving the remediation architecture and commissioning one RFC. The
-next expected deliverable is therefore the **Architecture Board review of
-`RFC/0010-semantic-authoring-operations.md`** (Draft), followed by Product Owner
-ratification of that RFC. Only then does an implementation item enter
+Architecture Board review of
+`RFC/0010-semantic-authoring-operations.md` was **held 2026-09-13**
+(`docs/reviews/rfc-0010-board-review.md`): the Board recommends **Option B —
+accept with amendments A1–A12** plus evidence changes, having re-executed every
+material claim. It resolved all six open questions and found two boundary errors
+and one unachievable preservation contract in the draft, each with a specific
+amendment. The next expected deliverable is therefore **Product Owner
+ratification of that recommendation**; only afterwards are the amendments
+applied, ADR-0012 recorded, and one implementation item queued. Only then does an implementation item enter
 `IMPLEMENTATION_QUEUE.md`. The capability carries a **non-zero Language
 Complexity Budget** — a new semantic operation, new document-transformation
 semantics, a new public toolchain API and a new maintained package — while
