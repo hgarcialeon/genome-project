@@ -57,15 +57,23 @@ export function App({ autoCompileDelayMs = DEFAULT_AUTO_COMPILE_DELAY_MS }: { au
   const [selectedNodeId, setSelectedNodeId] = useState<string | undefined>(undefined);
   const [announcement, setAnnouncement] = useState("");
   const editorRef = useRef<HTMLTextAreaElement>(null);
+  const evidenceRef = useRef<HTMLDivElement>(null);
+  const runButtonRef = useRef<HTMLButtonElement>(null);
 
   // The ephemeral session: in memory, discarded on reset or refresh. Nothing
   // here is written anywhere (RFC-0009 §4, Amendment 1).
   const [session, setSession] = useState<StudioSession | undefined>(undefined);
   const [events, setEvents] = useState<readonly RuntimeEvent[]>([]);
-  const [refusal, setRefusal] = useState<string | undefined>(undefined);
+  const [refusal, setRefusal] = useState<{ workflowId: string; reason: string } | undefined>(undefined);
   const [grantRefusal, setGrantRefusal] = useState<string | undefined>(undefined);
   const [sessionAnnouncement, setSessionAnnouncement] = useState("");
   const [selectedWorkflowId, setSelectedWorkflowId] = useState<string>(CANONICAL_WORKFLOW);
+  /**
+   * Focus recovery, applied after the render that removes a control rather than
+   * on a later frame: a keyboard user who moves on immediately must not have
+   * focus pulled away underneath them.
+   */
+  const [focusTarget, setFocusTarget] = useState<"evidence" | "run" | undefined>(undefined);
 
   const compileNow = useCallback(() => {
     setState((previous) => compileCurrent(previous));
@@ -84,6 +92,12 @@ export function App({ autoCompileDelayMs = DEFAULT_AUTO_COMPILE_DELAY_MS }: { au
     return () => clearTimeout(timer);
   }, [state.status, state.source, autoCompileDelayMs, compileNow]);
 
+  useEffect(() => {
+    if (focusTarget === undefined) return;
+    (focusTarget === "evidence" ? evidenceRef.current : runButtonRef.current)?.focus();
+    setFocusTarget(undefined);
+  }, [focusTarget]);
+
   const projection = state.lastSuccessful;
   const stale = isStale(state);
   const runnableModel = executableRuntimeModel(state);
@@ -91,10 +105,16 @@ export function App({ autoCompileDelayMs = DEFAULT_AUTO_COMPILE_DELAY_MS }: { au
 
   const run = session === undefined ? undefined : runState(session);
   const view: SessionView | undefined =
-    session === undefined ? undefined : { session, run, events, refusal, grantRefusal };
+    session === undefined ? undefined : { session, run, events, grantRefusal };
 
   const startRun = useCallback(() => {
     if (runnableModel === undefined) return;
+    // Repeated activation replaces the session rather than accumulating one:
+    // the previous subscription is disposed before another is created.
+    setSession((previous) => {
+      previous?.dispose();
+      return undefined;
+    });
     // Subscription happens inside startSession, before initiation, so no
     // emitted event can be missed. Events append for the life of the session:
     // the record after a grant continues the one from before it.
@@ -107,7 +127,7 @@ export function App({ autoCompileDelayMs = DEFAULT_AUTO_COMPILE_DELAY_MS }: { au
     });
     if (!outcome.ok) {
       setSession(undefined);
-      setRefusal(outcome.refusal.reason);
+      setRefusal({ workflowId: selectedWorkflowId, reason: outcome.refusal.reason });
       setSessionAnnouncement(`The runtime refused to start ${selectedWorkflowId}: ${outcome.refusal.reason}.`);
       return;
     }
@@ -137,6 +157,10 @@ export function App({ autoCompileDelayMs = DEFAULT_AUTO_COMPILE_DELAY_MS }: { au
       }
       setGrantRefusal(undefined);
       const after = runState(session);
+      // The activated control no longer exists — the runtime reports nothing
+      // pending — so focus moves to the evidence it produced rather than being
+      // stranded on a removed button.
+      setFocusTarget("evidence");
       setSessionAnnouncement(
         after?.status === "completed"
           ? `${session.workflowId} completed ${after.completedSteps} steps after the approval by ${principal}.`
@@ -155,10 +179,19 @@ export function App({ autoCompileDelayMs = DEFAULT_AUTO_COMPILE_DELAY_MS }: { au
     setRefusal(undefined);
     setGrantRefusal(undefined);
     setSessionAnnouncement("Session discarded.");
+    setFocusTarget("run");
   }, []);
 
   return (
     <div class="studio">
+      {/* The graph's accessible index is a long list of controls by design.
+          These let a keyboard user step over it to the two places where work
+          happens, rather than decoupling visual order from focus order. */}
+      <nav class="skip-links" aria-label="Skip links">
+        <a class="skip-link" href="#execution-panel">Skip to governance and execution</a>
+        <a class="skip-link" href="#source-panel">Skip to the source document</a>
+      </nav>
+
       <header class="studio__header">
         <p class="studio__product">Genome Studio</p>
         <h1 class="studio__organization" data-testid="organization-name">
@@ -228,7 +261,12 @@ export function App({ autoCompileDelayMs = DEFAULT_AUTO_COMPILE_DELAY_MS }: { au
 
         <div class="studio__side">
 
-        <aside class="panel panel--execution" aria-labelledby="execution-heading">
+        <aside
+          id="execution-panel"
+          class="panel panel--execution"
+          aria-labelledby="execution-heading"
+          tabIndex={-1}
+        >
           <ExecutionPanel
             workflows={workflows}
             selectedWorkflowId={selectedWorkflowId}
@@ -242,7 +280,10 @@ export function App({ autoCompileDelayMs = DEFAULT_AUTO_COMPILE_DELAY_MS }: { au
             onRun={startRun}
             onReset={resetSession}
             onGrant={grant}
+            evidenceRef={evidenceRef}
+            runButtonRef={runButtonRef}
             view={view}
+            startRefusal={refusal}
             sourceRevision={currentRevision(state)}
           />
         </aside>
@@ -266,7 +307,7 @@ export function App({ autoCompileDelayMs = DEFAULT_AUTO_COMPILE_DELAY_MS }: { au
         </div>
       </div>
 
-      <section class="panel panel--source" aria-labelledby="source-heading">
+      <section id="source-panel" class="panel panel--source" aria-labelledby="source-heading" tabIndex={-1}>
         <h2 id="source-heading" class="panel__heading">
           Source document
         </h2>

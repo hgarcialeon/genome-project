@@ -9,7 +9,8 @@
   --ink-muted: #4a5462; /* 7.4:1 on --surface */
   --surface: #f6f7f9;
   --panel: #ffffff;
-  --border: #c3cad4;
+  --border: #c3cad4; /* container hairlines: decorative, not a control boundary */
+  --control-border: #6b7480; /* the edge of an actual control: AA non-text contrast */
   --accent: #1a3f8f; /* 8.9:1 on --panel */
   --error: #8a1420; /* 8.2:1 on --panel */
   --warning: #6b4400; /* 7.6:1 on --panel */
@@ -157,7 +158,7 @@ body {
   width: 100%;
   min-height: 22rem;
   padding: 0.75rem;
-  border: 1px solid var(--border);
+  border: 1px solid var(--control-border);
   border-radius: 6px;
   background: var(--panel);
   color: var(--ink);
@@ -250,6 +251,27 @@ body {
 .diagnostic__where {
   margin: 0;
   font-size: 0.875rem;
+}
+
+.skip-links {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  background: var(--panel);
+  color: var(--accent);
+  font-size: 0.875rem;
+}
+
+.skip-link:focus {
+  position: static;
+  left: auto;
 }
 
 .visually-hidden {
@@ -436,7 +458,7 @@ body {
 }
 
 .graph-index__node:hover {
-  border-color: var(--border);
+  border-color: var(--control-border);
 }
 
 .graph-index__node--selected {
@@ -539,7 +561,7 @@ body {
 }
 
 .tree__disclosure:hover {
-  border-color: var(--border);
+  border-color: var(--control-border);
 }
 
 .tree__name {
@@ -568,7 +590,7 @@ body {
 .execution__select {
   width: 100%;
   padding: 0.4rem 0.5rem;
-  border: 1px solid var(--border);
+  border: 1px solid var(--control-border);
   border-radius: 6px;
   background: var(--panel);
   color: var(--ink);
@@ -578,9 +600,20 @@ body {
 
 .button:disabled {
   background: #e7eaef;
-  border-color: var(--border);
+  border-color: var(--control-border);
   color: #55606f;
   cursor: not-allowed;
+}
+
+.execution__refusal {
+  margin: 0 0 0.75rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--error);
+  border-left-width: 5px;
+  border-radius: 6px;
+  background: #fdf4f4;
+  color: var(--error);
+  font-size: 0.8125rem;
 }
 
 .execution__run-note,

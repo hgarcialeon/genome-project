@@ -10,6 +10,8 @@
  * thing Studio contributes is the arrangement.
  */
 
+import type { Ref } from "preact";
+
 import { INTRINSIC_FLOOR_PRINCIPAL } from "@genome/runtime";
 
 import { STUDIO_OPERATOR, type StudioSession } from "../genome/session.js";
@@ -21,8 +23,6 @@ export type SessionView = {
   session: StudioSession;
   run?: RunState;
   events: readonly RuntimeEvent[];
-  /** The runtime's refusal of the initiation, if it refused. */
-  refusal?: string;
   /** The runtime's refusal of the most recent grant, if it refused. */
   grantRefusal?: string;
 };
@@ -183,13 +183,16 @@ function ActionSection({
   );
 }
 
-function EvidenceSection({ view }: { view: SessionView }) {
+function EvidenceSection({ view, evidenceRef }: { view: SessionView; evidenceRef?: Ref<HTMLDivElement> }) {
   const granted = view.events.filter((event) => event.type === "approval.granted");
   const run = view.run;
   const completed = run?.status === "completed";
+  const failures = view.events.filter(
+    (event) => event.type === "agent.task.failed" || event.type === "workflow.failed",
+  );
 
   return (
-    <div class="evidence" data-testid="evidence">
+    <div class="evidence" data-testid="evidence" tabIndex={-1} ref={evidenceRef}>
       <h3 class="block__heading">
         <span class="block__kicker">Evidence</span> what the runtime recorded
       </h3>
@@ -217,6 +220,34 @@ function EvidenceSection({ view }: { view: SessionView }) {
         </ul>
       )}
 
+      {failures.length > 0 ? (
+        <ul class="evidence__failures" data-testid="failure-records">
+          {failures.map((event) => (
+            <li key={event.id} data-testid="failure-record">
+              <span class="evidence__event">
+                #{event.id} <code>{event.type}</code>
+              </span>{" "}
+              — reported by <code>{event.source}</code>
+              {typeof event.payload.step === "string" ? (
+                <>
+                  {" "}
+                  at step <code>{event.payload.step}</code>
+                </>
+              ) : null}
+              {typeof event.payload.detail === "string" ? <>: {event.payload.detail}</> : null}
+            </li>
+          ))}
+        </ul>
+      ) : null}
+
+      {run?.status === "failed" ? (
+        <p class="evidence__failed" data-testid="failure-summary">
+          <span aria-hidden="true">✕ </span>
+          <strong>{view.session.workflowId}</strong> failed after {run.completedSteps} completed steps. The runtime
+          recorded no completion, and Studio offers no retry the runtime does not have.
+        </p>
+      ) : null}
+
       {completed ? (
         <p class="evidence__completed" data-testid="completion-record">
           <span aria-hidden="true">✓ </span>
@@ -238,7 +269,10 @@ export function ExecutionPanel({
   onReset,
   onGrant,
   view,
+  startRefusal,
   sourceRevision,
+  evidenceRef,
+  runButtonRef,
 }: {
   workflows: RuntimeModel["workflows"];
   selectedWorkflowId: string;
@@ -249,8 +283,14 @@ export function ExecutionPanel({
   onReset: () => void;
   onGrant: (principal: string) => void;
   view?: SessionView;
+  /** The runtime's refusal of the last attempt to start, when no session exists. */
+  startRefusal?: { workflowId: string; reason: string };
   /** Revision of the source now in the editor, or `undefined` while it is edited or invalid. */
   sourceRevision?: string;
+  /** Focus lands here when the grant control it replaces disappears. */
+  evidenceRef?: Ref<HTMLDivElement>;
+  /** Focus returns here when a session is discarded. */
+  runButtonRef?: Ref<HTMLButtonElement>;
 }) {
   const run = view?.run;
   const status = run === undefined ? undefined : STATUS_TEXT[run.status];
@@ -286,7 +326,14 @@ export function ExecutionPanel({
           ))}
         </select>
 
-        <button type="button" class="button" data-testid="run-workflow" onClick={onRun} disabled={!canRun}>
+        <button
+          type="button"
+          class="button"
+          data-testid="run-workflow"
+          onClick={onRun}
+          disabled={!canRun}
+          ref={runButtonRef}
+        >
           Run workflow
         </button>
 
@@ -303,6 +350,15 @@ export function ExecutionPanel({
           : (runBlockedReason ?? "Nothing can run right now.")}
       </p>
 
+      {startRefusal !== undefined && view === undefined ? (
+        <p class="execution__refusal" data-testid="start-refusal">
+          <span aria-hidden="true">✕ </span>
+          The runtime refused to start <strong>{startRefusal.workflowId}</strong>:{" "}
+          <strong data-testid="start-refusal-reason">{startRefusal.reason}</strong>. Nothing ran, and nothing was
+          recorded.
+        </p>
+      ) : null}
+
       {view === undefined ? (
         <p class="execution__idle" data-testid="session-idle">
           No session. Nothing has been executed in this page.
@@ -311,11 +367,9 @@ export function ExecutionPanel({
         <div class="session" data-testid="session">
           <p class={`status status--${run?.status ?? "refused"}`} data-testid="session-status">
             <span class="status__mark" aria-hidden="true">
-              {view.refusal !== undefined ? "✕" : (status?.mark ?? "•")}
+              {status?.mark ?? "•"}
             </span>
-            <span class="status__label">
-              {view.refusal !== undefined ? `Refused by the runtime: ${view.refusal}` : (status?.label ?? run?.status)}
-            </span>
+            <span class="status__label">{status?.label ?? run?.status}</span>
           </p>
 
           <dl class="session__facts">
@@ -343,7 +397,7 @@ export function ExecutionPanel({
 
           {waiting ? <WaitingSection view={view} requests={requests} /> : null}
           {waiting ? <ActionSection view={view} requests={requests} onGrant={onGrant} /> : null}
-          <EvidenceSection view={view} />
+          <EvidenceSection view={view} evidenceRef={evidenceRef} />
         </div>
       )}
     </section>

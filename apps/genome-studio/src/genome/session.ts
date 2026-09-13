@@ -73,13 +73,21 @@ export function startSession({
   workflowId,
   onEvent,
   initiatedBy = STUDIO_OPERATOR,
+  failSteps,
 }: {
   model: RuntimeModel;
   workflowId: string;
   onEvent: (event: RuntimeEvent) => void;
   initiatedBy?: string;
+  /**
+   * The reference adapter's accepted failure control (RFC-0006): steps it
+   * should report as failed. The Milestone-1 surface never sets it — Studio
+   * offers no way to make work fail — but carrying it here lets the failure
+   * path be exercised against the real runtime instead of a mock.
+   */
+  failSteps?: readonly string[];
 }): StartOutcome {
-  const adapter = createReferenceAdapter({});
+  const adapter = createReferenceAdapter(failSteps === undefined ? {} : { failSteps: [...failSteps] });
   const runtime = createRuntime({ model, adapter });
   adapter.bind(runtime);
 
