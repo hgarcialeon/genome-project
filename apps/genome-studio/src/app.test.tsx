@@ -121,6 +121,22 @@ describe("Studio authoring surface", () => {
     expect(screen.getByTestId("locate-announcement").textContent).toContain(path);
   });
 
+  it("shows a parser diagnostic exactly as the compiler worded it, excerpt included", async () => {
+    const user = userEvent.setup();
+    render(<App autoCompileDelayMs={NO_AUTO_COMPILE} />);
+
+    setSource("company: [unclosed");
+    await user.click(screen.getByTestId("compile-now"));
+
+    const failure = compileDocument("company: [unclosed");
+    expect(failure.ok).toBe(false);
+    const message = failure.diagnostics[0].message;
+    // The YAML parser's location and caret live inside the message text; Studio
+    // neither reformats it nor extracts a location of its own.
+    expect(message).toContain("line 1, column 19");
+    expect(screen.getAllByTestId("diagnostic-message")[0].textContent).toBe(message);
+  });
+
   it("returns to current after the source is corrected", async () => {
     const user = userEvent.setup();
     render(<App autoCompileDelayMs={NO_AUTO_COMPILE} />);

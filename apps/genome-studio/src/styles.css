@@ -238,6 +238,10 @@ body {
 
 .diagnostic__message {
   margin: 0 0 0.25rem;
+  /* Parser diagnostics carry their own excerpt and caret; keep the compiler's
+     layout rather than reflowing it into prose. */
+  white-space: pre-wrap;
+  font-variant-numeric: tabular-nums;
 }
 
 .diagnostic__where {
