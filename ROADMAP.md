@@ -122,11 +122,11 @@ Goal: create an Organization IDE.
 
 | Deliverable | Status | Evidence / Notes |
 |-------------|--------|------------------|
-| Genome document editor | Not Started | Product-level deliverable per `RFC/0009-phase-4-governed-authoring.md` §8.1; no editor framework is prescribed (ERR-0003) |
-| Schema validation | Not Started | |
-| Live preview | Not Started | |
-| Organization tree | Not Started | |
-| Runtime logs | Not Started | |
+| Genome document editor | Done | RFC-0009 §8.1; no editor framework is prescribed (ERR-0003). Shipped in Milestone 1, closed complete 2026-09-13 (`docs/reviews/phase-4-m1-implementation-close-review.md`) |
+| Schema validation | Done | RFC-0009 §8.2 — the schema/diagnostic validation surface, projected from the compiler. Shipped in Milestone 1, closed complete 2026-09-13 |
+| Live preview | Done | RFC-0009 §8.3 — the live organization preview / Organization Graph, derived from `graphTarget`. Shipped in Milestone 1, closed complete 2026-09-13 |
+| Organization tree | Done | RFC-0009 §8.4 inspect projection, derived from `inspectTarget`. Shipped in Milestone 1, closed complete 2026-09-13 |
+| Runtime logs | Not Started | Recorded as Phase 4 **Milestone 2** (RFC-0009 §12) — **unopened**, unscoped and undesigned. Closing Milestone 1 did not open it; event persistence remains gated on its first consumer |
 
 ## Phase 5 — Autonomy Substrate
 

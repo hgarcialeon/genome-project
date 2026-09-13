@@ -74,6 +74,7 @@ export function startSession({
   onEvent,
   initiatedBy = STUDIO_OPERATOR,
   failSteps,
+  clock,
 }: {
   model: RuntimeModel;
   workflowId: string;
@@ -86,9 +87,17 @@ export function startSession({
    * path be exercised against the real runtime instead of a mock.
    */
   failSteps?: readonly string[];
+  /**
+   * The runtime's own injectable clock (RFC-0004; the CLI exposes it as
+   * `--clock`). The Milestone-1 surface never sets it, so Studio runs on the
+   * runtime's default wall clock — but carrying it here lets acceptance
+   * evidence demonstrate the byte-determinism RFC-0009 §7 requires using the
+   * *accepted* mechanism, rather than Studio normalizing events after the fact.
+   */
+  clock?: () => string;
 }): StartOutcome {
   const adapter = createReferenceAdapter(failSteps === undefined ? {} : { failSteps: [...failSteps] });
-  const runtime = createRuntime({ model, adapter });
+  const runtime = createRuntime(clock === undefined ? { model, adapter } : { model, adapter, clock });
   adapter.bind(runtime);
 
   const seen: RuntimeEvent[] = [];

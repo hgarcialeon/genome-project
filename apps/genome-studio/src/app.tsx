@@ -19,7 +19,7 @@ import { EventStream } from "./components/EventStream.js";
 import { ExecutionPanel, type SessionView } from "./components/ExecutionPanel.js";
 import { GraphIndex } from "./components/GraphIndex.js";
 import { OrganizationGraph } from "./components/OrganizationGraph.js";
-import { OrganizationTree } from "./components/OrganizationTree.js";
+import { addAgentOpenerId, OrganizationTree, type AuthoringHandlers } from "./components/OrganizationTree.js";
 import { StatusBar } from "./components/StatusBar.js";
 import {
   compileCurrent,
@@ -31,6 +31,8 @@ import {
   type CompilationState,
 } from "./genome/compilation-state.js";
 import { grantApproval, runState, startSession, type StudioSession } from "./genome/session.js";
+
+import { applyAddAgent, type AddAgentIntent } from "@genome/authoring";
 
 import type { RuntimeEvent } from "@genome/runtime";
 
@@ -75,6 +77,18 @@ export function App({ autoCompileDelayMs = DEFAULT_AUTO_COMPILE_DELAY_MS }: { au
    */
   const [focusTarget, setFocusTarget] = useState<"evidence" | "run" | undefined>(undefined);
 
+  /**
+   * The authoring interaction. Studio holds which department's form is open,
+   * what was last added, and where focus should return — and nothing about
+   * Genome document structure.
+   */
+  const [authoringDepartment, setAuthoringDepartment] = useState<string | undefined>(undefined);
+  const [lastAdded, setLastAdded] = useState<{ department: string; id: string } | undefined>(undefined);
+  const [authoringAnnouncement, setAuthoringAnnouncement] = useState("");
+  const [authoringOpener, setAuthoringOpener] = useState<string | undefined>(undefined);
+  const confirmationRef = useRef<HTMLParagraphElement>(null);
+  const [authoringFocus, setAuthoringFocus] = useState<"confirmation" | "opener" | undefined>(undefined);
+
   const compileNow = useCallback(() => {
     setState((previous) => compileCurrent(previous));
   }, []);
@@ -97,6 +111,20 @@ export function App({ autoCompileDelayMs = DEFAULT_AUTO_COMPILE_DELAY_MS }: { au
     (focusTarget === "evidence" ? evidenceRef.current : runButtonRef.current)?.focus();
     setFocusTarget(undefined);
   }, [focusTarget]);
+
+  // Focus after the authoring form closes, applied on the render that removes
+  // it so a keyboard user is never left standing on a control that is gone.
+  useEffect(() => {
+    if (authoringFocus === undefined) return;
+    const target =
+      authoringFocus === "confirmation"
+        ? confirmationRef.current
+        : authoringOpener === undefined
+          ? null
+          : document.getElementById(addAgentOpenerId(authoringOpener));
+    (target as HTMLElement | null)?.focus();
+    setAuthoringFocus(undefined);
+  }, [authoringFocus, authoringOpener]);
 
   const projection = state.lastSuccessful;
   const stale = isStale(state);
@@ -170,6 +198,58 @@ export function App({ autoCompileDelayMs = DEFAULT_AUTO_COMPILE_DELAY_MS }: { au
     [session],
   );
 
+  /**
+   * The authoring operation, invoked with the intent the form collected.
+   *
+   * Studio does exactly two things with the result: on success it feeds the
+   * returned source into the ordinary edit path — the same one a keystroke
+   * takes — and on failure it hands the result back to the form to render.
+   *
+   * There is no authoring-specific compile path: the Checkpoint-2 state machine
+   * marks the projections stale, and the existing debounced compile picks it up
+   * like any other edit. Studio never touches the graph or the tree directly;
+   * they change only when the compiler produces new output (RFC-0010 §9.1).
+   */
+  const submitAddAgent = useCallback(
+    (intent: AddAgentIntent) => {
+      const result = applyAddAgent(state.source, intent);
+      if (!result.ok) return result;
+
+      setState((previous) => editSource(previous, result.source));
+      setAuthoringDepartment(undefined);
+      setLastAdded({ department: intent.department, id: intent.id });
+      setAuthoringAnnouncement(
+        `Added ${intent.id} to ${intent.department}. The Genome source changed and the organization will recompile from it.`,
+      );
+      setAuthoringFocus("confirmation");
+      return result;
+    },
+    [state.source],
+  );
+
+  const openAddAgent = useCallback((department: string) => {
+    setAuthoringOpener(department);
+    setLastAdded(undefined);
+    setAuthoringDepartment(department);
+  }, []);
+
+  const cancelAddAgent = useCallback(() => {
+    setAuthoringDepartment(undefined);
+    setAuthoringFocus("opener");
+  }, []);
+
+  /**
+   * Authoring is offered whenever there is an organization on screen. It is not
+   * gated on the projection being current: the operation validates against the
+   * source itself and refuses with a reason, which is better than a control that
+   * disappears for 400 ms after every edit.
+   */
+  const authoring: Omit<AuthoringHandlers, "openDepartment"> = {
+    onOpen: openAddAgent,
+    onCancel: cancelAddAgent,
+    onSubmit: submitAddAgent,
+  };
+
   const resetSession = useCallback(() => {
     setSession((previous) => {
       previous?.dispose();
@@ -209,6 +289,10 @@ export function App({ autoCompileDelayMs = DEFAULT_AUTO_COMPILE_DELAY_MS }: { au
         </p>
       </header>
 
+      <p class="visually-hidden" role="status" data-testid="authoring-announcement">
+        {authoringAnnouncement}
+      </p>
+
       <div class="studio__workspace">
         <aside
           class={`panel panel--tree${stale ? " panel--stale" : ""}`}
@@ -217,7 +301,13 @@ export function App({ autoCompileDelayMs = DEFAULT_AUTO_COMPILE_DELAY_MS }: { au
         >
           <StaleMark stale={stale} />
           {projection !== undefined ? (
-            <OrganizationTree report={projection.inspect} headingId="tree-heading" />
+            <OrganizationTree
+              report={projection.inspect}
+              headingId="tree-heading"
+              authoring={{ ...authoring, openDepartment: authoringDepartment }}
+              confirmationRef={confirmationRef}
+              lastAdded={lastAdded}
+            />
           ) : (
             <p data-testid="tree-empty">Nothing has compiled yet, so there is no organization to show.</p>
           )}

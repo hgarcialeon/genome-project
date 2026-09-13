@@ -1,0 +1,24 @@
+# Leading block comment that must survive.
+# Second line of the leading block.
+genomeVersion: 0.1
+
+company:
+  name: Acme
+  mission: A long mission statement that is comfortably wider than the default line-folding width used by the serializer.
+
+departments:
+  # leading comment for engineering
+  engineering:   # trailing comment on the department key
+    # comment inside engineering
+    mission: Build things
+    agents:
+      # comment above the first agent
+      existing:
+        role: Engineer   # trailing comment on role
+  # comment introducing the next department
+  operations:
+    agents:
+      oncall:
+        role: Operator
+
+# Trailing file comment.

@@ -1,0 +1,17 @@
+{
+  "name": "@genome/authoring",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@genome/compiler": "workspace:*",
+    "yaml": "^2.6.1"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.8"
+  }
+}
