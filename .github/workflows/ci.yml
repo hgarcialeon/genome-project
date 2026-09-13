@@ -38,3 +38,7 @@ jobs:
 
       - name: Check project state consistency
         run: pnpm check-state
+
+      # Studio is browser-first: its production build must keep working.
+      - name: Build
+        run: pnpm build

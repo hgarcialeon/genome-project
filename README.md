@@ -87,6 +87,7 @@ genome-project/
 ├── SPEC/
 ├── docs/
 ├── packages/
+├── apps/
 └── scripts/
 ```
 
