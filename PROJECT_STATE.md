@@ -8,16 +8,18 @@ Consistency with the repository is checked by `pnpm check-state` in CI.
 
 ## Current Phase
 
-Phase 4 — Studio Prototype: **Open for Milestone 1 — Governed Authoring — only**
-(opened 2026-07-18). Phases 0–3 are closed: Phases 0–2 by the 2026-07-13 phase
-transition review (`docs/reviews/phase-0-3-board-review.md`), Phase 3 by the
-Phase 3 close review the same day (`docs/reviews/phase-3-close-board-review.md`,
+Phase 4 — Studio Prototype: **OPEN, with no currently authorized milestone.** It
+was opened 2026-07-18 for **Milestone 1 — Governed Authoring — only**, and that
+milestone is now closed complete. Phases 0–3 are closed: Phases 0–2 by the
+2026-07-13 phase transition review (`docs/reviews/phase-0-3-board-review.md`),
+Phase 3 by the Phase 3 close review the same day
+(`docs/reviews/phase-3-close-board-review.md`,
 Option B ratified by the Product Owner) on CLI-boundary evidence, with
 the RFC-0006 case-4 erratum applied first. Phase 4 was opened by the acceptance
 and Product Owner ratification of `RFC/0009-phase-4-governed-authoring.md`
 (**Accepted 2026-07-18 under Option B** — accept with four clarifying amendments
 applied; Board review `docs/reviews/rfc-0009-board-review.md`, Product Owner
-ratification recorded there; Governance Rule 2). The opening authorizes
+ratification recorded there; Governance Rule 2). That opening authorized
 **Milestone 1 (Governed Authoring) only**. **Milestone 1 was closed complete
 2026-09-13** (`docs/reviews/phase-4-m1-implementation-close-review.md`, Option B
 ratified). **Phase 4 itself remains OPEN, and no Phase 4 milestone is currently
@@ -90,18 +92,21 @@ compiler-production, runtime-production, CLI-surface, and event-taxonomy, plus
 no exported-log reader and no persistence). E1–E9 pass uncached at the CLI
 boundary; the example doubles as a standing regression witness for RFC-0007
 participation binding (E3/E7). RFC-0008 was **closed complete 2026-07-18**
-(Option A, `docs/reviews/rfc-0008-implementation-close-review.md`). The active
-milestone is now **Studio Milestone 1 — Governed Authoring**, authorized by the
+(Option A, `docs/reviews/rfc-0008-implementation-close-review.md`). Phase 4 then
+opened for **Studio Milestone 1 — Governed Authoring**, authorized by the
 acceptance of `RFC/0009-phase-4-governed-authoring.md` (Option B, 2026-07-18) and
-queued as a single item in `IMPLEMENTATION_QUEUE.md` (now **Done**). Its scope is
-fixed by the accepted (amended) RFC: a Studio surface providing a code editor,
-inline validation, a live Organization Graph, an organization tree, ephemeral
-governed execution, a live session event stream, deny-safe park, explicit grant,
+queued as a single item in `IMPLEMENTATION_QUEUE.md` (now **Done**). **That
+milestone is closed complete (2026-09-13); no Phase 4 milestone is currently
+active.** Its scope was fixed by the accepted (amended) RFC: a Studio surface
+providing a code editor, inline validation, a live Organization Graph, an
+organization tree, ephemeral governed execution, a live session event stream,
+deny-safe park, explicit grant,
 attributed approval, and completion — demonstrated on
 `SPEC/examples/genome-project.yaml` via `rfc-lifecycle` — built strictly as a
 projection/interaction layer (Principle 5) with the nine protected boundaries
-held. Close requires uncached executable conformance **and** a recorded
-reviewer-walkthrough product-acceptance record (RFC-0009 §14, Amendment 4).
+held. Close required uncached executable conformance **and** a recorded
+reviewer-walkthrough product-acceptance record (RFC-0009 §14, Amendment 4); both
+were satisfied before the milestone closed.
 Implementation checkpoints 1–6 landed on `main` 2026-09-13 (scaffold; editor,
 diagnostics and compilation state; graph and tree projections; ephemeral runtime
 and live event stream; explicit grant and attributed completion; accessibility
@@ -111,17 +116,18 @@ permanent Node ↔ browser conformance harness. Checkpoint 7 prepared the
 end-to-end product evidence and the acceptance record
 `docs/reviews/phase-4-m1-product-acceptance.md`.
 
-**Product Owner acceptance was performed 2026-09-13 and the disposition is
-REJECTED.** The rejection is a *product-acceptance* rejection of Milestone 1
-only; it rejects neither the compiler/runtime architecture nor the technical
+**Product Owner acceptance was first performed 2026-09-13 and the disposition
+was REJECTED.** That rejection was a *product-acceptance* rejection of Milestone
+1 only; it rejected neither the compiler/runtime architecture nor the technical
 implementation of Checkpoints 1–7. Projection, compilation, governed execution,
 deny-safe parking, policy/principal visibility, explicit grant, attributed
 completion, ephemerality and the accessibility floor were all accepted as
-demonstrated. The blocking failure is **authoring discoverability**: a user
-cannot discover or perform the canonical organizational change ("add an agent")
-without understanding and manually editing the Genome source structure.
+demonstrated. The blocking failure was **authoring discoverability**: a user
+could not then discover or perform the canonical organizational change ("add an
+agent") without understanding and manually editing the Genome source structure.
 **At that point Milestone 1 was not complete.** It was subsequently remediated,
-re-accepted, Board-reviewed and **closed complete on 2026-09-13** (see below). The remediation **architecture is now decided**: the Product
+re-accepted, Board-reviewed and **closed complete on 2026-09-13** (see below).
+The remediation **architecture was decided the same day**: the Product
 Owner **ratified Option C — toolchain-owned semantic authoring operations —
 exactly as recommended, with amendments A1–A8, on 2026-09-13**
 (`docs/reviews/phase-4-m1-authoring-remediation-board-review.md` §8; proposal
@@ -135,7 +141,7 @@ package (`add-agent` only) plus the minimal Studio integration needed to repeat
 Milestone-1 product acceptance. That item is **Done**: Stage A
 (`@genome/authoring`) and Stage B (Studio integration) both landed, with
 RFC-0010 evidence E1–E19 passing uncached and every protected boundary empty. A
-**new** acceptance record is prepared at
+**new** acceptance record is recorded at
 `docs/reviews/phase-4-m1-product-acceptance-remediation.md` with its disposition
 **Accepted with follow-ups** (2026-09-13). The original Milestone-1 product
 acceptance (`docs/reviews/phase-4-m1-product-acceptance.md`) remains recorded as
@@ -196,14 +202,16 @@ commissioned, drafted, Board-reviewed, and **accepted 2026-07-18 under Option B*
 (accept with four clarifying amendments applied;
 `docs/reviews/rfc-0009-board-review.md`, Product Owner ratification). That
 acceptance **opened Phase 4 for Milestone 1 — Governed Authoring — only** and
-added one implementation item to `IMPLEMENTATION_QUEUE.md`. **The current
-objective is the implementation of RFC-0010 — `@genome/authoring` (`add-agent`
-only) and the minimal Studio `add-agent` integration — so that Milestone-1
-product acceptance can be repeated.** It supersedes, without discarding, the
-earlier framing of implementing Studio Milestone 1 (Governed Authoring) to the
-accepted RFC's Definition of Done — a projection/interaction layer over the
-shipped compiler targets and the ephemeral runtime event stream (Principle 5),
-with the nine protected boundaries held and a recorded product-acceptance
+added one implementation item to `IMPLEMENTATION_QUEUE.md`. **There is no
+current engineering objective.** The last one — implementing RFC-0010
+(`@genome/authoring`, `add-agent` only) and the minimal Studio `add-agent`
+integration so that Milestone-1 product acceptance could be repeated — is
+discharged, and no work has been authorized to replace it. That objective had
+superseded, without discarding, the earlier framing of implementing Studio
+Milestone 1 (Governed Authoring) to the accepted RFC's Definition of Done — a
+projection/interaction layer over the shipped compiler targets and the ephemeral
+runtime event stream (Principle 5), with the nine protected boundaries held and
+a recorded product-acceptance
 walkthrough required to close. That implementation is **complete**: checkpoints
 1–6 landed, Checkpoint 7 prepared the acceptance evidence, the first walkthrough
 rejected the milestone, RFC-0010 remediated it, the repeated walkthrough was
@@ -238,8 +246,9 @@ interpretation, and authoring operations are consumer-gated rather than a generi
 mutation language.
 
 **Decided 2026-09-13: browser portability of the accepted Genome revision
-derivation.** No architectural decision is open beyond the commissioned RFC's own
-Board review. The decision was required by the
+derivation.** The commissioned RFC's Board review has since been held and
+RFC-0010 accepted, so **no architectural decision is open**. The decision was
+required by the
 browser-first topology recorded in the Milestone-1 acceptance floor
 (`IMPLEMENTATION_QUEUE.md`). The Milestone-1
 browser-compatibility spike established that `packages/genome-compiler` cannot be
@@ -290,12 +299,12 @@ decision is open; RFC-0009 is decided (accepted) as noted above.
 None. The Milestone-1 portability blocker raised on 2026-09-13 was cleared the
 same day by the Product Owner's ratification of Option A
 (`docs/reviews/rfc-0009-m1-compiler-portability-board-review.md`,
-`docs/adr/0011-platform-neutral-compiler.md`). Phase 4 Milestone 1 — Governed
-Authoring remains the current authorized work. The gate that held substantive
+`docs/adr/0011-platform-neutral-compiler.md`). The gate that held substantive
 Studio UI implementation — the authorized portability change, its permanent
 conformance evidence, and the browser-first re-spike recorded with the
 Milestone-1 acceptance floor in `IMPLEMENTATION_QUEUE.md` — was satisfied before
-checkpoint 1, and checkpoints 1–6 have since landed.
+checkpoint 1, and checkpoints 1–6 landed thereafter. **Milestone 1 has since
+closed complete; no Phase 4 milestone is currently authorized.**
 
 **No blocker is open**, and Milestone 1 is closed complete. The Milestone-1
 Governed Authoring discoverability blocker raised 2026-09-13 was **cleared the
@@ -304,16 +313,19 @@ implemented, and the repeated Product Owner walkthrough passed with the
 disposition **Accepted with follow-ups**
 (`docs/reviews/phase-4-m1-product-acceptance.md` §13). Four non-blocking
 follow-ups (F1–F4) remain recorded there; none violates an accepted close
-criterion, and none holds the milestone open. Product Owner acceptance was performed and rejected
-(`docs/reviews/phase-4-m1-product-acceptance.md` §12): a first-time user cannot
-discover or perform the canonical organizational change ("add an agent")
-without understanding and manually editing the Genome source structure. The
-failure is architectural rather than a defect — Genome has accepted surfaces
-for source → compiler → projections → governed execution, but none for
-organizational intent → valid Genome document change. Remediation is **blocked
-on Architecture Board disposition and Product Owner ratification**; no
-remediation implementation is authorized. The rejection authorizes no Milestone
-2, no Autonomy Substrate, no Office View and no persistence.
+criterion, and none holds the milestone open.
+
+As dated history (2026-09-13): the first product acceptance was **rejected**
+(`docs/reviews/phase-4-m1-product-acceptance.md` §12) because a first-time user
+could not then discover or perform the canonical organizational change ("add an
+agent") without understanding and manually editing the Genome source structure.
+That failure was architectural rather than a defect — Genome had accepted
+surfaces for source → compiler → projections → governed execution, but none for
+organizational intent → valid Genome document change. It was remediated by
+RFC-0010 (Accepted, Option B; ADR-0012), whose implementation landed and whose
+repeated walkthrough passed the same day. The rejection stands in the record and
+is not erased. Neither that rejection nor its remediation authorizes Milestone 2,
+the Autonomy Substrate, Office View or persistence.
 
 ## Governance Status
 
@@ -397,13 +409,16 @@ merged and disposed (2026-07-18). Under the adopted Option A sequencing
 Board-reviewed, and **accepted 2026-07-18 under Option B**
 (`docs/reviews/rfc-0009-board-review.md`, Product Owner ratification), which
 **opened Phase 4 for Milestone 1 — Governed Authoring — only** and added one
-implementation item to `IMPLEMENTATION_QUEUE.md`. That implementation is **In
-Progress**: checkpoints 1–6 landed, Checkpoint 7 prepared the end-to-end product
-evidence, and **Product Owner acceptance was performed 2026-09-13 and
-rejected** on the authoring discoverability blocker. That Board recommendation — Option C, a
-toolchain-owned authoring capability in a new package rather than a compiler
-target — was **ratified by the Product Owner on 2026-09-13 with amendments
-A1–A8**, resolving the remediation architecture and commissioning one RFC. The
+implementation item to `IMPLEMENTATION_QUEUE.md`. That implementation is
+**complete**: checkpoints 1–6 landed, Checkpoint 7 prepared the end-to-end
+product evidence, and **Product Owner acceptance was first performed 2026-09-13
+and rejected** on the authoring discoverability blocker. The rejection was
+referred to the Architecture Board, which reviewed the remediation options
+(`docs/reviews/phase-4-m1-authoring-remediation-board-review.md`). That Board
+recommendation — Option C, a toolchain-owned authoring capability in a new
+package rather than a compiler target — was **ratified by the Product Owner on
+2026-09-13 with amendments A1–A8**, resolving the remediation architecture and
+commissioning one RFC. The
 `RFC/0010-semantic-authoring-operations.md` was Board-reviewed and
 **accepted 2026-09-13 under Option B** (amendments A1–A12 and the evidence
 amendments applied; `docs/reviews/rfc-0010-board-review.md` §28), with the
@@ -429,11 +444,12 @@ triggers remain **unauthorized**. Only then does an implementation item enter
 Complexity Budget** — a new semantic operation, new document-transformation
 semantics, a new public toolchain API and a new maintained package — while
 changing no accepted language, schema, compiler, runtime, event, revision or
-governance semantics. Only after that ratification may
-remediation be scoped and implemented; the Board implementation close review
-(RFC-0009 §14) follows a *successful* product acceptance, which has not
-occurred. Nothing authorizes marking the milestone complete, draining the queue
-item, or closing Phase 4. Only Milestone 1 is authorized;
+governance semantics. That ratification, the RFC-0010 acceptance and the
+RFC-0010 implementation have all occurred; the Board implementation-close review
+(RFC-0009 §14) followed the *successful* repeated product acceptance and closed
+Milestone 1 on 2026-09-13, draining both queue items and moving four Phase 4
+deliverables to **Done**. **Phase 4 was not closed by that act**, no Phase 4
+milestone is currently authorized, and
 durable runtime logs remain a later, unopened Phase 4 milestone. Re-sequencing
 `ROADMAP.md` per adopted Option B was performed 2026-09-12 and is no longer
 outstanding; it commissioned no autonomy work and opened no phase.
@@ -449,8 +465,17 @@ outstanding; it commissioned no autonomy work and opened no phase.
 | RFC-0006 — Reference Adapter & `genome run` | Accepted 2026-07-13 (Option B), `docs/reviews/rfc-0006-board-review.md`; case-4 erratum applied 2026-07-13 per the Phase 3 close review | `docs/adr/0008-reference-execution-contract.md` | Drained |
 | RFC-0007 — Executor-Scoped Policies | Accepted 2026-07-14 (Option A, five amendments applied), `docs/reviews/rfc-0007-board-review.md`; closed complete 2026-07-15, `docs/reviews/rfc-0007-implementation-close-review.md` | `docs/adr/0009-participation-scoped-policies.md` | Drained (closed 2026-07-15) |
 | RFC-0008 — Self-Hosting Example | Accepted 2026-07-15 (Option B), `docs/reviews/rfc-0008-board-review.md`; closed complete 2026-07-18, `docs/reviews/rfc-0008-implementation-close-review.md` | None required | Drained (closed 2026-07-18) |
+| RFC-0009 — Phase 4 Governed Authoring | Accepted 2026-07-18 (Option B, four clarifying amendments applied), `docs/reviews/rfc-0009-board-review.md`; its Milestone-1 implementation closed complete 2026-09-13, `docs/reviews/phase-4-m1-implementation-close-review.md` | None required (view boundary; ADR-0011 records the authorized compiler-portability property) | Drained (Milestone 1 closed 2026-09-13) |
+| RFC-0010 — Semantic Authoring Operations (`add-agent`) | Accepted 2026-09-13 (Option B, amendments A1–A12 and the evidence amendments applied), `docs/reviews/rfc-0010-board-review.md`; implementation complete and closed within the Phase 4 M1 implementation-close review 2026-09-13, `docs/reviews/phase-4-m1-implementation-close-review.md` | `docs/adr/0012-semantic-authoring-boundary.md` | Drained (Milestone 1 closed 2026-09-13) |
 
 Definition-of-Done evidence for each lives in its board decision document.
+This table records RFCs whose implementation queue items are drained; it is not a
+separate lifecycle state. RFC-0009 and RFC-0010 are listed because both queue
+items are drained and both Definitions of Done were satisfied and evidenced in
+`docs/reviews/phase-4-m1-implementation-close-review.md`. Two consequences are
+**not** implied by their presence here: RFC-0009 §12's record of Milestone 2 is
+not an outstanding RFC-0009 deliverable — durable runtime logs require their own
+RFC — and neither listing closes Phase 4, which remains open.
 One evidence gap found by the 2026-07-13 audit is now closed: the RFC-0005
 item "`genome diff` CLI command with the pinned exit codes" was checked off
 before any test exercised the CLI boundary; `packages/genome-cli/src/cli.test.ts`

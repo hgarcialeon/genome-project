@@ -11,6 +11,24 @@ instrument is established by `docs/adr/0010-erratum-mechanism.md`.
 An erratum moves **no test, contract, event, or exit code**. Anything that
 fails this litmus is ADR or RFC territory and uses those channels.
 
+## Scope note (clarification of ADR-0010; not a new rule)
+
+The instrument's subject is **accepted documents** — documents that carry a
+ratified form from which text could silently diverge (ADR-0010, Decision 2 and
+4). `PROJECT_STATE.md` is **not** one of them: Governance Rule 8 makes it the
+living register of current state, and the RFC Completion Criteria in
+`docs/GOVERNANCE.md` require it to change whenever work lands. It has no
+ratified form to diverge from, and the erratum pointer ADR-0010 Decision 4
+requires at each corrected site would itself go stale at the next landing.
+
+Reconciling `PROJECT_STATE.md` to acts already ratified elsewhere is therefore
+ordinary Rule 8 reconciliation, applied by direct commit, and takes **no
+`ERR-NNNN` id**. The zero-behavioral-change litmus is necessary for an erratum
+but does not by itself make a correction one. Determined 2026-09-13 when the
+Product Owner commissioned a documentation-only reconciliation of stale
+present-tense claims in `PROJECT_STATE.md` following the Phase 4 Milestone 1
+closure; no erratum was issued.
+
 ## Entry format
 
 Each entry carries: an id (`ERR-NNNN`); the affected document and section;
