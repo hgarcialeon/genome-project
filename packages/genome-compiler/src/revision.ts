@@ -7,9 +7,13 @@
  * lexicographically at every level and preserves array order (which is
  * meaningful — e.g. workflow steps), so documents differing only in YAML
  * formatting or key order share a revision.
+ *
+ * The hash is compiler-owned and platform-neutral (ADR-0011): the derivation
+ * is normative, so it must produce the same revision for every consumer —
+ * Node, browser, or any later one — and no view may compute its own.
  */
 
-import { createHash } from "node:crypto";
+import { sha256HexUtf8 } from "./sha256.js";
 
 const canonicalize = (value: unknown): unknown => {
   if (Array.isArray(value)) {
@@ -36,5 +40,5 @@ export function canonicalJson(value: unknown): string | undefined {
 }
 
 export function deriveGenomeRevision(document: unknown): string {
-  return createHash("sha256").update(canonicalJson(document) as string, "utf8").digest("hex");
+  return sha256HexUtf8(canonicalJson(document) as string);
 }

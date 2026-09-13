@@ -8,10 +8,9 @@
  * reimplementing parse or schema validation here is disallowed.
  */
 
-import { readFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
-
 import { createValidator, formatErrors, parseGenomeDocument } from "@genome/schema";
+
+import defaultSchema from "../../../SPEC/schema/genome.schema.json" with { type: "json" };
 
 import { buildAst, type GenomeAst } from "./ast/index.js";
 import { isWarning, type CompileStage, type Diagnostic } from "./diagnostics.js";
@@ -25,10 +24,6 @@ export * from "./graph/index.js";
 export * from "./revision.js";
 export * from "./semantics/index.js";
 export * from "./targets/index.js";
-
-// Canonical schema location (SPEC is the source of truth), resolved relative
-// to this file so compilation works regardless of the working directory.
-const DEFAULT_SCHEMA_PATH = fileURLToPath(new URL("../../../SPEC/schema/genome.schema.json", import.meta.url));
 
 export type CompileOptions = {
   /** JSON Schema to validate against. Defaults to `SPEC/schema/genome.schema.json`. */
@@ -54,8 +49,15 @@ export type CompileFailure = {
 
 export type CompileResult = CompileSuccess | CompileFailure;
 
+/**
+ * The canonical schema (`SPEC/schema/genome.schema.json`, the source of truth),
+ * resolved through the module system rather than read from disk: the compiler's
+ * canonical path then carries no platform-specific import and behaves
+ * identically under Node and in a browser (ADR-0011). Each call returns an
+ * independent copy, so a caller cannot mutate the schema a later compile uses.
+ */
 export function loadDefaultSchema(): object {
-  return JSON.parse(readFileSync(DEFAULT_SCHEMA_PATH, "utf8"));
+  return structuredClone(defaultSchema) as object;
 }
 
 /**
