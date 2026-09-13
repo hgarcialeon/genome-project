@@ -179,9 +179,10 @@ implementation of Genome document semantics.** The capability lives outside
 Studio and outside the compiler: the compiler remains *source → meaning*, and
 semantic authoring is *intent → source*. The ratification resolves architecture
 only — it authorizes no implementation and commissions exactly one RFC, scoped
-to a single `add-agent` operation, whose acceptance is a precondition for any
-queue item. No ADR is recorded yet: the architectural property will be recorded
-when that RFC is accepted.
+to a single `add-agent` operation — drafted as
+`RFC/0010-semantic-authoring-operations.md`, whose acceptance is a precondition
+for any queue item. No ADR is recorded yet: the RFC's OQ6 recommends one for the
+authoring boundary, to be written if the Board agrees and the RFC is accepted.
 
 **Decided 2026-09-13: browser portability of the accepted Genome revision
 derivation.** No architectural decision is open beyond the commissioned RFC's own
@@ -283,8 +284,15 @@ remediation implementation is authorized. The rejection authorizes no Milestone
   acceptance **performed and REJECTED 2026-09-13** on the authoring
   discoverability blocker (`docs/reviews/phase-4-m1-product-acceptance.md`
   §12); the remediation architecture is **ratified** (Option C, amendments
-  A1–A8, 2026-09-13) and commissions one new RFC scoped to a single `add-agent`
-  operation; durable runtime logs remain a later, unopened Phase 4 milestone
+  A1–A8, 2026-09-13) and commissioned
+  `RFC/0010-semantic-authoring-operations.md` (**Draft**, awaiting Board review),
+  scoped to a single `add-agent` operation; durable runtime logs remain a later,
+  unopened Phase 4 milestone
+- Milestone-1 authoring remediation: ✅ architecture ratified — Option C
+  (toolchain-owned semantic authoring), amendments A1–A8, 2026-09-13
+  (`docs/reviews/phase-4-m1-authoring-remediation-board-review.md`);
+  commissioned `RFC/0010-semantic-authoring-operations.md` — 📝 **Draft**,
+  awaiting Architecture Board review; no implementation authorized
 - Specification-maintenance mechanism: ✅ established — erratum registry
   adopted 2026-07-15 (`docs/adr/0010-erratum-mechanism.md`, `docs/ERRATA.md`)
 
@@ -326,8 +334,9 @@ rejected** on the authoring discoverability blocker. That Board recommendation �
 toolchain-owned authoring capability in a new package rather than a compiler
 target — was **ratified by the Product Owner on 2026-09-13 with amendments
 A1–A8**, resolving the remediation architecture and commissioning one RFC. The
-next expected deliverable is therefore the **commissioned semantic-authoring
-RFC**, its Architecture Board review, and Product Owner ratification of it. Only then does an implementation item enter
+next expected deliverable is therefore the **Architecture Board review of
+`RFC/0010-semantic-authoring-operations.md`** (Draft), followed by Product Owner
+ratification of that RFC. Only then does an implementation item enter
 `IMPLEMENTATION_QUEUE.md`. The capability carries a **non-zero Language
 Complexity Budget** — a new semantic operation, new document-transformation
 semantics, a new public toolchain API and a new maintained package — while
