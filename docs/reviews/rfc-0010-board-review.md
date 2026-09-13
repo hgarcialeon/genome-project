@@ -1,15 +1,17 @@
 # Architecture Board Review — RFC-0010: Semantic Authoring Operations (`add-agent`)
 
-**Status: Board recommendation recorded. NOT ratified. Awaiting Product Owner.**
+**Status: RATIFIED by the Product Owner, 2026-09-13 — Option B.**
 
 Held 2026-09-13. Subject: `RFC/0010-semantic-authoring-operations.md`.
 Commit under review: **`82bcf3e`** (working tree clean at review time).
 
 Board (`docs/GOVERNANCE.md`): Product Owner, Chief Architect, Lead Engineer.
 
-**This review recommends; it does not decide.** RFC-0010 is unmodified by this
-review. No package is implemented, no Studio code changed, no queue item added,
-no milestone completed, no phase opened.
+**The Board recommends; it does not decide.** §§0–27 are the review as held,
+with RFC-0010 unmodified at review time. The Product Owner's decision is recorded
+in **§28: RATIFIED 2026-09-13 — Option B**, accepting RFC-0010 with amendments
+A1–A12 and the §23 evidence changes. No package is implemented and no Studio code
+is changed by that ratification.
 
 Every material repository claim in the RFC was **re-executed**, not trusted.
 Where the RFC's claims survived, this review says so. Where they did not, §4 and
@@ -848,7 +850,141 @@ opinion.
 **Board recommendation: Option B — Accept with amendments A1–A12 and the §23
 evidence changes.**
 
-**Product Owner disposition: PENDING**
+---
 
-*(Not preselected. Nothing in this review is ratified, applied, or implemented.
-RFC-0010 is unmodified. The next act is Product Owner ratification.)*
+## 28. Product Owner disposition — RATIFIED
+
+**Product Owner disposition: RATIFIED — 2026-09-13 — Option B (Accept RFC-0010
+with amendments).**
+
+| Field | Value |
+|---|---|
+| Disposition | **Option B — Accept with amendments** |
+| Amendments | **A1–A12 and the §23 evidence changes, applied exactly as recorded** |
+| Date | 2026-09-13 |
+| RFC-0010 | **Accepted** once the amendments are applied to its text |
+| ADR | **ADR-0012 — Semantic Authoring Boundary**, created |
+| Queue | **exactly one** implementation item |
+
+### 28.1 Explicit acceptance of A10
+
+The Product Owner explicitly accepts the Board's resolution of A10:
+
+> An `add-agent` result enters Studio through the existing **ordinary
+> source-edit lifecycle**. RFC-0010 must not create an authoring-specific
+> compile lifecycle.
+
+Therefore:
+
+- the returned source becomes the editor source;
+- the existing Checkpoint-2 source state machinery applies;
+- the existing accepted **400 ms auto-compile** behavior may compile it
+  normally;
+- the authoring operation must **not** introduce a special explicit-compile
+  gate;
+- Studio must **not** update graph/tree directly;
+- projections change **only** after the existing compiler pipeline produces new
+  accepted outputs.
+
+**This preserves one lifecycle for all source edits.**
+
+### 28.2 Decisions the accepted contract must carry
+
+**Existing schema/language facts.** `role` optional; `autonomy` optional; an
+omitted `autonomy` **remains omitted** and is never materialized as `manual`;
+`skills` exists in the accepted agent shape and must be **explicitly addressed**
+rather than silently ignored; `add-agent` is **department-scoped only**;
+team-scoped placement is excluded as a distinct future operation.
+
+**The semantic authoring operation must not become stricter than accepted Genome
+language semantics.** Studio may ask for optional information for usability;
+that is not a semantic requirement of `@genome/authoring`.
+
+**Ownership.** The dedicated toolchain package `@genome/authoring` is accepted.
+The durable split: compiler `source → meaning`; authoring `intent → source`;
+Studio collects intent and presents the resulting source. Semantic authoring is
+**not** placed in Studio, in `@genome/schema`, or in compiler targets.
+
+**Public operation.** One named operation only — conceptually
+`applyAddAgent(source, intent)`. **No** generic operation dispatcher and **no**
+authoring operation language.
+
+**Intent.** Minimum semantic intent: target department and agent id. Optional
+accepted fields may include `role`, `autonomy` and `skills` — **only** where
+they already exist in accepted Genome semantics. **No new Genome fields.**
+
+**Duplicate behavior.** Genome does not currently define a general agent-id
+uniqueness semantic. The operation refuses a duplicate mapping key in the
+**specific target mapping**, as an operation-level conflict, **before** producing
+invalid YAML. This is **not** generalized to cross-department or cross-team
+uniqueness; existing accepted documents carrying the same local agent id in
+different scopes remain valid wherever the current compiler accepts them.
+
+**Source preservation.** The false all-or-nothing contract is replaced by the
+Board's **three-tier model**: (1) required preservation, (2) desirable
+preservation, (3) non-normative / disclosed normalization — the latter naming
+CRLF normalization, mixed/custom indentation normalization, and any other
+formatting empirically shown not to round-trip. **No byte-preservation claim may
+be made for properties empirical testing disproved.** The implementation must not
+perform unnecessary whole-document rewriting. The `yaml` v2 configuration used as
+feasibility evidence, `lineWidth: 0` included, remains **implementation evidence,
+not a normative dependency**.
+
+**Determinism.** Pinned **separately** from preservation: same exact source bytes
+plus same exact `add-agent` intent yields byte-identical resulting source, with
+identical intent defined precisely. Deterministic output and byte preservation of
+untouched formatting are **separate properties** and must not be conflated.
+
+**Diagnostics (A8).** The compiler `Diagnostic.stage` union is **not** widened
+and compiler diagnostics are **not** modified to host authoring failures.
+`@genome/authoring` may define its own narrowly scoped operation-failure
+representation for `invalid-intent` and `conflict`. Compiler diagnostics remain
+**verbatim and authoritative** for invalid source and invalid resulting Genome
+source. No competing Genome diagnostic taxonomy. Compiler semantics and
+diagnostic contracts remain unchanged.
+
+**Failure atomicity (A9).** Failure results contain **no successful mutated
+`source`**. A caller must not be able to accidentally consume an invalid
+candidate as success. On failure: failure classification, relevant operation
+information, and compiler diagnostics where applicable — but no
+successful-source field.
+
+**Revision ownership.** Authoring never computes, predicts, stores, preserves as
+metadata, or supplies `genomeRevision`. After mutation the normal compiler
+derives the revision from the resulting source. **ADR-0011 remains unchanged.**
+
+**Source visibility (A11).** The resulting source remains immediately
+inspectable in Studio. Visual authoring does not hide the durable Genome
+artifact.
+
+**Accessibility (A12).** Both success and failure paths satisfy the existing
+Milestone-1 WCAG 2.2 AA acceptance floor, with predictable focus behavior for
+opening Add agent, validation errors, operation conflicts, successful mutation,
+and cancel.
+
+### 28.3 Evidence amendments
+
+The strengthened **E4/E5/E9/E12** and the added **E14–E17** are applied exactly
+as recorded in §23. The Definition of Done must mechanically prove the accepted
+architecture, including: no compiler `Diagnostic` contract expansion; no
+Studio-owned YAML mutation; no revision derivation in authoring; and **no
+authoring-specific compile path**. `SPEC/examples/genome-project.yaml` remains a
+**required** preservation fixture.
+
+### 28.4 What this ratification authorizes
+
+- RFC-0010 becomes **Accepted** with the amendments applied.
+- **ADR-0012 — Semantic Authoring Boundary** is created.
+- **Exactly one** implementation item enters `IMPLEMENTATION_QUEUE.md`, covering
+  `@genome/authoring` (`add-agent` only), RFC-0010 evidence, and the minimal
+  Studio integration required to repeat Milestone-1 product acceptance.
+
+### 28.5 What it does not authorize
+
+- **No implementation in the acceptance commit.**
+- No Phase 4 roadmap deliverable moves to **Done**.
+- No change to accepted language, schema, compiler, runtime, event, revision or
+  governance semantics.
+- Milestone 1 remains **In Progress**; the prior product acceptance remains
+  **Rejected pending remediation**; Phase 4 remains **open for Milestone 1
+  only**.

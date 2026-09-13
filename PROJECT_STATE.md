@@ -54,7 +54,13 @@ and Studio implementation checkpoints 1–6 landed, Checkpoint 7 prepared the
 acceptance evidence, and **Product Owner acceptance was performed and REJECTED
 on 2026-09-13** on a single blocking product failure — Governed Authoring
 discoverability (`docs/reviews/phase-4-m1-product-acceptance.md` §12). The item
-is not complete, not drained, and Phase 4 is not closed.
+is not complete, not drained, and Phase 4 is not closed. The remediation
+architecture was ratified and `RFC/0010-semantic-authoring-operations.md`
+**accepted 2026-09-13 under Option B**, adding a second **Not Started**
+engineering item. **The current engineering objective is the implementation of
+RFC-0010** — the `@genome/authoring` package (`add-agent` only) plus the minimal
+Studio `add-agent` integration required to repeat Milestone-1 product acceptance.
+No implementation has been performed.
 
 ## Current Milestone
 
@@ -98,15 +104,20 @@ completion, ephemerality and the accessibility floor were all accepted as
 demonstrated. The blocking failure is **authoring discoverability**: a user
 cannot discover or perform the canonical organizational change ("add an agent")
 without understanding and manually editing the Genome source structure.
-**Milestone 1 is not complete, the queue item is not drained, no Milestone-1
-roadmap deliverable is Done, and Phase 4 is not closed.** The remediation **architecture is now decided**: the Product
+**Milestone 1 is not complete, the Milestone-1 queue item is not drained, no
+Phase 4 roadmap deliverable is Done, and Phase 4 is not closed.** The remediation **architecture is now decided**: the Product
 Owner **ratified Option C — toolchain-owned semantic authoring operations —
 exactly as recommended, with amendments A1–A8, on 2026-09-13**
 (`docs/reviews/phase-4-m1-authoring-remediation-board-review.md` §8; proposal
-`docs/proposals/phase-4-m1-authoring-remediation.md`). The ratification resolves
-the remediation architecture **only** and **commissions one new RFC** scoped to a
-single `add-agent` operation. **It authorizes no implementation**, adds no queue
-item, and leaves the Milestone-1 acceptance **Rejected pending remediation**.
+`docs/proposals/phase-4-m1-authoring-remediation.md`). That ratification commissioned
+`RFC/0010-semantic-authoring-operations.md`, which was Board-reviewed and
+**accepted 2026-09-13 under Option B** (amendments A1–A12 plus evidence
+amendments; `docs/reviews/rfc-0010-board-review.md` §28;
+`docs/adr/0012-semantic-authoring-boundary.md`). Acceptance added **exactly one**
+implementation item to `IMPLEMENTATION_QUEUE.md` — the `@genome/authoring`
+package (`add-agent` only) plus the minimal Studio integration needed to repeat
+Milestone-1 product acceptance. **No implementation has been performed.** The
+prior Milestone-1 product acceptance remains **Rejected pending remediation**.
 The prior RFC-0007 queue item was **implemented, drained, and closed**
 (2026-07-15) by the Board's implementation closure review
 (`docs/reviews/rfc-0007-implementation-close-review.md`, Option A).
@@ -152,7 +163,10 @@ commissioned, drafted, Board-reviewed, and **accepted 2026-07-18 under Option B*
 `docs/reviews/rfc-0009-board-review.md`, Product Owner ratification). That
 acceptance **opened Phase 4 for Milestone 1 — Governed Authoring — only** and
 added one implementation item to `IMPLEMENTATION_QUEUE.md`. **The current
-objective is to implement Studio Milestone 1 (Governed Authoring)** to the
+objective is the implementation of RFC-0010 — `@genome/authoring` (`add-agent`
+only) and the minimal Studio `add-agent` integration — so that Milestone-1
+product acceptance can be repeated.** It supersedes, without discarding, the
+earlier framing of implementing Studio Milestone 1 (Governed Authoring) to the
 accepted RFC's Definition of Done — a projection/interaction layer over the
 shipped compiler targets and the ephemeral runtime event stream (Principle 5),
 with the nine protected boundaries held and a recorded product-acceptance
@@ -179,10 +193,14 @@ implementation of Genome document semantics.** The capability lives outside
 Studio and outside the compiler: the compiler remains *source → meaning*, and
 semantic authoring is *intent → source*. The ratification resolves architecture
 only — it authorizes no implementation and commissions exactly one RFC, scoped
-to a single `add-agent` operation — drafted as
-`RFC/0010-semantic-authoring-operations.md`, whose acceptance is a precondition
-for any queue item. No ADR is recorded yet: the RFC's OQ6 recommends one for the
-authoring boundary, to be written if the Board agrees and the RFC is accepted.
+to a single `add-agent` operation. That RFC —
+`RFC/0010-semantic-authoring-operations.md` — is **Accepted** (Option B,
+2026-09-13), and the durable boundary is recorded as
+`docs/adr/0012-semantic-authoring-boundary.md`: the compiler owns
+*source → meaning*, authoring owns *intent → source*, views collect intent and
+present results, Genome source stays canonical, authoring does not own compiler
+interpretation, and authoring operations are consumer-gated rather than a generic
+mutation language.
 
 **Decided 2026-09-13: browser portability of the accepted Genome revision
 derivation.** No architectural decision is open beyond the commissioned RFC's own
@@ -285,18 +303,20 @@ remediation implementation is authorized. The rejection authorizes no Milestone
   discoverability blocker (`docs/reviews/phase-4-m1-product-acceptance.md`
   §12); the remediation architecture is **ratified** (Option C, amendments
   A1–A8, 2026-09-13) and commissioned
-  `RFC/0010-semantic-authoring-operations.md` (**Draft**, Board-reviewed
-  2026-09-13, awaiting Product Owner ratification), scoped to a single
-  `add-agent` operation; durable runtime logs remain a later,
+  `RFC/0010-semantic-authoring-operations.md` (**Accepted** 2026-09-13 under
+  Option B; ADR-0012), scoped to a single `add-agent` operation and carrying one
+  queued implementation item; durable runtime logs remain a later,
   unopened Phase 4 milestone
 - Milestone-1 authoring remediation: ✅ architecture ratified — Option C
   (toolchain-owned semantic authoring), amendments A1–A8, 2026-09-13
   (`docs/reviews/phase-4-m1-authoring-remediation-board-review.md`);
-  commissioned `RFC/0010-semantic-authoring-operations.md` — 📝 **Draft**,
-  **Architecture Board review held 2026-09-13**
-  (`docs/reviews/rfc-0010-board-review.md`, recommending Option B — accept with
-  amendments A1–A12), **awaiting Product Owner ratification**; no implementation
-  authorized
+  commissioned `RFC/0010-semantic-authoring-operations.md`
+- RFC-0010 — Semantic Authoring Operations (`add-agent`): ✅ **Accepted**
+  2026-09-13 under **Option B** (accept with amendments A1–A12 and the evidence
+  amendments applied; `docs/reviews/rfc-0010-board-review.md` §28, Product Owner
+  ratification recorded there); architectural property recorded as
+  `docs/adr/0012-semantic-authoring-boundary.md`; **one** implementation item
+  queued (Not Started); no implementation performed
 - Specification-maintenance mechanism: ✅ established — erratum registry
   adopted 2026-07-15 (`docs/adr/0010-erratum-mechanism.md`, `docs/ERRATA.md`)
 
@@ -338,15 +358,17 @@ rejected** on the authoring discoverability blocker. That Board recommendation �
 toolchain-owned authoring capability in a new package rather than a compiler
 target — was **ratified by the Product Owner on 2026-09-13 with amendments
 A1–A8**, resolving the remediation architecture and commissioning one RFC. The
-Architecture Board review of
-`RFC/0010-semantic-authoring-operations.md` was **held 2026-09-13**
-(`docs/reviews/rfc-0010-board-review.md`): the Board recommends **Option B —
-accept with amendments A1–A12** plus evidence changes, having re-executed every
-material claim. It resolved all six open questions and found two boundary errors
-and one unachievable preservation contract in the draft, each with a specific
-amendment. The next expected deliverable is therefore **Product Owner
-ratification of that recommendation**; only afterwards are the amendments
-applied, ADR-0012 recorded, and one implementation item queued. Only then does an implementation item enter
+`RFC/0010-semantic-authoring-operations.md` was Board-reviewed and
+**accepted 2026-09-13 under Option B** (amendments A1–A12 and the evidence
+amendments applied; `docs/reviews/rfc-0010-board-review.md` §28), with the
+durable boundary recorded as `docs/adr/0012-semantic-authoring-boundary.md` and
+**exactly one** implementation item added to `IMPLEMENTATION_QUEUE.md` (Not
+Started). The next expected deliverable is therefore the **implementation of
+RFC-0010** — the `@genome/authoring` package (`add-agent` only) together with the
+minimal Studio integration required to repeat Milestone-1 product acceptance —
+followed by a **repeated recorded product-acceptance walkthrough**. Only a
+successful acceptance re-opens the path to the Milestone-1 implementation close
+review. Only then does an implementation item enter
 `IMPLEMENTATION_QUEUE.md`. The capability carries a **non-zero Language
 Complexity Budget** — a new semantic operation, new document-transformation
 semantics, a new public toolchain API and a new maintained package — while
