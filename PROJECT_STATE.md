@@ -62,11 +62,15 @@ architecture was ratified and `RFC/0010-semantic-authoring-operations.md`
 Product Owner walkthrough was performed 2026-09-13 and the disposition is
 **Accepted with follow-ups**: **the Milestone-1 product-acceptance gate passes**
 and the authoring-discoverability blocker is resolved
-(`docs/reviews/phase-4-m1-product-acceptance.md` §13). **The current engineering
-objective is the Architecture Board implementation-close review** of Phase 4
-Milestone 1, packet
-`docs/reviews/phase-4-m1-implementation-close-packet.md`. Four non-blocking
-follow-ups (F1–F4) are recorded; none violates an accepted close criterion.
+(`docs/reviews/phase-4-m1-product-acceptance.md` §13). The Architecture Board
+**implementation-close review was held 2026-09-13**
+(`docs/reviews/phase-4-m1-implementation-close-review.md`) on the packet
+`docs/reviews/phase-4-m1-implementation-close-packet.md`; it recommends
+**Option B — close Milestone 1 with a required follow-up record** and its
+disposition is **PENDING Product Owner ratification**. **The current engineering
+objective is that ratification.** Milestone 1 is **not** closed, no roadmap
+deliverable is Done, no follow-up queue item has been added, and Milestone 2
+remains unopened.
 
 ## Current Milestone
 
@@ -384,12 +388,15 @@ amendments applied; `docs/reviews/rfc-0010-board-review.md` §28), with the
 durable boundary recorded as `docs/adr/0012-semantic-authoring-boundary.md` and
 **exactly one** implementation item added to `IMPLEMENTATION_QUEUE.md` (Not
 Started). RFC-0010 is **implemented** — the `@genome/authoring` package (`add-agent` only)
-and the minimal Studio integration both landed 2026-09-13 — and the repeated
-product acceptance was performed the same day, disposition **Accepted with
-follow-ups**. The next expected deliverable is therefore the **Architecture Board
-implementation-close review of Phase 4 Milestone 1**, on the packet
-`docs/reviews/phase-4-m1-implementation-close-packet.md`. Milestone 2 (durable
-runtime logs) remains unopened and the autonomy substrate is not commissioned. Only then does an implementation item enter
+and the minimal Studio integration both landed 2026-09-13 — the repeated product
+acceptance was performed the same day (**Accepted with follow-ups**), and the
+**Architecture Board implementation-close review was held 2026-09-13**
+(`docs/reviews/phase-4-m1-implementation-close-review.md`), recommending
+**Option B**. The next expected deliverable is therefore the **Product Owner's
+ratification of that recommendation**; only afterwards may Milestone 1 be closed,
+the queue items drained and the Phase 4 deliverables marked Done. Milestone 2
+(durable runtime logs) remains unopened and the autonomy substrate is not
+commissioned. Only then does an implementation item enter
 `IMPLEMENTATION_QUEUE.md`. The capability carries a **non-zero Language
 Complexity Budget** — a new semantic operation, new document-transformation
 semantics, a new public toolchain API and a new maintained package — while
