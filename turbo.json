@@ -6,7 +6,8 @@
       "outputs": ["dist/**"]
     },
     "test": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "passThroughEnv": ["GENOME_CHROMIUM", "CHROME_BIN", "PLAYWRIGHT_BROWSERS_PATH"]
     },
     "typecheck": {
       "dependsOn": ["^build"]

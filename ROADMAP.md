@@ -7,6 +7,34 @@ requires an `IMPLEMENTATION_QUEUE.md` entry. **De-scoped** requires a stated
 reason. A phase closes only through the phase transition review defined in
 `docs/GOVERNANCE.md`.
 
+## Phase Sequencing
+
+The committed order below is **Option B — Autonomy First**
+(`docs/proposals/roadmap-revision.md`, Product Owner disposition 2026-07-18),
+applied to this roadmap 2026-09-12 as the separate ratified act that disposition
+reserved. It re-sequences committed phases only; it commissions nothing, opens no
+phase, authorizes no implementation, and changes no evidence gate or
+deferred-capability condition.
+
+What it means here:
+
+- Phase 4 — Studio Prototype remains the current phase, opened for Milestone 1
+  (Governed Authoring) by `RFC/0009-phase-4-governed-authoring.md`.
+- After that milestone, the autonomy spine — Phase 5 — Autonomy Substrate — is
+  sequenced ahead of a standalone Office View phase, each deliverable still
+  behind its own RFC and evidence gate.
+- Phase 6 — Self-Improvement Loop remains last.
+- **Office View is not cancelled and not de-scoped.** It leaves the numbered
+  sequence because its standalone placement is no longer presumed; its final
+  form and placement — standalone phase, Studio projection, or later capability
+  — must be proposed separately and governed before it is re-placed. It is
+  recorded below as a future capability with its deliverables intact.
+
+Phase numbers are stable identifiers: Phases 0–4 and Phase 6 keep the numbers
+accepted documents already cite, and Phase 5's slot carries the autonomy
+substrate. References in accepted documents to "Office View (Phase 5)" resolve
+to the Office View section at the end of this roadmap.
+
 ## Phase 0 — Foundation
 
 Closed 2026-07-13 (`docs/reviews/phase-0-3-board-review.md`).
@@ -94,23 +122,31 @@ Goal: create an Organization IDE.
 
 | Deliverable | Status | Evidence / Notes |
 |-------------|--------|------------------|
-| Monaco editor for Genome YAML | Not Started | Requires the Phase 4 RFC |
+| Genome document editor | Not Started | Product-level deliverable per `RFC/0009-phase-4-governed-authoring.md` §8.1; no editor framework is prescribed (ERR-0003) |
 | Schema validation | Not Started | |
 | Live preview | Not Started | |
 | Organization tree | Not Started | |
 | Runtime logs | Not Started | |
 
-## Phase 5 — Office View
+## Phase 5 — Autonomy Substrate
 
-Goal: render the company as a living isometric organization.
+Goal: make governed autonomous execution real, in dependency order.
+
+**Named and sequenced only — nothing here is commissioned.** Each deliverable
+requires its own RFC, Board review, and Product Owner ratification before any
+work enters `IMPLEMENTATION_QUEUE.md`. Every existing architecture and evidence
+gate is preserved exactly as recorded: provider adapters require their own
+accepted contract and evidence; trigger auto-initiation requires an RFC;
+exported-log readers and durable event persistence remain gated on their first
+consumer; simulation must not be treated as free or implied by deterministic
+replay.
 
 | Deliverable | Status | Evidence / Notes |
 |-------------|--------|------------------|
-| PixiJS renderer | Not Started | Requires the Phase 5 RFC |
-| Office layout engine | Not Started | |
-| Agent sprites | Not Started | |
-| Agent states | Not Started | |
-| Event-driven animations | Not Started | Prototype queued Low in `IMPLEMENTATION_QUEUE.md` |
+| First real provider adapter | Not Started | Behind the ADR-0008 seam; requires its own accepted contract and evidence, including an empty runtime-core diff |
+| Trigger-driven initiation | Not Started | Requires an RFC; explicit initiation remains the only v0.1 behavior (RFC-0004 non-goal) |
+| Durable evidence and observability | Not Started | Gate unchanged — event persistence stays gated on the first consumer requiring a durable log; the Phase 4 "Runtime logs" deliverable keeps its Phase 4 home |
+| Simulation | Not Started | Requires its own RFC and product boundary; sequenced as the rehearsal layer before real-effect execution |
 
 ## Phase 6 — Self-Improvement Loop
 
@@ -125,3 +161,21 @@ Goal: allow Genome to improve Genome.
 | Validate | Not Started | |
 | Promote | Not Started | |
 | Update Genome | Not Started | |
+
+## Office View — Future Capability
+
+Placement governed separately. Sequenced behind the autonomy substrate by the
+adopted Option B direction; **not cancelled, not de-scoped**. Its final form —
+standalone phase, Studio projection, or later capability — requires its own
+proposal and ratification before it is re-placed in the committed sequence
+(`docs/proposals/roadmap-revision.md` §4, Product Owner disposition 2026-07-18).
+
+Goal: render the company as a living isometric organization.
+
+| Deliverable | Status | Evidence / Notes |
+|-------------|--------|------------------|
+| PixiJS renderer | Not Started | Requires the Office View RFC |
+| Office layout engine | Not Started | |
+| Agent sprites | Not Started | |
+| Agent states | Not Started | |
+| Event-driven animations | Not Started | Prototype queued Low in `IMPLEMENTATION_QUEUE.md` |

@@ -1,0 +1,15 @@
+# Golden revision fixture: canonicalization invariance, variant A.
+genomeVersion: 0.1
+
+company:
+  name: Canonical Form
+  mission: Prove that formatting does not change identity.
+
+departments:
+  operations:
+    teams:
+      support:
+        agents:
+          triage:
+            role: Support Engineer
+            autonomy: supervised

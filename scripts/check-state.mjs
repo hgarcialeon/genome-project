@@ -14,8 +14,9 @@
  *      ROADMAP.md.
  *   3. Repository paths referenced in the governance documents exist,
  *      including the top level of README.md's repository-structure tree.
- *   4. Every workspace package under packages/ has a `test` script, so
- *      "implemented" claims always have an executable check.
+ *   4. Every workspace package under packages/ and every application under
+ *      apps/ has a `test` script, so "implemented" claims always have an
+ *      executable check.
  *   5. Source files contain no raw control bytes (tab/LF/CR excepted).
  *   6. No current-state headings (Current Goal / Current Phase / ...) exist
  *      outside PROJECT_STATE.md — current state has exactly one home.
@@ -125,15 +126,21 @@ if (treeBlock) {
 }
 
 // ---------------------------------------------------------------------------
-// 4. Every package has a test script
+// 4. Every workspace package and application has a test script
 // ---------------------------------------------------------------------------
 
-for (const name of readdirSync(join(ROOT, "packages"))) {
-  const manifestPath = join(ROOT, "packages", name, "package.json");
-  if (!existsSync(manifestPath)) continue;
-  const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
-  if (!manifest.scripts?.test) {
-    fail("package-tests", `packages/${name} has no "test" script — implemented claims need executable evidence`);
+for (const workspace of ["packages", "apps"]) {
+  if (!existsSync(join(ROOT, workspace))) continue;
+  for (const name of readdirSync(join(ROOT, workspace))) {
+    const manifestPath = join(ROOT, workspace, name, "package.json");
+    if (!existsSync(manifestPath)) continue;
+    const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
+    if (!manifest.scripts?.test) {
+      fail(
+        "package-tests",
+        `${workspace}/${name} has no "test" script — implemented claims need executable evidence`,
+      );
+    }
   }
 }
 
@@ -155,7 +162,7 @@ function* walk(dir) {
   }
 }
 
-for (const dir of ["packages", "scripts", "SPEC", "docs", "RFC"]) {
+for (const dir of ["packages", "apps", "scripts", "SPEC", "docs", "RFC"]) {
   if (!existsSync(join(ROOT, dir))) continue;
   for (const path of walk(join(ROOT, dir))) {
     const bytes = readFileSync(path);

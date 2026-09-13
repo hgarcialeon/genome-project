@@ -99,8 +99,8 @@ undifferentiated, so that no reader can mistake aspiration for plan:
 
 | Tier | Capability | Where it stands |
 |---|---|---|
-| Planned | Studio prototype (Monaco editing, schema validation, live preview, organization tree, runtime logs) | Phase 4 on `ROADMAP.md`; opening RFC not commissioned |
-| Planned | Office View (isometric rendering of the live organization) | Phase 5; prototype queued Low in `IMPLEMENTATION_QUEUE.md` |
+| Planned | Studio prototype (document editing, schema validation, live preview, organization tree, runtime logs) | Phase 4 on `ROADMAP.md`; opening RFC accepted — `RFC/0009-phase-4-governed-authoring.md` (ERR-0004); current phase state in `PROJECT_STATE.md` |
+| Planned | Office View (isometric rendering of the live organization) | `ROADMAP.md` section "Office View — Future Capability"; placement governed separately (ERR-0004); prototype queued Low in `IMPLEMENTATION_QUEUE.md` |
 | Planned | Self-improvement loop (observe → diagnose → propose → validate → promote) | Phase 6; proposal payload reserved by ADR-0006 |
 | Planned (gated) | Event persistence | Gated on the first consumer requiring a durable log |
 | Planned (gated) | Human members as declarable principals (Gap 2) | Deferred at the first view-phase RFC rendering principals |

@@ -1,0 +1,25 @@
+# Golden revision fixture: ASCII content across the structures the graph surfaces.
+genomeVersion: 0.1
+
+company:
+  name: Northwind Billing
+  mission: Invoice every customer correctly, on time.
+
+departments:
+  engineering:
+    teams:
+      billing:
+        agents:
+          architect:
+            role: Software Architect
+            autonomy: supervised
+          backend:
+            role: Backend Engineer
+
+workflows:
+  invoice-run:
+    owner: engineering.billing.backend
+    steps:
+      - plan
+      - implement
+      - review

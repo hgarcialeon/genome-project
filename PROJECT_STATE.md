@@ -1,6 +1,6 @@
 # Genome Project State
 
-Last Updated: 2026-07-18
+Last Updated: 2026-09-13
 
 This file is the **only** source for current project state (Governance
 Rule 8). Other documents point here; none may restate what this file owns.
@@ -126,12 +126,40 @@ accepted RFC's Definition of Done — a projection/interaction layer over the
 shipped compiler targets and the ephemeral runtime event stream (Principle 5),
 with the nine protected boundaries held and a recorded product-acceptance
 walkthrough required to close. No Studio code has yet been written; only
-Milestone 1 is authorized. Re-sequencing `ROADMAP.md` per adopted Option B
-remains a separate ratified act, not yet performed.
+Milestone 1 is authorized. Re-sequencing `ROADMAP.md` per adopted Option B was
+**performed 2026-09-12** (Product Owner direction) as the separate ratified act
+that disposition reserved: the autonomy substrate now holds the Phase 5 slot,
+Self-Improvement remains Phase 6, and Office View is recorded as a future
+capability whose placement is governed separately — not cancelled, not
+de-scoped. The reconciliation commissioned nothing and changed no gate.
 
 ## Active Architectural Decision
 
-None open. `RFC/0009-phase-4-governed-authoring.md` — the Phase 4 opening RFC
+**Decided 2026-09-13: browser portability of the accepted Genome revision
+derivation.** No architectural decision is open. The decision was required by the
+browser-first topology recorded in the Milestone-1 acceptance floor
+(`IMPLEMENTATION_QUEUE.md`). The Milestone-1
+browser-compatibility spike established that `packages/genome-compiler` cannot be
+bundled for a browser as it stands — `node:crypto` is exercised on the canonical
+compilation path, `node:fs` and `node:url` are inert but must still resolve — and
+that no view-side fix is acceptable (Constitution Principles 2 and 5; RFC-0009
+§3). Making the compiler platform-neutral crosses the RFC-0009 §11 protected
+boundary "no production diff under `packages/genome-compiler/src`", which §11
+answers with a return to the Board. The Board review
+`docs/reviews/rfc-0009-m1-compiler-portability-board-review.md` (evidence
+independently re-executed uncached; three options) recommended Option A, and the
+Product Owner **ratified Option A on 2026-09-13** — a **one-time
+protected-boundary implementation authorization for Milestone 1 only**, recorded
+verbatim in that review. The accepted architectural property is recorded as
+`docs/adr/0011-platform-neutral-compiler.md`: revision derivation stays
+exclusively compiler-owned and normatively unchanged, `compile` stays
+synchronous, callers cannot inject the algorithm, the compiler's canonical path
+becomes platform-neutral, and views consume compiler-owned identity instead of
+reproducing it. The authorization amends no RFC-0009 semantics, authorizes no
+broader compiler redesign, and gives Studio no ownership of the derivation; the
+review's stop conditions return the work to the Board if it is exceeded.
+
+Previously decided and unchanged: `RFC/0009-phase-4-governed-authoring.md` — the Phase 4 opening RFC
 defining the Studio boundary (strategy move A3) and scoping the Governed
 Authoring Milestone 1 — was **accepted 2026-07-18 under Option B** (accept with
 four clarifying amendments applied; `docs/reviews/rfc-0009-board-review.md`, every
@@ -156,7 +184,14 @@ decision is open; RFC-0009 is decided (accepted) as noted above.
 
 ## Current Blockers
 
-None.
+None. The Milestone-1 portability blocker raised on 2026-09-13 was cleared the
+same day by the Product Owner's ratification of Option A
+(`docs/reviews/rfc-0009-m1-compiler-portability-board-review.md`,
+`docs/adr/0011-platform-neutral-compiler.md`). Phase 4 Milestone 1 — Governed
+Authoring remains the current authorized work; substantive Studio UI
+implementation stays gated behind the authorized portability change, its
+permanent conformance evidence, and the browser-first gate recorded with the
+Milestone-1 acceptance floor in `IMPLEMENTATION_QUEUE.md`.
 
 ## Governance Status
 
@@ -170,8 +205,9 @@ None.
 - Product Strategy: ✅ adopted — Option A, 2026-07-14
   (`docs/PRODUCT_STRATEGY.md`)
 - Strategic sequencing direction: ✅ adopted — Option B "Autonomy First",
-  2026-07-18 (`docs/proposals/roadmap-revision.md`); strategic intent only,
-  `ROADMAP.md` re-sequencing reserved as a separate ratified act (not yet done)
+  2026-07-18 (`docs/proposals/roadmap-revision.md`); the reserved `ROADMAP.md`
+  re-sequencing was applied 2026-09-12 (Product Owner direction), commissioning
+  no autonomy work
 - Phase 4 planned opening experience: ✅ adopted — Governed Authoring,
   2026-07-18 (`docs/reviews/phase-4-planning-packet-amendment.md`, Option A)
 - Phase 4 opening RFC: ✅ Accepted — `RFC/0009-phase-4-governed-authoring.md`,
@@ -220,8 +256,8 @@ the accepted RFC's Definition of Done, followed by its Board implementation clos
 review — which requires both uncached executable conformance and a recorded
 product-acceptance walkthrough (RFC-0009 §14). Only Milestone 1 is authorized;
 durable runtime logs remain a later, unopened Phase 4 milestone. Re-sequencing
-`ROADMAP.md` per adopted Option B remains a separate ratified act, not yet
-performed.
+`ROADMAP.md` per adopted Option B was performed 2026-09-12 and is no longer
+outstanding; it commissioned no autonomy work and opened no phase.
 
 ## Completed RFCs
 
