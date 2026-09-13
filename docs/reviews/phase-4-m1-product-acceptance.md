@@ -1,6 +1,12 @@
 # Phase 4 Milestone 1 — Governed Authoring: Product Acceptance Record
 
-**Status: REJECTED — Product Owner acceptance performed 2026-09-13.**
+**Status: REJECTED 2026-09-13 → REMEDIATED and ACCEPTED WITH FOLLOW-UPS
+2026-09-13 (§13).**
+
+This record is **append-only**. §§1–12 stand exactly as written when the
+milestone was rejected, including the rejection itself and its evidence. The
+rejection happened; it is not erased, rewritten, or reinterpreted. §13 records
+the later remediation walkthrough and its disposition.
 
 The walkthrough was conducted. Most of Milestone 1 passed. Acceptance was
 **rejected** on one blocking product failure: **authoring discoverability**
@@ -16,7 +22,8 @@ prepared by the Lead Engineer; §§1–11 are the evidence as prepared, preserve
 unchanged. §12 records the Product Owner's disposition.
 
 Nothing in this document marks Milestone 1 complete, drains the queue item, or
-closes Phase 4.
+closes Phase 4 — the product-acceptance **gate** passes (§13); the milestone
+closes only through the Board's implementation-close review.
 
 ---
 
@@ -415,3 +422,125 @@ review is `docs/reviews/phase-4-m1-authoring-remediation-board-review.md`.
 **Neither is ratified.** The next governance act is **Product Owner
 ratification** of a Board-recommended option. No remediation implementation is
 authorized before that.
+
+---
+
+# 13. Remediation walkthrough — 2026-09-13
+
+**Product Owner disposition: Accepted with follow-ups**
+
+**The M1 product acceptance gate PASSES.** The blocker recorded in §12.1 is
+**resolved**. This is a remediation of the §12 rejection, not a new architecture
+finding against RFC-0010.
+
+| Field | Value |
+|---|---|
+| Disposition | **Accepted with follow-ups** |
+| Date | 2026-09-13 |
+| Commit walked | `f149a7532fd1008c387e226554d2ba22e0c1ef2a` |
+| Remediation record | `docs/reviews/phase-4-m1-product-acceptance-remediation.md` |
+| Remediation decision | RFC-0010 (Accepted, Option B) · ADR-0012 |
+
+## 13.1 What was walked
+
+The reviewer completed the canonical remediation journey **without prior
+knowledge of Genome YAML structure**.
+
+- **`+ Add agent` was discoverable directly under Engineering** on the initial
+  organization surface — no scrolling to the source editor, no inferred
+  document structure.
+- The Add agent form **focused the agent-id field automatically**.
+- **Empty and duplicate values were rejected with understandable messages.**
+- **`po-review-agent` was added with no optional fields.**
+- The resulting Genome source changed by **exactly**:
+
+  ```yaml
+  po-review-agent: {}
+  ```
+
+  No `role`, no `autonomy` — the deny-safe default was not materialized.
+
+## 13.2 Observed source lifecycle
+
+The **ordinary** lifecycle, with no authoring-specific path:
+
+```
+source updated → projections stale → Run disabled
+  → existing automatic compilation → current again
+```
+
+**No explicit Compile action was required.** This is the ratified A10 behavior:
+one lifecycle for all source edits.
+
+## 13.3 Compiler-derived projections
+
+| Projection | Before | After |
+|---|---|---|
+| Organization Graph | 19 nodes / 31 relations | **20 / 32** |
+| Organization tree | no `po-review-agent` | shows the new agent |
+
+Both changed only after the compiler produced new output.
+
+## 13.4 Governed execution check
+
+`rfc-lifecycle` **parked deny-safe** awaiting `human:product-owner`, with **zero
+workflow steps executed** — unchanged from the Checkpoint 1–7 evidence in §5.
+
+## 13.5 Invalid-source and session-divergence check
+
+Introducing invalid YAML **blocked new execution**, while the already-started
+session **remained bound to its original revision** and displayed the existing
+divergence warning. The Checkpoint 4–6 behavior is intact.
+
+The test document was restored and the temporary session cleared.
+
+## 13.6 The rejected criterion is satisfied
+
+> A user can discover and perform "add an agent to Engineering" without external
+> instruction or knowledge of Genome YAML structure.
+
+**No YAML knowledge was required at any point in the journey.**
+
+## 13.7 Follow-ups (non-blocking)
+
+Recorded as follow-up work. See §13.8 for the close-criterion analysis.
+
+| # | Priority | Finding |
+|---|---|---|
+| F1 | **P2** | **Source-change navigation.** After successful authoring the canonical source remains available and editable but is physically far from the interaction — observed ~2814 px from the top with a pending execution session in a 583 px viewport. Add a discoverable action associated with success, conceptually *"View change in source"*, navigating/focusing the user to the relevant source area. **No second representation of the change; no change to canonical-source ownership.** Studio navigation/usability only. |
+| F2 | **P2** | **Stale success confirmation.** After `po-review-agent` was removed by a later source edit and the document recompiled, the UI still displayed "Added po-review-agent…". The confirmation must not claim a mutation remains current once subsequent source changes invalidate it. Prefer clearing it when the source changes again through another edit, using existing source/edit state — **not** by reparsing YAML in Studio. |
+| F3 | **P3** | **Projection-status copy.** "Everything below was compiled…" appears beneath graph/tree content and is ambiguous about what "below" refers to. Name the projections/state explicitly. **Copy only**; no compiler/projection semantic change. |
+| F4 | **P3** | **Escape cancellation.** Cancel works and restores focus correctly; **Escape** does not currently close the Add agent interaction. Add it if consistent with the existing pattern, preserving predictable focus restoration, keyboard-only operation, and no mutation on cancel. Accessibility/interaction polish, not a new authoring semantic. |
+
+## 13.8 Close-criterion analysis — are any of F1–F4 blocking?
+
+Assessed against the **accepted criteria**, not severity labels: RFC-0009 §10.1
+and §14, RFC-0010 §13 (E1–E19) and §14, the Milestone-1 acceptance floor in
+`IMPLEMENTATION_QUEUE.md`, and RFC-0009 §3.
+
+**Finding: none of F1–F4 violates an explicit accepted close criterion.** They
+are **non-blocking follow-ups (option B)**. Milestone 1 is not held open for
+polish.
+
+| # | Clause tested | Result |
+|---|---|---|
+| F1 | RFC-0010 §9.2 / A11 — *"the resulting source remains immediately inspectable… does not hide or replace the durable Genome artifact"* | **Not violated.** The clause's concern, as recorded in the Board review §17, is **concealment**, not proximity. The source is present, visible, editable and unhidden, and the confirmation names it ("The Genome source below has changed"). **This is the closest call of the four** and is flagged for the Board, which may read "immediately" as including reachability. |
+| F2 | RFC-0009 §3 — *"become a second source of truth for the document"*; Checkpoint-2 stale invariant | **Not violated.** The stale invariant is stated over **projections**, and projections behaved correctly (§13.2). Nothing consumes the confirmation: it drives no projection, no run-readiness, no revision, no execution. It is a stale *message*, not a competing source of truth. It is nonetheless a UI truthfulness defect and should be fixed. |
+| F3 | Accessibility floor — *"diagnostics and errors programmatically associated with the relevant content"* | **Not violated.** This is status copy, not a diagnostic or error, and it is correctly associated with its panel. Ambiguous wording is a clarity defect, not a floor breach. |
+| F4 | Accessibility floor — *"keyboard operability for all essential interactions"*, *"no essential interaction requiring pointer-only input"*; WCAG 2.2 AA | **Not violated.** Cancel is fully keyboard-operable and restores focus. WCAG 2.2 AA contains **no success criterion requiring Escape dismissal**, and SC 2.1.2 (No Keyboard Trap, Level A) is satisfied — focus is never trapped. Escape is a convention, and worth adding, but not a floor requirement. |
+
+**Board note.** F1 is the only item where a reasonable reading could differ. If
+the Board finds that RFC-0010 §9.2's "immediately inspectable" carries a
+reachability obligation rather than only a non-concealment obligation, F1 becomes
+a close blocker and this analysis should be overturned. The Lead Engineer does
+not so find, and says so rather than leaving the ambiguity unstated.
+
+## 13.9 Governance consequence
+
+- The §12 **rejection is resolved**; it remains recorded, not erased.
+- **Product acceptance passes.** Milestone 1 remains **In Progress** until the
+  Board's implementation-close review.
+- Phase 4 remains **open for Milestone 1 only**. **Milestone 2 (durable runtime
+  logs) remains unopened.** No Autonomy Substrate work is opened.
+- No `ROADMAP.md` deliverable moves to **Done**.
+- The close packet is `docs/reviews/phase-4-m1-implementation-close-packet.md`.

@@ -58,10 +58,15 @@ is not complete, not drained, and Phase 4 is not closed. The remediation
 architecture was ratified and `RFC/0010-semantic-authoring-operations.md`
 **accepted 2026-09-13 under Option B**, adding a second engineering item — now
 **In Progress**. Its implementation landed in two stages: `@genome/authoring`
-(Stage A) and the minimal Studio `add-agent` integration (Stage B). **The current
-engineering objective is the repeated Product Owner product acceptance** against
-`docs/reviews/phase-4-m1-product-acceptance-remediation.md`, whose disposition is
-**PENDING**.
+(Stage A) and the minimal Studio `add-agent` integration (Stage B). The repeated
+Product Owner walkthrough was performed 2026-09-13 and the disposition is
+**Accepted with follow-ups**: **the Milestone-1 product-acceptance gate passes**
+and the authoring-discoverability blocker is resolved
+(`docs/reviews/phase-4-m1-product-acceptance.md` §13). **The current engineering
+objective is the Architecture Board implementation-close review** of Phase 4
+Milestone 1, packet
+`docs/reviews/phase-4-m1-implementation-close-packet.md`. Four non-blocking
+follow-ups (F1–F4) are recorded; none violates an accepted close criterion.
 
 ## Current Milestone
 
@@ -122,9 +127,10 @@ Milestone-1 product acceptance. That item is **In Progress**: Stage A
 RFC-0010 evidence E1–E19 passing uncached and every protected boundary empty. A
 **new** acceptance record is prepared at
 `docs/reviews/phase-4-m1-product-acceptance-remediation.md` with its disposition
-**PENDING**. The prior Milestone-1 product acceptance
-(`docs/reviews/phase-4-m1-product-acceptance.md`) remains **Rejected** and is not
-reused or reopened.
+**Accepted with follow-ups** (2026-09-13). The original Milestone-1 product
+acceptance (`docs/reviews/phase-4-m1-product-acceptance.md`) remains recorded as
+**Rejected**; its §13 appends the remediation walkthrough that resolves that
+rejection. The rejection is not erased or rewritten.
 The prior RFC-0007 queue item was **implemented, drained, and closed**
 (2026-07-15) by the Board's implementation closure review
 (`docs/reviews/rfc-0007-implementation-close-review.md`, Option A).
@@ -269,10 +275,13 @@ conformance evidence, and the browser-first re-spike recorded with the
 Milestone-1 acceptance floor in `IMPLEMENTATION_QUEUE.md` — was satisfied before
 checkpoint 1, and checkpoints 1–6 have since landed.
 
-**One blocker is open as of 2026-09-13: Milestone-1 Governed Authoring
-discoverability.** Its *architecture* is decided (Option C ratified, below); the
-blocker stays open until the commissioned RFC is accepted, implemented, and a
-fresh product acceptance succeeds. Product Owner acceptance was performed and rejected
+**No blocker is open.** The Milestone-1 Governed Authoring discoverability
+blocker raised 2026-09-13 was **cleared the same day**: RFC-0010 was accepted and
+implemented, and the repeated Product Owner walkthrough passed with the
+disposition **Accepted with follow-ups**
+(`docs/reviews/phase-4-m1-product-acceptance.md` §13). Four non-blocking
+follow-ups (F1–F4) remain recorded there; none violates an accepted close
+criterion, and none holds the milestone open. Product Owner acceptance was performed and rejected
 (`docs/reviews/phase-4-m1-product-acceptance.md` §12): a first-time user cannot
 discover or perform the canonical organizational change ("add an agent")
 without understanding and manually editing the Genome source structure. The
@@ -308,10 +317,11 @@ remediation implementation is authorized. The rejection authorizes no Milestone
   landed, Checkpoint-7 acceptance evidence prepared, and Product Owner
   acceptance **performed and REJECTED 2026-09-13** on the authoring
   discoverability blocker (`docs/reviews/phase-4-m1-product-acceptance.md`
-  §12); the remediation is **implemented and awaiting a repeated product
-  acceptance** (`docs/reviews/phase-4-m1-product-acceptance-remediation.md`,
-  disposition PENDING); the remediation architecture is **ratified** (Option C,
-  amendments A1–A8, 2026-09-13) and commissioned
+  §12), then **remediated**: RFC-0010 shipped and the repeated walkthrough was
+  **Accepted with follow-ups 2026-09-13** (§13 of that record), so the
+  **product-acceptance gate passes** and the milestone now awaits the Board's
+  implementation-close review; the remediation architecture is **ratified**
+  (Option C, amendments A1–A8, 2026-09-13) and commissioned
   `RFC/0010-semantic-authoring-operations.md` (**Accepted** 2026-09-13 under
   Option B; ADR-0012), scoped to a single `add-agent` operation and carrying one
   queued implementation item; durable runtime logs remain a later,
@@ -374,12 +384,12 @@ amendments applied; `docs/reviews/rfc-0010-board-review.md` §28), with the
 durable boundary recorded as `docs/adr/0012-semantic-authoring-boundary.md` and
 **exactly one** implementation item added to `IMPLEMENTATION_QUEUE.md` (Not
 Started). RFC-0010 is **implemented** — the `@genome/authoring` package (`add-agent` only)
-and the minimal Studio integration both landed 2026-09-13. The next expected
-deliverable is therefore the **repeated recorded product-acceptance walkthrough**
-by the Product Owner against
-`docs/reviews/phase-4-m1-product-acceptance-remediation.md` (disposition
-**PENDING**). Only a successful acceptance re-opens the path to the Milestone-1
-implementation close review. Only then does an implementation item enter
+and the minimal Studio integration both landed 2026-09-13 — and the repeated
+product acceptance was performed the same day, disposition **Accepted with
+follow-ups**. The next expected deliverable is therefore the **Architecture Board
+implementation-close review of Phase 4 Milestone 1**, on the packet
+`docs/reviews/phase-4-m1-implementation-close-packet.md`. Milestone 2 (durable
+runtime logs) remains unopened and the autonomy substrate is not commissioned. Only then does an implementation item enter
 `IMPLEMENTATION_QUEUE.md`. The capability carries a **non-zero Language
 Complexity Budget** — a new semantic operation, new document-transformation
 semantics, a new public toolchain API and a new maintained package — while

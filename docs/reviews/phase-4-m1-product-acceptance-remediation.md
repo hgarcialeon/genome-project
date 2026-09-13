@@ -1,16 +1,18 @@
 # Phase 4 Milestone 1 — Product Acceptance (Remediation Walkthrough)
 
-**Status: PREPARED — awaiting Product Owner acceptance.**
+**Status: ACCEPTED WITH FOLLOW-UPS — Product Owner walkthrough performed 2026-09-13.**
 
 This is a **new** acceptance record, not an amendment of
 `docs/reviews/phase-4-m1-product-acceptance.md`. That record's disposition
 stands as **Rejected** and is not reused, reopened, or overwritten.
 
 Prepared by the Lead Engineer under RFC-0009 §14.8 (Amendment 4) and RFC-0010
-§14. **It records no decision.** The Product Owner conducts the acceptance; §9 is
-unresolved.
+§14. §§1–8 and §§10–11 are the evidence as prepared; **§9 records the Product
+Owner's disposition**.
 
-Nothing here marks Milestone 1 complete, drains a queue item, or closes Phase 4.
+The product-acceptance **gate passes**. Nothing here marks Milestone 1 complete,
+drains a queue item, or closes Phase 4 — the milestone closes only through the
+Board's implementation-close review.
 
 ---
 
@@ -146,53 +148,31 @@ the keyboard.
 
 ## 9. Product Owner disposition
 
-**Product Owner disposition: PENDING**
-
-Available dispositions:
-
-- Accepted
-- Accepted with follow-ups
-- Rejected
-
-*(Not preselected. To be completed by the Product Owner.)*
+**Product Owner disposition: Accepted with follow-ups** — 2026-09-13.
 
 | Field | Value |
 |---|---|
-| Disposition | *(unresolved)* |
-| Date | *(unrecorded)* |
-| Follow-ups, if any | *(unrecorded)* |
-| Rationale | *(unrecorded)* |
+| Disposition | **Accepted with follow-ups** |
+| Date | 2026-09-13 |
+| Result | **The M1 product acceptance gate PASSES** |
+| Blocker status | The §12.1 rejection blocker is **resolved** |
+| Follow-ups | F1–F4, **non-blocking** — see the acceptance record §13.7–§13.8 |
 
-### How to conduct it
+The full walkthrough observations, the follow-ups, and the close-criterion
+analysis are recorded in `docs/reviews/phase-4-m1-product-acceptance.md` §13,
+appended to the original rejection rather than replacing it.
 
-```bash
-pnpm install --frozen-lockfile
-pnpm --filter @genome/studio build
-pnpm --filter @genome/studio preview   # open the printed URL
-```
+In summary: the reviewer discovered `+ Add agent` directly under Engineering on
+the initial surface, added `po-review-agent` with no optional fields, and the
+source changed by exactly `po-review-agent: {}`. The ordinary lifecycle was
+observed — stale, Run disabled, automatic compilation, current — with **no
+explicit Compile required**. The compiler-derived graph moved 19/31 → 20/32 and
+the tree showed the agent. Governed execution still parked deny-safe for
+`human:product-owner` with zero steps, and invalid YAML blocked new execution
+while the running session stayed bound to its own revision. **No YAML knowledge
+was required at any point.**
 
-Start from the initial screen. **You should not be told where the source editor
-is, or what shape the YAML takes** — if the product cannot get you there, that
-is the finding.
-
-| # | Item | Met? |
-|---|---|---|
-| 1 | Identify that the organization can be changed | ☐ |
-| 2 | Find Engineering | ☐ |
-| 3 | Discover Add agent | ☐ |
-| 4 | Enter the required data | ☐ |
-| 5 | Complete the change | ☐ |
-| 6 | See that the source changed | ☐ |
-| 7 | Understand the source is canonical | ☐ |
-| 8 | See graph and tree update through compiler outputs | ☐ |
-| 9 | Continue to governed execution, if desired | ☐ |
-| 10 | Repeat the whole sequence keyboard-only | ☐ |
-| 11 | Review §8 caveats; decide whether any blocks acceptance | ☐ |
-
-Until §9 is resolved, Milestone 1 is **not complete**, no queue item is Done,
-and Phase 4 is **not closed**. Acceptance does not by itself close the
-milestone: the Board's implementation close review follows and must carry this
-record.
+This disposition is **not** a new architecture finding against RFC-0010.
 
 ## 10. Screenshot provenance
 
