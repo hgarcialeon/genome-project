@@ -386,7 +386,6 @@ Describe a company once. Compile it into an autonomous organization.
 
 - Office View implementation (prototype queued Low)
 - Marketplace
-- Studio UI
 - Provider-specific agent integrations (the adapter seam ships; adapters do not)
 - Trigger auto-initiation (event/schedule/webhook binding grammars)
 - Event persistence (assigned to a later phase, gated on the first
