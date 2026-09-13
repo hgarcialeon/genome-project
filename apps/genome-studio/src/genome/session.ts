@@ -114,6 +114,24 @@ export function startSession({
   };
 }
 
+export type GrantOutcome = { ok: true } | { ok: false; reason: string };
+
+/**
+ * Submits an explicit approval as the named principal, through the accepted
+ * runtime mechanism, and lets the adapter carry on with whatever the runtime
+ * dispatched as a result.
+ *
+ * Studio asserts nothing about the outcome: the runtime decides whether the
+ * grant is valid, emits `approval.granted` if it is, and resumes execution on
+ * its own terms. A refusal is returned as the runtime worded it.
+ */
+export function grantApproval(session: StudioSession, principal: string): GrantOutcome {
+  const result = session.runtime.submitApproval(session.runId, principal, true);
+  if (!result.ok) return { ok: false, reason: result.reason };
+  session.adapter.settle();
+  return { ok: true };
+}
+
 /** The run as the runtime reports it. Studio reconstructs no run state. */
 export function runState(session: StudioSession): RunState | undefined {
   return session.runtime.state().runs[session.runId];

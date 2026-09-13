@@ -763,3 +763,102 @@ body {
   font-size: 0.75rem;
   overflow: auto;
 }
+
+/* Waiting · Action · Evidence ------------------------------------------- */
+
+.block__heading {
+  margin: 0 0 0.4rem;
+  font-size: 0.875rem;
+}
+
+.block__kicker {
+  display: inline-block;
+  margin-right: 0.4rem;
+  padding: 0.05rem 0.35rem;
+  border-radius: 3px;
+  background: var(--ink);
+  color: #ffffff;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+.action {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid var(--accent);
+  border-left-width: 5px;
+  border-radius: 6px;
+  background: #f4f7fd;
+}
+
+.action__list {
+  margin: 0 0 0.5rem;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.button--grant {
+  font-weight: 600;
+}
+
+.action__note,
+.action__identity {
+  font-size: 0.8125rem;
+  color: var(--ink-muted);
+}
+
+.action__identity {
+  margin: 0;
+}
+
+.action__floor {
+  margin: 0;
+  font-size: 0.8125rem;
+}
+
+.action__refusal {
+  margin: 0.5rem 0 0;
+  color: var(--error);
+  font-size: 0.8125rem;
+}
+
+.evidence {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-left: 5px solid var(--ok);
+  border-radius: 6px;
+  background: #f5faf6;
+}
+
+.evidence__none,
+.evidence__list,
+.evidence__completed {
+  margin: 0;
+  font-size: 0.8125rem;
+  /* Revisions and node ids are long and unbreakable; wrap them rather than
+     letting one push the layout sideways. */
+  overflow-wrap: anywhere;
+}
+
+.evidence__list {
+  padding-left: 1.1rem;
+}
+
+.evidence__completed {
+  margin-top: 0.5rem;
+  color: var(--ok);
+  font-weight: 600;
+}
+
+.evidence__event {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.principal--granted {
+  border-color: var(--ok);
+}

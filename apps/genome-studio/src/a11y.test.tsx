@@ -95,6 +95,51 @@ describe("accessibility floor", () => {
     expect(screen.getByTestId("session-announcement").getAttribute("role")).toBe("status");
   });
 
+  it("has no axe violations after the grant completes the run", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<App autoCompileDelayMs={NO_AUTO_COMPILE} />);
+
+    await user.click(screen.getByTestId("run-workflow"));
+    await user.click(screen.getByTestId("grant-button"));
+
+    expect(screen.getByTestId("completion-record")).toBeTruthy();
+    expect(await violations(container)).toEqual([]);
+  });
+
+  it("names the grant action for the principal it attributes to, and keeps focus where it was", async () => {
+    const user = userEvent.setup();
+    render(<App autoCompileDelayMs={NO_AUTO_COMPILE} />);
+
+    await user.click(screen.getByTestId("run-workflow"));
+
+    const grantButton = screen.getByRole("button", { name: /Grant as human:product-owner/ });
+    expect(grantButton).toBe(screen.getByTestId("grant-button"));
+
+    grantButton.focus();
+    await user.keyboard("{Enter}");
+
+    // No modal, no focus stolen into the log: focus stays in the document body
+    // where the removed control was, and the outcome is announced instead.
+    expect(document.activeElement).not.toBe(screen.getByTestId("event-list"));
+    expect(screen.getByTestId("session-announcement").textContent).toContain("completed");
+  });
+
+  it("separates requirement, action and evidence while parked", async () => {
+    const user = userEvent.setup();
+    render(<App autoCompileDelayMs={NO_AUTO_COMPILE} />);
+
+    await user.click(screen.getByTestId("run-workflow"));
+
+    const waiting = screen.getByTestId("waiting");
+    const action = screen.getByTestId("action");
+    const evidence = screen.getByTestId("evidence");
+    expect(waiting.contains(action)).toBe(false);
+    expect(action.contains(evidence)).toBe(false);
+    expect(waiting.textContent).toContain("required");
+    expect(action.textContent).toContain("Grant as");
+    expect(evidence.textContent).toContain("No approval has been granted");
+  });
+
   it("gives every interactive control an accessible name", () => {
     render(<App autoCompileDelayMs={NO_AUTO_COMPILE} />);
 

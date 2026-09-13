@@ -1,13 +1,16 @@
 /**
- * Governance and execution: what is running, what it is waiting for, and why.
+ * Governance and execution: what the organization requires, the explicit human
+ * act, and what the runtime recorded.
  *
- * Every fact here is read from accepted output — the runtime's `state()` for
- * the run, its `approval.requested` events for what was asked and of whom, and
- * the runtime model the session was created from for the labels behind the ids.
- * Studio decides nothing about approval: if the runtime says a run is parked
- * with a pending principal, that is what appears; if it says nothing, nothing
- * appears.
+ * The three are deliberately separate on screen. A button that turns into the
+ * word "Approved" teaches nothing; a requirement, an act, and the evidence the
+ * runtime emitted are the product. Every fact below is read from accepted
+ * output — `state()` for the run, the runtime's own `approval.requested` and
+ * `approval.granted` events for what was asked and who answered — and the only
+ * thing Studio contributes is the arrangement.
  */
+
+import { INTRINSIC_FLOOR_PRINCIPAL } from "@genome/runtime";
 
 import { STUDIO_OPERATOR, type StudioSession } from "../genome/session.js";
 
@@ -18,7 +21,10 @@ export type SessionView = {
   session: StudioSession;
   run?: RunState;
   events: readonly RuntimeEvent[];
+  /** The runtime's refusal of the initiation, if it refused. */
   refusal?: string;
+  /** The runtime's refusal of the most recent grant, if it refused. */
+  grantRefusal?: string;
 };
 
 const STATUS_TEXT: Record<string, { mark: string; label: string }> = {
@@ -28,20 +34,199 @@ const STATUS_TEXT: Record<string, { mark: string; label: string }> = {
   failed: { mark: "✕", label: "Failed" },
 };
 
-/** Approval requests the runtime emitted for this run, as it emitted them. */
-const approvalRequests = (events: readonly RuntimeEvent[]) =>
-  events
-    .filter((event) => event.type === "approval.requested")
-    .map((event) => ({
-      /** The runtime attributes the request to its origin: a policy id, or the initiator for the intrinsic floor. */
-      source: event.source,
-      principals: (event.payload.principals as string[] | undefined) ?? [],
-      eventId: event.id,
-    }));
-
 /** Resolves an id the runtime reported to the label the same model declares. */
 const policyLabel = (model: RuntimeModel, id: string): string | undefined =>
   model.policies.find((policy) => policy.id === id)?.policyId;
+
+type PendingRequest = {
+  eventId: number;
+  /** The runtime's attribution for the request: a policy id, or the initiator for the intrinsic floor. */
+  source: string;
+  label?: string;
+  principals: readonly string[];
+  /** Those the runtime still reports as pending. */
+  outstanding: readonly string[];
+};
+
+/**
+ * The approval requests the runtime emitted, paired with what it still reports
+ * as pending. Structurally plural: one card per request, one action per
+ * outstanding principal, whatever their number.
+ */
+const pendingRequests = (view: SessionView): PendingRequest[] => {
+  const stillPending = new Set(view.run?.pendingApprovals ?? []);
+  return view.events
+    .filter((event) => event.type === "approval.requested")
+    .map((event) => {
+      const principals = (event.payload.principals as string[] | undefined) ?? [];
+      return {
+        eventId: event.id,
+        source: event.source,
+        label: policyLabel(view.session.model, event.source),
+        principals,
+        outstanding: principals.filter((principal) => stillPending.has(principal)),
+      };
+    });
+};
+
+function WaitingSection({ view, requests }: { view: SessionView; requests: PendingRequest[] }) {
+  return (
+    <div class="waiting" data-testid="waiting">
+      <h3 class="block__heading">
+        <span class="block__kicker">Waiting</span> what the organization requires
+      </h3>
+      <p class="waiting__lead">
+        Execution parked before any step ran. The runtime holds it until the required approval is granted — no timeout,
+        no default, no inference.
+      </p>
+
+      <p class="waiting__principals">
+        Approval required from:{" "}
+        {(view.run?.pendingApprovals ?? []).map((principal) => (
+          <code key={principal} class="principal" data-testid="required-principal">
+            {principal}
+          </code>
+        ))}
+      </p>
+
+      <ul class="waiting__requests" data-testid="approval-requests">
+        {requests.map((request) => (
+          <li key={request.eventId}>
+            <span class="waiting__requested-by">Requested by </span>
+            {request.label !== undefined ? (
+              <>
+                policy <strong data-testid="approval-policy-label">{request.label}</strong>{" "}
+              </>
+            ) : null}
+            <code data-testid="approval-source">{request.source}</code>
+            <span class="waiting__of">
+              , requiring{" "}
+              {request.principals.map((principal) => (
+                <code key={principal} class="principal" data-testid="approval-principal">
+                  {principal}
+                </code>
+              ))}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function ActionSection({
+  view,
+  requests,
+  onGrant,
+}: {
+  view: SessionView;
+  requests: PendingRequest[];
+  onGrant: (principal: string) => void;
+}) {
+  const actionable = requests.flatMap((request) =>
+    request.outstanding.map((principal) => ({ request, principal })),
+  );
+
+  return (
+    <div class="action" data-testid="action">
+      <h3 class="block__heading">
+        <span class="block__kicker">Action</span> the explicit human grant
+      </h3>
+
+      <ul class="action__list">
+        {actionable.map(({ request, principal }) => (
+          <li key={`${request.eventId}:${principal}`}>
+            {principal === INTRINSIC_FLOOR_PRINCIPAL ? (
+              <p class="action__floor" data-testid="floor-principal-note">
+                <code class="principal">{principal}</code> is the runtime's supervised floor: a concrete human
+                principal must grant it. Studio does not choose one for you.
+              </p>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  class="button button--grant"
+                  data-testid="grant-button"
+                  data-principal={principal}
+                  onClick={() => onGrant(principal)}
+                >
+                  Grant as {principal}
+                </button>
+                <span class="action__note">
+                  {" "}
+                  for{" "}
+                  {request.label !== undefined ? (
+                    <>
+                      policy <strong>{request.label}</strong>{" "}
+                    </>
+                  ) : null}
+                  <code>{request.source}</code>
+                </span>
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
+
+      <p class="action__identity" data-testid="action-identity">
+        Studio authenticates nobody. Initiating as <code>{view.session.initiatedBy}</code> and granting as the named
+        principal are operator assertions, recorded by the runtime as stated.
+      </p>
+
+      {view.grantRefusal !== undefined ? (
+        <p class="action__refusal" data-testid="grant-refusal">
+          <span aria-hidden="true">✕ </span>
+          The runtime refused that grant: <strong>{view.grantRefusal}</strong>. Nothing was approved.
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function EvidenceSection({ view }: { view: SessionView }) {
+  const granted = view.events.filter((event) => event.type === "approval.granted");
+  const run = view.run;
+  const completed = run?.status === "completed";
+
+  return (
+    <div class="evidence" data-testid="evidence">
+      <h3 class="block__heading">
+        <span class="block__kicker">Evidence</span> what the runtime recorded
+      </h3>
+
+      {granted.length === 0 ? (
+        <p class="evidence__none" data-testid="evidence-none">
+          No approval has been granted. The runtime has recorded none.
+        </p>
+      ) : (
+        <ul class="evidence__list" data-testid="granted-list">
+          {granted.map((event) => (
+            <li key={event.id} data-testid="granted-record">
+              <span class="evidence__event">
+                #{event.id} <code>approval.granted</code>
+              </span>{" "}
+              — granted by{" "}
+              <code class="principal principal--granted" data-testid="granted-by">
+                {event.source}
+              </code>
+              {typeof event.payload.principal === "string" ? (
+                <span class="visually-hidden"> (principal {event.payload.principal})</span>
+              ) : null}
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {completed ? (
+        <p class="evidence__completed" data-testid="completion-record">
+          <span aria-hidden="true">✓ </span>
+          <strong>{view.session.workflowId}</strong> completed {run?.completedSteps} steps under revision{" "}
+          <code>{view.session.genomeRevision}</code>, initiated by <code>{view.session.initiatedBy}</code>.
+        </p>
+      ) : null}
+    </div>
+  );
+}
 
 export function ExecutionPanel({
   workflows,
@@ -51,6 +236,7 @@ export function ExecutionPanel({
   runBlockedReason,
   onRun,
   onReset,
+  onGrant,
   view,
   sourceRevision,
 }: {
@@ -61,13 +247,15 @@ export function ExecutionPanel({
   runBlockedReason?: string;
   onRun: () => void;
   onReset: () => void;
+  onGrant: (principal: string) => void;
   view?: SessionView;
   /** Revision of the source now in the editor, or `undefined` while it is edited or invalid. */
   sourceRevision?: string;
 }) {
   const run = view?.run;
   const status = run === undefined ? undefined : STATUS_TEXT[run.status];
-  const requests = view === undefined ? [] : approvalRequests(view.events);
+  const requests = view === undefined ? [] : pendingRequests(view);
+  const waiting = run?.status === "pending-approval";
   // The session belongs to the revision it started under. It diverges the
   // moment the editor no longer holds that revision's source — including while
   // the text is merely edited, when there is no current revision at all.
@@ -148,56 +336,14 @@ export function ExecutionPanel({
           {divergent ? (
             <p class="session__divergent" data-testid="session-divergent">
               <span aria-hidden="true">⧗ </span>
-              This session belongs to the revision it started under. The document in the editor has changed since.
+              This session belongs to the revision it started under. The document in the editor has changed since;
+              granting acts on this session, never on the edited source.
             </p>
           ) : null}
 
-          {run?.status === "pending-approval" ? (
-            <div class="waiting" data-testid="waiting">
-              <h3 class="panel__subheading">Waiting for approval</h3>
-              <p class="waiting__lead">
-                Execution parked before any step ran. The runtime holds it until the required approval is granted.
-              </p>
-
-              <p class="waiting__principals">
-                Required principals:{" "}
-                {run.pendingApprovals.map((principal) => (
-                  <code key={principal} class="principal" data-testid="required-principal">
-                    {principal}
-                  </code>
-                ))}
-              </p>
-
-              <ul class="waiting__requests" data-testid="approval-requests">
-                {requests.map((request) => {
-                  const label = policyLabel(view.session.model, request.source);
-                  return (
-                    <li key={request.eventId}>
-                      <span class="waiting__requested-by">Requested by </span>
-                      {label !== undefined ? (
-                        <>
-                          policy <strong data-testid="approval-policy-label">{label}</strong>{" "}
-                        </>
-                      ) : null}
-                      <code data-testid="approval-source">{request.source}</code>
-                      <span class="waiting__of">
-                        , requiring{" "}
-                        {request.principals.map((principal) => (
-                          <code key={principal} class="principal" data-testid="approval-principal">
-                            {principal}
-                          </code>
-                        ))}
-                      </span>
-                    </li>
-                  );
-                })}
-              </ul>
-
-              <p class="waiting__deny-safe">
-                No approval is inferred or issued automatically. Granting arrives in the next milestone increment.
-              </p>
-            </div>
-          ) : null}
+          {waiting ? <WaitingSection view={view} requests={requests} /> : null}
+          {waiting ? <ActionSection view={view} requests={requests} onGrant={onGrant} /> : null}
+          <EvidenceSection view={view} />
         </div>
       )}
     </section>

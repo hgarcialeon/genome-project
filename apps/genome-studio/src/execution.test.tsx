@@ -117,7 +117,9 @@ describe("canonical deny-safe run", () => {
     expect(types).not.toContain("workflow.completed");
     expect(types).not.toContain("agent.task.assigned");
     expect(screen.getByTestId("session-status").textContent).not.toContain("Completed");
-    expect(screen.queryByRole("button", { name: /grant/i })).toBeNull();
+    // The grant is offered, never taken: the runtime has recorded no approval.
+    expect(screen.getByTestId("grant-button")).toBeTruthy();
+    expect(screen.getByTestId("evidence-none")).toBeTruthy();
   });
 });
 

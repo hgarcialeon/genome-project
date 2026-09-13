@@ -30,7 +30,7 @@ import {
   openDocument,
   type CompilationState,
 } from "./genome/compilation-state.js";
-import { runState, startSession, type StudioSession } from "./genome/session.js";
+import { grantApproval, runState, startSession, type StudioSession } from "./genome/session.js";
 
 import type { RuntimeEvent } from "@genome/runtime";
 
@@ -63,6 +63,7 @@ export function App({ autoCompileDelayMs = DEFAULT_AUTO_COMPILE_DELAY_MS }: { au
   const [session, setSession] = useState<StudioSession | undefined>(undefined);
   const [events, setEvents] = useState<readonly RuntimeEvent[]>([]);
   const [refusal, setRefusal] = useState<string | undefined>(undefined);
+  const [grantRefusal, setGrantRefusal] = useState<string | undefined>(undefined);
   const [sessionAnnouncement, setSessionAnnouncement] = useState("");
   const [selectedWorkflowId, setSelectedWorkflowId] = useState<string>(CANONICAL_WORKFLOW);
 
@@ -90,19 +91,20 @@ export function App({ autoCompileDelayMs = DEFAULT_AUTO_COMPILE_DELAY_MS }: { au
 
   const run = session === undefined ? undefined : runState(session);
   const view: SessionView | undefined =
-    session === undefined ? undefined : { session, run, events, refusal };
+    session === undefined ? undefined : { session, run, events, refusal, grantRefusal };
 
   const startRun = useCallback(() => {
     if (runnableModel === undefined) return;
     // Subscription happens inside startSession, before initiation, so no
-    // emitted event can be missed.
-    const collected: RuntimeEvent[] = [];
+    // emitted event can be missed. Events append for the life of the session:
+    // the record after a grant continues the one from before it.
+    setEvents([]);
+    setGrantRefusal(undefined);
     const outcome = startSession({
       model: runnableModel,
       workflowId: selectedWorkflowId,
-      onEvent: (event) => collected.push(event),
+      onEvent: (event) => setEvents((previous) => [...previous, event]),
     });
-    setEvents(collected);
     if (!outcome.ok) {
       setSession(undefined);
       setRefusal(outcome.refusal.reason);
@@ -119,6 +121,31 @@ export function App({ autoCompileDelayMs = DEFAULT_AUTO_COMPILE_DELAY_MS }: { au
     );
   }, [runnableModel, selectedWorkflowId]);
 
+  /**
+   * The explicit human grant. The runtime decides: Studio submits the
+   * assertion and reports what came back, and the evidence the UI shows is the
+   * event the runtime emitted, never the fact that a button was pressed.
+   */
+  const grant = useCallback(
+    (principal: string) => {
+      if (session === undefined) return;
+      const outcome = grantApproval(session, principal);
+      if (!outcome.ok) {
+        setGrantRefusal(outcome.reason);
+        setSessionAnnouncement(`The runtime refused the grant as ${principal}: ${outcome.reason}.`);
+        return;
+      }
+      setGrantRefusal(undefined);
+      const after = runState(session);
+      setSessionAnnouncement(
+        after?.status === "completed"
+          ? `${session.workflowId} completed ${after.completedSteps} steps after the approval by ${principal}.`
+          : `Approval submitted as ${principal}. The run is ${after?.status ?? "updated"}.`,
+      );
+    },
+    [session],
+  );
+
   const resetSession = useCallback(() => {
     setSession((previous) => {
       previous?.dispose();
@@ -126,6 +153,7 @@ export function App({ autoCompileDelayMs = DEFAULT_AUTO_COMPILE_DELAY_MS }: { au
     });
     setEvents([]);
     setRefusal(undefined);
+    setGrantRefusal(undefined);
     setSessionAnnouncement("Session discarded.");
   }, []);
 
@@ -213,6 +241,7 @@ export function App({ autoCompileDelayMs = DEFAULT_AUTO_COMPILE_DELAY_MS }: { au
             }
             onRun={startRun}
             onReset={resetSession}
+            onGrant={grant}
             view={view}
             sourceRevision={currentRevision(state)}
           />
