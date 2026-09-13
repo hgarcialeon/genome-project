@@ -40,7 +40,7 @@ Secondary observation:
 |---|---|
 | Repository | `hgarcialeon/genome-project` |
 | Branch | `claude/fervent-hypatia-9ul9ed` |
-| **Commit under review** | `PIN-COMMIT-UNDER-REVIEW` |
+| **Commit under review** | `f149a7532fd1008c387e226554d2ba22e0c1ef2a` |
 | Stage A | `4f68336` — `@genome/authoring` |
 | Stage B | `9a11e13` — Studio integration |
 | Date prepared | 2026-09-13 |
@@ -202,7 +202,7 @@ record.
 | Browser | headless **Chromium** (`/opt/pw-browsers/chromium-1194/chrome-linux/chrome`) over CDP |
 | Viewport | **1440 × 900**, `deviceScaleFactor: 2` |
 | Capture | full-page; each state **asserted before capture** |
-| Commit rendered | `PIN-COMMIT-UNDER-REVIEW` |
+| Commit rendered | `f149a7532fd1008c387e226554d2ba22e0c1ef2a` |
 | Document | `SPEC/examples/genome-project.yaml` |
 | Reproduce | `pnpm --filter @genome/studio build && node scripts/capture-authoring-evidence.mjs` |
 
@@ -220,7 +220,27 @@ Screenshots are evidence, **not normative state**; §11 is the standing evidence
 ## 11. Repository health and RFC-0010 evidence
 
 ```
-PIN-HEALTH-RESULTS
+$ pnpm check-state
+check-state: project state documents are consistent with the repository.
+
+$ pnpm typecheck
+ Tasks:    8 successful, 8 total     Cached: 0 cached, 8 total
+
+$ pnpm test -- --force
+@genome/adapter-reference     Tests    7 passed (7)
+@genome/authoring             Tests   37 passed (37)   <- RFC-0010 E1-E19
+@genome/browser-conformance   Tests   11 passed (11)
+@genome/cli                   Tests   44 passed (44)
+@genome/compiler              Tests   60 passed (60)
+@genome/runtime               Tests   18 passed (18)
+@genome/schema                Tests    4 passed (4)
+@genome/studio                Tests  128 passed (128)  <- incl. 14 authoring
+                              TOTAL  309 passed (309)
+ Tasks:    8 successful, 8 total     Cached: 0 cached, 8 total   <- uncached
+
+$ pnpm build
+@genome/studio:build: vite v6.4.3 building for production... built in 1.46s
+ Tasks:    1 successful, 1 total     Cached: 0 cached, 1 total
 ```
 
 **Protected boundaries**, diffed from the pre-implementation commit `620e7f8`:
