@@ -1,15 +1,22 @@
 # Phase 4 Milestone 1 — Governed Authoring: Product Acceptance Record
 
-**Status: PREPARED — awaiting Product Owner acceptance.**
+**Status: REJECTED — Product Owner acceptance performed 2026-09-13.**
+
+The walkthrough was conducted. Most of Milestone 1 passed. Acceptance was
+**rejected** on one blocking product failure: **authoring discoverability**
+(§12). This is a *product-acceptance* rejection of Milestone 1. It is **not** a
+rejection of the compiler/runtime architecture, and **not** a rejection of the
+technical implementation of Checkpoints 1–7 — the passing evidence below stands
+and remains valuable.
 
 This document is the recorded reviewer walkthrough required by RFC-0009 §14.8
 (Amendment 4) and by the Milestone-1 acceptance floor
 (`IMPLEMENTATION_QUEUE.md`, Product Owner disposition 2026-09-12). It is
-prepared by the Lead Engineer. **It records no decision.** The Product Owner
-conducts the acceptance; the disposition section at the end is unresolved.
+prepared by the Lead Engineer; §§1–11 are the evidence as prepared, preserved
+unchanged. §12 records the Product Owner's disposition.
 
 Nothing in this document marks Milestone 1 complete, drains the queue item, or
-closes Phase 4. Those acts follow acceptance, not this record.
+closes Phase 4.
 
 ---
 
@@ -289,24 +296,120 @@ pnpm --filter @genome/studio preview     # then open the printed URL
 
 ## 12. Product Owner disposition
 
-**Product Owner disposition: PENDING**
-
-Available dispositions:
-
-- Accepted
-- Accepted with follow-ups
-- Rejected
-
-*(Not preselected. To be completed by the Product Owner.)*
+**Product Owner disposition: Rejected**
 
 | Field | Value |
 |---|---|
-| Disposition | *(unresolved)* |
-| Date | *(unrecorded)* |
-| Follow-ups, if any | *(unrecorded)* |
-| Rationale | *(unrecorded)* |
+| Disposition | **Rejected** |
+| Date | 2026-09-13 |
+| Scope of rejection | Milestone 1 **product acceptance** only |
+| Not rejected | the compiler/runtime architecture; the technical implementation of Checkpoints 1–7 |
 
-Until this section is resolved by the Product Owner, Milestone 1 is **not
-complete**, the `IMPLEMENTATION_QUEUE.md` item is **not Done**, and Phase 4 is
-**not closed**. Acceptance does not by itself close the milestone: the Board's
-implementation close review (RFC-0009 §14) follows, and must carry this record.
+Available dispositions were: Accepted · Accepted with follow-ups · **Rejected**.
+
+### 12.1 Primary blocker
+
+> Milestone 1 successfully demonstrates organization projection, compilation,
+> and governed execution, but fails Governed Authoring product acceptance
+> because a user cannot discover or perform the canonical organizational change
+> ("add an agent") without understanding and manually editing the Genome source
+> structure.
+
+### 12.2 Secondary observation
+
+> The primary visible actions are Run workflow and Compile now, causing Studio
+> to communicate execution and compilation more strongly than organizational
+> authoring.
+
+### 12.3 Walkthrough observations
+
+The Product Owner opened Studio without consulting architecture documentation.
+
+Initial experience:
+
+- the Organization tree was visible;
+- the Organization Graph was visible and understandable as an organizational
+  projection;
+- Governance & Execution exposed workflows and allowed a workflow to run;
+- governed execution was sufficiently discoverable to interact with.
+
+However, the Product Owner did not understand what they were expected to do in
+Studio beyond running a workflow, reporting:
+
+> "I don't know what I'm doing in Studio or what it's for."
+
+On further inspection this refined to a more specific finding: **the
+visualization and governed-execution portions communicate useful behavior, but
+organizational authoring is not discoverable.**
+
+The canonical acceptance task requires adding an agent. The Product Owner could
+not determine how to add an agent. After scrolling to SOURCE DOCUMENT, Studio
+presented raw Genome YAML and a prominent "Compile now" action, but no
+discoverable path explaining:
+
+- where an agent belongs;
+- what structure must be edited;
+- what valid agent properties exist;
+- how the source edit relates to the organization shown above.
+
+Completing the canonical authoring task would therefore require prior knowledge
+of the Genome language/schema, or external instruction.
+
+**This is not to be reinterpreted as merely a documentation problem.**
+
+### 12.4 Disposition of the evidence
+
+The rejection is narrow. The record distinguishes:
+
+**PASSING EVIDENCE** — accepted as demonstrated, and preserved:
+
+| Area | Status |
+|---|---|
+| Organization projection (graph and tree) | ✅ passing |
+| Compiler feedback / diagnostics | ✅ passing |
+| Stale vs. current projection behavior | ✅ passing |
+| Governed execution | ✅ passing |
+| Deny-safe parking | ✅ passing |
+| Required policy / principal visibility | ✅ passing |
+| Explicit grant | ✅ passing |
+| Attributed completion | ✅ passing |
+| Ephemeral session behavior | ✅ passing |
+| Accessibility and error-recovery evidence | ✅ passing |
+
+**BLOCKING PRODUCT FAILURE**:
+
+| Area | Status |
+|---|---|
+| Authoring discoverability | ❌ **blocking** |
+| Performing the canonical "add an agent" task without external knowledge of the Genome source structure | ❌ **blocking** |
+
+Against §5, this resolves the §10.1 criteria as: criterion 2 (understandable
+graph update) passes *mechanically* but is **unreachable** for a first-time
+user, because the edit that triggers it cannot be discovered; criteria 3–6 pass;
+criteria 1 and 7 fail — the user could not say what Studio is for beyond running
+a workflow, and the strongest visible actions read as execution and compilation
+rather than authoring. The vertical slice did **not** fail as a whole.
+
+### 12.5 Consequences
+
+- Milestone 1 remains **In Progress**. It is **not** complete.
+- The `IMPLEMENTATION_QUEUE.md` item remains **In Progress**. It is **not** Done.
+- Phase 4 remains **open for Milestone 1 only**. It is **not** closed.
+- No `ROADMAP.md` Milestone-1 deliverable moves to Done.
+- Remediation requires **Architecture Board disposition before implementation**.
+  No implementation is authorized by this rejection.
+
+This rejection authorizes **nothing** beyond preparing a remediation proposal
+for Board review. It does **not** authorize Milestone 2, the Autonomy
+Substrate, Office View, or persistence.
+
+### 12.6 Referred to the Architecture Board
+
+The failure exposes an architectural gap rather than a defect: Genome has
+accepted surfaces for *source → compiler → projections → governed execution*,
+but none for *organizational intent → valid Genome document change*.
+
+A remediation proposal and an Architecture Board review of it are to be
+prepared. Neither will be ratified by their preparation: the next governance act
+after the Board recommends is **Product Owner ratification**. No remediation
+implementation is authorized before that.
