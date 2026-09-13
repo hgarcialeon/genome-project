@@ -54,6 +54,46 @@ describe("accessibility floor", () => {
     }
   });
 
+  it("names the graph drawing and provides the same content as text", () => {
+    render(<App autoCompileDelayMs={NO_AUTO_COMPILE} />);
+
+    const drawing = screen.getByRole("img");
+    const name = drawing.getAttribute("aria-label") ?? "";
+    expect(name).toContain("Organization Graph");
+    expect(name).toContain("nodes");
+    expect(name).toContain("relationships");
+
+    // The picture is not the only representation: every node is also a control.
+    const listed = screen.getAllByTestId("graph-index-node");
+    const drawn = Array.from(document.querySelectorAll("g[data-node-id]"));
+    expect(listed.length).toBe(drawn.length);
+  });
+
+  it("structures the workspace with landmarks and headings", () => {
+    render(<App autoCompileDelayMs={NO_AUTO_COMPILE} />);
+
+    expect(screen.getByRole("banner")).toBeTruthy();
+    expect(screen.getAllByRole("complementary").length).toBeGreaterThan(0);
+    expect(screen.getByRole("heading", { level: 1 })).toBeTruthy();
+
+    const headings = screen.getAllByRole("heading").map((heading) => heading.textContent ?? "");
+    expect(headings).toContain("Organization Graph");
+    expect(headings).toContain("Organization");
+    expect(headings).toContain("Source document");
+  });
+
+  it("announces whether the projections describe the current source", () => {
+    render(<App autoCompileDelayMs={NO_AUTO_COMPILE} />);
+
+    const graphPanel = screen.getByRole("region", { name: "Organization Graph" });
+    const noteId = graphPanel.getAttribute("aria-describedby") ?? "";
+    expect(document.getElementById(noteId)?.textContent).toContain("compiled from the source currently in the editor");
+
+    fireEvent.input(screen.getByTestId("source"), { target: { value: "genomeVersion: 0.1\ncompany:\n  name: Edited\n" } });
+
+    expect(document.getElementById(noteId)?.textContent).toContain("does not describe the source");
+  });
+
   it("keeps every essential interaction reachable by keyboard", () => {
     render(<App autoCompileDelayMs={NO_AUTO_COMPILE} />);
 

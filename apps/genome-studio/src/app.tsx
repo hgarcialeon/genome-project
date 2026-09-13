@@ -1,12 +1,13 @@
 /**
- * Studio — Governed Authoring (Milestone 1, checkpoint 2).
+ * Studio — Governed Authoring (Milestone 1, checkpoint 3).
  *
- * Studio is a view and interaction layer. Everything it presents was produced
- * by the accepted compiler; everything it will execute will be produced by the
- * accepted runtime. The product hierarchy it is growing into is organization →
- * governance → execution → source; this checkpoint ships the source workspace,
- * the compiler's verdict on it, and the freshness invariant that the later
- * panels depend on.
+ * The workspace reads organization first: the graph the compiler produced is
+ * the centre of the product, the organization outline sits beside it, the
+ * compiler's verdict on the current source sits with them, and the source
+ * document itself is below — important, but not the identity of the product.
+ *
+ * Every projection on screen came from the accepted compiler, and none of them
+ * is ever presented as describing a source it was not compiled from.
  */
 
 import { useCallback, useEffect, useRef, useState } from "preact/hooks";
@@ -14,21 +15,39 @@ import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 import { CANONICAL_DOCUMENT, CANONICAL_DOCUMENT_NAME } from "./canonical.js";
 import { DiagnosticsPanel } from "./components/DiagnosticsPanel.js";
 import { DocumentEditor } from "./components/DocumentEditor.js";
+import { GraphIndex } from "./components/GraphIndex.js";
+import { OrganizationGraph } from "./components/OrganizationGraph.js";
+import { OrganizationTree } from "./components/OrganizationTree.js";
 import { StatusBar } from "./components/StatusBar.js";
 import {
   compileCurrent,
   editSource,
+  isStale,
   openDocument,
   type CompilationState,
 } from "./genome/compilation-state.js";
 
 const DIAGNOSTICS_SUMMARY_ID = "diagnostics-summary";
+const STALE_NOTE_ID = "projection-stale-note";
 
 /** Idle delay before the current source is compiled without being asked. */
 export const DEFAULT_AUTO_COMPILE_DELAY_MS = 400;
 
+function StaleMark({ stale }: { stale: boolean }) {
+  if (!stale) return null;
+  return (
+    <p class="projection-stale" data-testid="projection-stale">
+      <span class="projection-stale__mark" aria-hidden="true">
+        ⧗
+      </span>
+      Last successful revision — not the source in the editor.
+    </p>
+  );
+}
+
 export function App({ autoCompileDelayMs = DEFAULT_AUTO_COMPILE_DELAY_MS }: { autoCompileDelayMs?: number } = {}) {
   const [state, setState] = useState<CompilationState>(() => openDocument(CANONICAL_DOCUMENT));
+  const [selectedNodeId, setSelectedNodeId] = useState<string | undefined>(undefined);
   const [announcement, setAnnouncement] = useState("");
   const editorRef = useRef<HTMLTextAreaElement>(null);
 
@@ -49,28 +68,85 @@ export function App({ autoCompileDelayMs = DEFAULT_AUTO_COMPILE_DELAY_MS }: { au
     return () => clearTimeout(timer);
   }, [state.status, state.source, autoCompileDelayMs, compileNow]);
 
-  const organization = state.lastSuccessful?.inspect.company;
+  const projection = state.lastSuccessful;
+  const stale = isStale(state);
 
   return (
     <div class="studio">
       <header class="studio__header">
         <p class="studio__product">Genome Studio</p>
         <h1 class="studio__organization" data-testid="organization-name">
-          {organization?.name ?? "No organization compiled yet"}
+          {projection?.inspect.company.name ?? "No organization compiled yet"}
         </h1>
-        {organization?.mission !== undefined ? (
+        {projection?.inspect.company.mission !== undefined ? (
           <p class="studio__mission" data-testid="organization-mission">
-            {organization.mission}
+            {projection.inspect.company.mission}
           </p>
         ) : null}
+        <p id={STALE_NOTE_ID} class="visually-hidden">
+          {stale
+            ? "The organization shown is the last successful revision and does not describe the source currently in the editor."
+            : "The organization shown was compiled from the source currently in the editor."}
+        </p>
       </header>
 
-      <section class="panel panel--state" aria-labelledby="state-heading">
-        <h2 id="state-heading" class="panel__heading">
-          Compilation state
-        </h2>
-        <StatusBar state={state} documentName={CANONICAL_DOCUMENT_NAME} />
-      </section>
+      <div class="studio__workspace">
+        <aside class={`panel panel--tree${stale ? " panel--stale" : ""}`} aria-describedby={STALE_NOTE_ID}>
+          <StaleMark stale={stale} />
+          {projection !== undefined ? (
+            <OrganizationTree report={projection.inspect} headingId="tree-heading" />
+          ) : (
+            <p data-testid="tree-empty">Nothing has compiled yet, so there is no organization to show.</p>
+          )}
+        </aside>
+
+        <section
+          class={`panel panel--graph${stale ? " panel--stale" : ""}`}
+          aria-labelledby="graph-heading"
+          aria-describedby={STALE_NOTE_ID}
+        >
+          <h2 id="graph-heading" class="panel__heading">
+            Organization Graph
+          </h2>
+          <StaleMark stale={stale} />
+          {projection !== undefined ? (
+            <>
+              <OrganizationGraph
+                graph={projection.graph}
+                stale={stale}
+                selectedNodeId={selectedNodeId}
+                onSelect={setSelectedNodeId}
+                describedBy={STALE_NOTE_ID}
+              />
+              <GraphIndex
+                graph={projection.graph}
+                selectedNodeId={selectedNodeId}
+                onSelect={setSelectedNodeId}
+                headingId="graph-index-heading"
+              />
+            </>
+          ) : (
+            <p data-testid="graph-empty">Nothing has compiled yet, so there is no graph to show.</p>
+          )}
+        </section>
+
+        <aside class="panel panel--state" aria-labelledby="state-heading">
+          <h2 id="state-heading" class="panel__heading">
+            Compilation state
+          </h2>
+          <StatusBar state={state} documentName={CANONICAL_DOCUMENT_NAME} />
+          <DiagnosticsPanel
+            diagnostics={state.diagnostics}
+            status={state.status}
+            failedStage={state.failedStage}
+            panelId={DIAGNOSTICS_SUMMARY_ID}
+            onLocate={(diagnostic) => {
+              editorRef.current?.focus();
+              setAnnouncement(`Editor focused. The compiler reported this at ${diagnostic.path}.`);
+            }}
+          />
+        </aside>
+      </div>
 
       <section class="panel panel--source" aria-labelledby="source-heading">
         <h2 id="source-heading" class="panel__heading">
@@ -84,19 +160,6 @@ export function App({ autoCompileDelayMs = DEFAULT_AUTO_COMPILE_DELAY_MS }: { au
           textareaRef={editorRef}
           onInput={onInput}
           onCompile={compileNow}
-        />
-      </section>
-
-      <section class="panel panel--diagnostics">
-        <DiagnosticsPanel
-          diagnostics={state.diagnostics}
-          status={state.status}
-          failedStage={state.failedStage}
-          panelId={DIAGNOSTICS_SUMMARY_ID}
-          onLocate={(diagnostic) => {
-            editorRef.current?.focus();
-            setAnnouncement(`Editor focused. The compiler reported this at ${diagnostic.path}.`);
-          }}
         />
       </section>
 
