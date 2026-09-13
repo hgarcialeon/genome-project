@@ -409,7 +409,9 @@ The failure exposes an architectural gap rather than a defect: Genome has
 accepted surfaces for *source → compiler → projections → governed execution*,
 but none for *organizational intent → valid Genome document change*.
 
-A remediation proposal and an Architecture Board review of it are to be
-prepared. Neither will be ratified by their preparation: the next governance act
-after the Board recommends is **Product Owner ratification**. No remediation
-implementation is authorized before that.
+The remediation proposal is
+`docs/proposals/phase-4-m1-authoring-remediation.md`; the Architecture Board
+review is `docs/reviews/phase-4-m1-authoring-remediation-board-review.md`.
+**Neither is ratified.** The next governance act is **Product Owner
+ratification** of a Board-recommended option. No remediation implementation is
+authorized before that.

@@ -100,8 +100,13 @@ cannot discover or perform the canonical organizational change ("add an agent")
 without understanding and manually editing the Genome source structure.
 **Milestone 1 is not complete, the queue item is not drained, no Milestone-1
 roadmap deliverable is Done, and Phase 4 is not closed.** Remediation requires
-Architecture Board disposition before any implementation; a remediation
-proposal and its Board review are being prepared, and neither is ratified.
+Architecture Board disposition before any implementation. The proposal is
+`docs/proposals/phase-4-m1-authoring-remediation.md`; the Architecture Board
+review `docs/reviews/phase-4-m1-authoring-remediation-board-review.md`
+recommends **Option C — toolchain-owned semantic authoring operations** with
+eight amendments, scoped to a single `add-agent` operation and delivered via a
+new RFC. **Neither is ratified**; the pending act is Product Owner
+ratification.
 The prior RFC-0007 queue item was **implemented, drained, and closed**
 (2026-07-15) by the Board's implementation closure review
 (`docs/reviews/rfc-0007-implementation-close-review.md`, Option A).
@@ -300,10 +305,15 @@ Progress**: checkpoints 1–6 landed, Checkpoint 7 prepared the end-to-end produ
 evidence, and **Product Owner acceptance was performed 2026-09-13 and
 rejected** on the authoring discoverability blocker. The next expected
 deliverable is therefore the **Product Owner's ratification of an Architecture
-Board recommendation** on the
-Milestone-1 authoring remediation — how Genome should support semantic
-organizational authoring without making Studio a second implementation of the
-Genome language. Only after that ratification may
+Board recommendation** recorded in
+`docs/reviews/phase-4-m1-authoring-remediation-board-review.md` on the
+Milestone-1 authoring remediation proposal
+`docs/proposals/phase-4-m1-authoring-remediation.md` — how Genome should support
+semantic organizational authoring without making Studio a second implementation
+of the Genome language. The Board recommends Option C (a toolchain-owned
+authoring capability in a new package, not a compiler target), which carries a
+**non-zero Language Complexity Budget** and therefore requires a new RFC before
+anything enters the queue. Only after that ratification may
 remediation be scoped and implemented; the Board implementation close review
 (RFC-0009 §14) follows a *successful* product acceptance, which has not
 occurred. Nothing authorizes marking the milestone complete, draining the queue
