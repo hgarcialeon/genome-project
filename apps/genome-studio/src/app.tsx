@@ -12,20 +12,27 @@
 
 import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 
-import { CANONICAL_DOCUMENT, CANONICAL_DOCUMENT_NAME } from "./canonical.js";
+import { CANONICAL_DOCUMENT, CANONICAL_DOCUMENT_NAME, CANONICAL_WORKFLOW } from "./canonical.js";
 import { DiagnosticsPanel } from "./components/DiagnosticsPanel.js";
 import { DocumentEditor } from "./components/DocumentEditor.js";
+import { EventStream } from "./components/EventStream.js";
+import { ExecutionPanel, type SessionView } from "./components/ExecutionPanel.js";
 import { GraphIndex } from "./components/GraphIndex.js";
 import { OrganizationGraph } from "./components/OrganizationGraph.js";
 import { OrganizationTree } from "./components/OrganizationTree.js";
 import { StatusBar } from "./components/StatusBar.js";
 import {
   compileCurrent,
+  currentRevision,
   editSource,
+  executableRuntimeModel,
   isStale,
   openDocument,
   type CompilationState,
 } from "./genome/compilation-state.js";
+import { runState, startSession, type StudioSession } from "./genome/session.js";
+
+import type { RuntimeEvent } from "@genome/runtime";
 
 const DIAGNOSTICS_SUMMARY_ID = "diagnostics-summary";
 const STALE_NOTE_ID = "projection-stale-note";
@@ -51,6 +58,14 @@ export function App({ autoCompileDelayMs = DEFAULT_AUTO_COMPILE_DELAY_MS }: { au
   const [announcement, setAnnouncement] = useState("");
   const editorRef = useRef<HTMLTextAreaElement>(null);
 
+  // The ephemeral session: in memory, discarded on reset or refresh. Nothing
+  // here is written anywhere (RFC-0009 §4, Amendment 1).
+  const [session, setSession] = useState<StudioSession | undefined>(undefined);
+  const [events, setEvents] = useState<readonly RuntimeEvent[]>([]);
+  const [refusal, setRefusal] = useState<string | undefined>(undefined);
+  const [sessionAnnouncement, setSessionAnnouncement] = useState("");
+  const [selectedWorkflowId, setSelectedWorkflowId] = useState<string>(CANONICAL_WORKFLOW);
+
   const compileNow = useCallback(() => {
     setState((previous) => compileCurrent(previous));
   }, []);
@@ -70,6 +85,49 @@ export function App({ autoCompileDelayMs = DEFAULT_AUTO_COMPILE_DELAY_MS }: { au
 
   const projection = state.lastSuccessful;
   const stale = isStale(state);
+  const runnableModel = executableRuntimeModel(state);
+  const workflows = runnableModel?.workflows ?? projection?.runtimeModel.workflows ?? [];
+
+  const run = session === undefined ? undefined : runState(session);
+  const view: SessionView | undefined =
+    session === undefined ? undefined : { session, run, events, refusal };
+
+  const startRun = useCallback(() => {
+    if (runnableModel === undefined) return;
+    // Subscription happens inside startSession, before initiation, so no
+    // emitted event can be missed.
+    const collected: RuntimeEvent[] = [];
+    const outcome = startSession({
+      model: runnableModel,
+      workflowId: selectedWorkflowId,
+      onEvent: (event) => collected.push(event),
+    });
+    setEvents(collected);
+    if (!outcome.ok) {
+      setSession(undefined);
+      setRefusal(outcome.refusal.reason);
+      setSessionAnnouncement(`The runtime refused to start ${selectedWorkflowId}: ${outcome.refusal.reason}.`);
+      return;
+    }
+    setRefusal(undefined);
+    setSession(outcome.session);
+    const started = runState(outcome.session);
+    setSessionAnnouncement(
+      started?.status === "pending-approval"
+        ? `${selectedWorkflowId} parked before any step ran, waiting for ${started.pendingApprovals.join(", ")}.`
+        : `${selectedWorkflowId} is ${started?.status ?? "started"}.`,
+    );
+  }, [runnableModel, selectedWorkflowId]);
+
+  const resetSession = useCallback(() => {
+    setSession((previous) => {
+      previous?.dispose();
+      return undefined;
+    });
+    setEvents([]);
+    setRefusal(undefined);
+    setSessionAnnouncement("Session discarded.");
+  }, []);
 
   return (
     <div class="studio">
@@ -91,7 +149,11 @@ export function App({ autoCompileDelayMs = DEFAULT_AUTO_COMPILE_DELAY_MS }: { au
       </header>
 
       <div class="studio__workspace">
-        <aside class={`panel panel--tree${stale ? " panel--stale" : ""}`} aria-describedby={STALE_NOTE_ID}>
+        <aside
+          class={`panel panel--tree${stale ? " panel--stale" : ""}`}
+          aria-labelledby="tree-heading"
+          aria-describedby={STALE_NOTE_ID}
+        >
           <StaleMark stale={stale} />
           {projection !== undefined ? (
             <OrganizationTree report={projection.inspect} headingId="tree-heading" />
@@ -100,6 +162,7 @@ export function App({ autoCompileDelayMs = DEFAULT_AUTO_COMPILE_DELAY_MS }: { au
           )}
         </aside>
 
+        <div class="studio__centre">
         <section
           class={`panel panel--graph${stale ? " panel--stale" : ""}`}
           aria-labelledby="graph-heading"
@@ -130,6 +193,31 @@ export function App({ autoCompileDelayMs = DEFAULT_AUTO_COMPILE_DELAY_MS }: { au
           )}
         </section>
 
+        <section class="panel panel--events">
+          <EventStream events={events} headingId="events-heading" announcement={sessionAnnouncement} />
+        </section>
+        </div>
+
+        <div class="studio__side">
+
+        <aside class="panel panel--execution" aria-labelledby="execution-heading">
+          <ExecutionPanel
+            workflows={workflows}
+            selectedWorkflowId={selectedWorkflowId}
+            onSelectWorkflow={setSelectedWorkflowId}
+            canRun={runnableModel !== undefined}
+            runBlockedReason={
+              stale
+                ? "Nothing can run: the compiled revision is not the source in the editor. Compile the current source first."
+                : "Nothing can run: this source has not compiled."
+            }
+            onRun={startRun}
+            onReset={resetSession}
+            view={view}
+            sourceRevision={currentRevision(state)}
+          />
+        </aside>
+
         <aside class="panel panel--state" aria-labelledby="state-heading">
           <h2 id="state-heading" class="panel__heading">
             Compilation state
@@ -146,6 +234,7 @@ export function App({ autoCompileDelayMs = DEFAULT_AUTO_COMPILE_DELAY_MS }: { au
             }}
           />
         </aside>
+        </div>
       </div>
 
       <section class="panel panel--source" aria-labelledby="source-heading">

@@ -10,6 +10,7 @@
  */
 
 import { fireEvent, render, screen } from "@testing-library/preact";
+import { userEvent } from "@testing-library/user-event";
 import axe from "axe-core";
 import { describe, expect, it } from "vitest";
 
@@ -41,6 +42,57 @@ describe("accessibility floor", () => {
 
     expect(screen.getByTestId("compilation-status").textContent).toContain("Invalid");
     expect(await violations(container)).toEqual([]);
+  });
+
+  it("has no axe violations with a parked session", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<App autoCompileDelayMs={NO_AUTO_COMPILE} />);
+
+    await user.click(screen.getByTestId("run-workflow"));
+
+    expect(screen.getByTestId("waiting")).toBeTruthy();
+    expect(await violations(container)).toEqual([]);
+  });
+
+  it("has no axe violations with a parked session and stale source", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<App autoCompileDelayMs={NO_AUTO_COMPILE} />);
+
+    await user.click(screen.getByTestId("run-workflow"));
+    fireEvent.input(screen.getByTestId("source"), {
+      target: { value: "genomeVersion: 0.1\ncompany:\n  name: Edited\n" },
+    });
+
+    expect(screen.getByTestId("session-divergent")).toBeTruthy();
+    expect(await violations(container)).toEqual([]);
+  });
+
+  it("names the workflow selector and the run control, and reflects their state", async () => {
+    const user = userEvent.setup();
+    render(<App autoCompileDelayMs={NO_AUTO_COMPILE} />);
+
+    expect(screen.getByLabelText("Workflow")).toBe(screen.getByTestId("workflow-select"));
+    const runControl = screen.getByRole("button", { name: "Run workflow" });
+    expect((runControl as HTMLButtonElement).disabled).toBe(false);
+
+    await user.click(runControl);
+
+    // Parked state is readable as text, and the waiting principal is textual.
+    expect(screen.getByTestId("session-status").textContent).toContain("Parked");
+    expect(screen.getAllByTestId("required-principal")[0].textContent).toBe("human:product-owner");
+  });
+
+  it("structures the event stream as an ordered list that is not itself a live region", async () => {
+    const user = userEvent.setup();
+    render(<App autoCompileDelayMs={NO_AUTO_COMPILE} />);
+
+    await user.click(screen.getByTestId("run-workflow"));
+
+    const list = screen.getByTestId("event-list");
+    expect(list.tagName.toLowerCase()).toBe("ol");
+    expect(list.closest("[role='status']")).toBeNull();
+    expect(list.closest("[aria-live]")).toBeNull();
+    expect(screen.getByTestId("session-announcement").getAttribute("role")).toBe("status");
   });
 
   it("gives every interactive control an accessible name", () => {
