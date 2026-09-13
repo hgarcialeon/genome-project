@@ -99,14 +99,14 @@ demonstrated. The blocking failure is **authoring discoverability**: a user
 cannot discover or perform the canonical organizational change ("add an agent")
 without understanding and manually editing the Genome source structure.
 **Milestone 1 is not complete, the queue item is not drained, no Milestone-1
-roadmap deliverable is Done, and Phase 4 is not closed.** Remediation requires
-Architecture Board disposition before any implementation. The proposal is
-`docs/proposals/phase-4-m1-authoring-remediation.md`; the Architecture Board
-review `docs/reviews/phase-4-m1-authoring-remediation-board-review.md`
-recommends **Option C — toolchain-owned semantic authoring operations** with
-eight amendments, scoped to a single `add-agent` operation and delivered via a
-new RFC. **Neither is ratified**; the pending act is Product Owner
-ratification.
+roadmap deliverable is Done, and Phase 4 is not closed.** The remediation **architecture is now decided**: the Product
+Owner **ratified Option C — toolchain-owned semantic authoring operations —
+exactly as recommended, with amendments A1–A8, on 2026-09-13**
+(`docs/reviews/phase-4-m1-authoring-remediation-board-review.md` §8; proposal
+`docs/proposals/phase-4-m1-authoring-remediation.md`). The ratification resolves
+the remediation architecture **only** and **commissions one new RFC** scoped to a
+single `add-agent` operation. **It authorizes no implementation**, adds no queue
+item, and leaves the Milestone-1 acceptance **Rejected pending remediation**.
 The prior RFC-0007 queue item was **implemented, drained, and closed**
 (2026-07-15) by the Board's implementation closure review
 (`docs/reviews/rfc-0007-implementation-close-review.md`, Option A).
@@ -168,8 +168,24 @@ de-scoped. The reconciliation commissioned nothing and changed no gate.
 
 ## Active Architectural Decision
 
+**Decided 2026-09-13 (second decision of the day): the Milestone-1 authoring
+remediation architecture.** The Product Owner ratified **Option C —
+toolchain-owned semantic authoring operations — with amendments A1–A8**
+(`docs/reviews/phase-4-m1-authoring-remediation-board-review.md` §8). The
+accepted direction is `user organizational intent → Studio interaction →
+toolchain-owned semantic authoring capability → canonical Genome source →
+existing compiler → projections/runtime`. **Studio must not become an
+implementation of Genome document semantics.** The capability lives outside
+Studio and outside the compiler: the compiler remains *source → meaning*, and
+semantic authoring is *intent → source*. The ratification resolves architecture
+only — it authorizes no implementation and commissions exactly one RFC, scoped
+to a single `add-agent` operation, whose acceptance is a precondition for any
+queue item. No ADR is recorded yet: the architectural property will be recorded
+when that RFC is accepted.
+
 **Decided 2026-09-13: browser portability of the accepted Genome revision
-derivation.** No architectural decision is open. The decision was required by the
+derivation.** No architectural decision is open beyond the commissioned RFC's own
+Board review. The decision was required by the
 browser-first topology recorded in the Milestone-1 acceptance floor
 (`IMPLEMENTATION_QUEUE.md`). The Milestone-1
 browser-compatibility spike established that `packages/genome-compiler` cannot be
@@ -228,7 +244,9 @@ Milestone-1 acceptance floor in `IMPLEMENTATION_QUEUE.md` — was satisfied befo
 checkpoint 1, and checkpoints 1–6 have since landed.
 
 **One blocker is open as of 2026-09-13: Milestone-1 Governed Authoring
-discoverability.** Product Owner acceptance was performed and rejected
+discoverability.** Its *architecture* is decided (Option C ratified, below); the
+blocker stays open until the commissioned RFC is accepted, implemented, and a
+fresh product acceptance succeeds. Product Owner acceptance was performed and rejected
 (`docs/reviews/phase-4-m1-product-acceptance.md` §12): a first-time user cannot
 discover or perform the canonical organizational change ("add an agent")
 without understanding and manually editing the Genome source structure. The
@@ -264,8 +282,9 @@ remediation implementation is authorized. The rejection authorizes no Milestone
   landed, Checkpoint-7 acceptance evidence prepared, and Product Owner
   acceptance **performed and REJECTED 2026-09-13** on the authoring
   discoverability blocker (`docs/reviews/phase-4-m1-product-acceptance.md`
-  §12); remediation awaits Board recommendation and Product Owner ratification;
-  durable runtime logs remain a later, unopened Phase 4 milestone
+  §12); the remediation architecture is **ratified** (Option C, amendments
+  A1–A8, 2026-09-13) and commissions one new RFC scoped to a single `add-agent`
+  operation; durable runtime logs remain a later, unopened Phase 4 milestone
 - Specification-maintenance mechanism: ✅ established — erratum registry
   adopted 2026-07-15 (`docs/adr/0010-erratum-mechanism.md`, `docs/ERRATA.md`)
 
@@ -303,17 +322,17 @@ Board-reviewed, and **accepted 2026-07-18 under Option B**
 implementation item to `IMPLEMENTATION_QUEUE.md`. That implementation is **In
 Progress**: checkpoints 1–6 landed, Checkpoint 7 prepared the end-to-end product
 evidence, and **Product Owner acceptance was performed 2026-09-13 and
-rejected** on the authoring discoverability blocker. The next expected
-deliverable is therefore the **Product Owner's ratification of an Architecture
-Board recommendation** recorded in
-`docs/reviews/phase-4-m1-authoring-remediation-board-review.md` on the
-Milestone-1 authoring remediation proposal
-`docs/proposals/phase-4-m1-authoring-remediation.md` — how Genome should support
-semantic organizational authoring without making Studio a second implementation
-of the Genome language. The Board recommends Option C (a toolchain-owned
-authoring capability in a new package, not a compiler target), which carries a
-**non-zero Language Complexity Budget** and therefore requires a new RFC before
-anything enters the queue. Only after that ratification may
+rejected** on the authoring discoverability blocker. That Board recommendation — Option C, a
+toolchain-owned authoring capability in a new package rather than a compiler
+target — was **ratified by the Product Owner on 2026-09-13 with amendments
+A1–A8**, resolving the remediation architecture and commissioning one RFC. The
+next expected deliverable is therefore the **commissioned semantic-authoring
+RFC**, its Architecture Board review, and Product Owner ratification of it. Only then does an implementation item enter
+`IMPLEMENTATION_QUEUE.md`. The capability carries a **non-zero Language
+Complexity Budget** — a new semantic operation, new document-transformation
+semantics, a new public toolchain API and a new maintained package — while
+changing no accepted language, schema, compiler, runtime, event, revision or
+governance semantics. Only after that ratification may
 remediation be scoped and implemented; the Board implementation close review
 (RFC-0009 §14) follows a *successful* product acceptance, which has not
 occurred. Nothing authorizes marking the milestone complete, draining the queue

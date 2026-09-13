@@ -1,6 +1,6 @@
 # Architecture Board Review — Milestone-1 Authoring Remediation
 
-**Status: Board recommendation recorded. NOT ratified. Awaiting Product Owner.**
+**Status: RATIFIED by the Product Owner, 2026-09-13.**
 
 Held 2026-09-13. Subject:
 `docs/proposals/phase-4-m1-authoring-remediation.md`.
@@ -10,8 +10,11 @@ acceptance (`docs/reviews/phase-4-m1-product-acceptance.md` §12).
 
 Board (per `docs/GOVERNANCE.md`): Product Owner, Chief Architect, Lead Engineer.
 
-**This review recommends. It does not decide.** No option is ratified, no RFC is
-commissioned, no queue item is added, and no implementation is authorized.
+**The Board recommends; it does not decide.** §§1–7 are the Board's review as
+held. The Product Owner's decision is recorded in **§8: RATIFIED 2026-09-13** —
+Option C with amendments A1–A8. That ratification resolves the remediation
+**architecture** and **commissions an RFC**. It authorizes **no implementation**,
+adds **no queue item**, marks nothing Done, and closes no phase.
 
 ---
 
@@ -206,7 +209,7 @@ Should RFC drafting find any of the above necessary, work **stops** and returns
 to the Board and Product Owner. This is not an implementation detail to be
 resolved in passing.
 
-## 7. Governance state — unchanged by this review
+## 7. Governance state — unchanged by this review or its ratification
 
 - Milestone 1 remains **In Progress**; it is **not** complete.
 - The `IMPLEMENTATION_QUEUE.md` item remains **In Progress**; it is **not** Done.
@@ -231,8 +234,92 @@ Available dispositions:
 - Ratify a different option (A, B, D, E2, E3)
 - Reject and return to the Board with direction
 
-**Product Owner disposition: PENDING**
+**Product Owner disposition: RATIFIED — 2026-09-13**
 
-*(Not preselected. Nothing in this review is ratified. If ratified, the next act
-is commissioning the RFC named in A6 — drafting, Board review and ratification
-all still precede any queue item or implementation.)*
+The Product Owner ratifies **Option C — toolchain-owned semantic authoring
+operations — exactly as recommended**, including **amendments A1–A8**.
+
+| Field | Value |
+|---|---|
+| Disposition | **Ratified as recommended** |
+| Option | **C** — toolchain-owned semantic authoring operations |
+| Amendments | **A1–A8, all ratified** |
+| Date | 2026-09-13 |
+| Scope | remediation **architecture** only |
+
+### Ratified architectural direction
+
+```
+user organizational intent
+  → Studio interaction
+  → toolchain-owned semantic authoring capability
+  → canonical Genome source
+  → existing compiler
+  → projections / runtime
+```
+
+**Studio must not become an implementation of Genome document semantics.**
+
+### What this ratification does
+
+- Resolves the remediation **architecture**.
+- **Commissions a new RFC** for the smallest semantic-authoring capability that
+  clears the rejected Milestone-1 acceptance criterion, scoped to exactly one
+  operation: **`add-agent`**.
+
+### What this ratification does NOT do
+
+- **It does not authorize implementation.** No `add-agent` implementation, no
+  Studio production-code change, no language/schema/compiler/runtime change.
+- It adds **no** `IMPLEMENTATION_QUEUE.md` item. Nothing enters the queue until
+  the commissioned RFC is itself accepted and ratified.
+- It marks nothing Done, completes no milestone, and closes no phase.
+- It authorizes no Milestone 2, Autonomy Substrate, Office View, or persistence.
+
+### Ratified constraints as applied
+
+A1–A8 are ratified as written in §4, with the Product Owner's applications:
+
+- **A1** — the capability lives outside Studio; a dedicated toolchain/package
+  boundary is preferred over inverse transformation inside the compiler. **The
+  RFC determines exact package/API ownership**; the ratification deliberately
+  pre-decides neither the final package name nor the API shape. Compiler stays
+  *source → meaning*; semantic authoring is *intent → source*; the two are not
+  blurred.
+- **A2** — no parallel validator. After producing a candidate document, the
+  accepted schema/compiler diagnostics determine validity; the operation fails
+  before returning a successful mutation when the result violates accepted
+  semantics. Cross-reference validation (e.g. workflow-owner resolution) is not
+  duplicated.
+- **A3** — source preservation and determinism evidence is pinned by the RFC.
+  `yaml` v2 may serve as implementation evidence, but the RFC specifies required
+  **observable behavior** rather than mandating a library.
+- **A4** — Genome source remains canonical; no hidden structured state beside
+  the source; Studio maintains no authoritative shadow organization model.
+- **A5** — `add-agent` only. No edit/delete agent, add-workflow, add-policy,
+  arbitrary patches, generic CRUD, schema-driven form generation, drag-and-drop
+  editing, or bulk mutation.
+- **A6** — a new RFC, its Board review, and Product Owner ratification all
+  precede implementation intake.
+- **A7** — Checkpoints 1–7 are preserved and integrated with, not redesigned.
+- **A8** — the WCAG 2.2 AA Milestone-1 acceptance floor applies to the
+  authoring interaction.
+
+### Canonical product scenario (ratified)
+
+```
+Organization → Engineering → Add agent → provide required agent information
+  → canonical Genome source changes → source becomes edited/stale
+  → compile → Organization Graph and tree reflect the new agent
+```
+
+The user must be able to complete this **without knowing where an agent belongs
+in Genome YAML**. The resulting Genome source remains visible, editable and
+canonical.
+
+### Next governance action
+
+**Draft the commissioned RFC** (`RFC/0010-semantic-authoring-operations.md`),
+then **Architecture Board review**, then **Product Owner ratification**, and
+only then implementation intake. No implementation is authorized before that
+lifecycle completes.
