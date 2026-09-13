@@ -1,0 +1,19 @@
+genomeVersion: 0.1
+
+company:
+  name: Acme
+
+departments:
+  engineering:
+    agents:
+      dept-agent:
+        role: Engineer
+    teams:
+      platform:
+        agents:
+          shared:
+            role: Team Engineer
+  operations:
+    agents:
+      shared:
+        role: Operator

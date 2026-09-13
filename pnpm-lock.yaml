@@ -65,6 +65,19 @@ importers:
         specifier: ^2.1.8
         version: 2.1.9(@types/node@26.1.1)(jsdom@25.0.1)
 
+  packages/genome-authoring:
+    dependencies:
+      '@genome/compiler':
+        specifier: workspace:*
+        version: link:../genome-compiler
+      yaml:
+        specifier: ^2.6.1
+        version: 2.9.0
+    devDependencies:
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.9(@types/node@26.1.1)(jsdom@25.0.1)
+
   packages/genome-browser-conformance:
     dependencies:
       '@genome/adapter-reference':

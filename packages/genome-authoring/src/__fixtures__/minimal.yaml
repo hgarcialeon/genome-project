@@ -1,0 +1,17 @@
+genomeVersion: 0.1
+
+company:
+  name: Acme
+  mission: Keep the lights on.
+
+departments:
+  engineering:
+    mission: Build things
+    agents:
+      existing:
+        role: Engineer
+        autonomy: supervised
+  operations:
+    agents:
+      existing:
+        role: Operator
