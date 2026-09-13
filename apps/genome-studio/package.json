@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@genome/adapter-reference": "workspace:*",
+    "@genome/authoring": "workspace:*",
     "@genome/compiler": "workspace:*",
     "@genome/runtime": "workspace:*",
     "preact": "^10.25.4"

@@ -205,3 +205,72 @@ describe("accessibility floor", () => {
     }
   });
 });
+
+describe("accessibility floor — the authoring interaction (RFC-0010 §9.3)", () => {
+  const openAddAgent = async (user: ReturnType<typeof userEvent.setup>) => {
+    const opener = screen
+      .getAllByTestId("add-agent-open")
+      .find((button) => button.getAttribute("data-department") === "engineering");
+    if (opener === undefined) throw new Error("no Add agent control for engineering");
+    await user.click(opener);
+  };
+
+  it("has no axe violations with the Add agent form open", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<App autoCompileDelayMs={NO_AUTO_COMPILE} />);
+
+    await openAddAgent(user);
+
+    expect(await violations(container)).toEqual([]);
+  });
+
+  it("has no axe violations while an authoring failure is shown", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<App autoCompileDelayMs={NO_AUTO_COMPILE} />);
+
+    await openAddAgent(user);
+    // A duplicate: refused by the operation, rendered as an error.
+    await user.type(screen.getByTestId("add-agent-id"), "engineering-agent");
+    await user.click(screen.getByTestId("add-agent-submit"));
+
+    expect(screen.getByTestId("add-agent-errors").hidden).toBe(false);
+    expect(await violations(container)).toEqual([]);
+  });
+
+  it("has no axe violations after a successful authoring change", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<App autoCompileDelayMs={NO_AUTO_COMPILE} />);
+
+    await openAddAgent(user);
+    await user.type(screen.getByTestId("add-agent-id"), "accessible-agent");
+    await user.click(screen.getByTestId("add-agent-submit"));
+
+    expect(screen.getByTestId("add-agent-confirmation")).toBeTruthy();
+    expect(await violations(container)).toEqual([]);
+  });
+
+  it("names every authoring control and marks required versus optional", () => {
+    render(<App autoCompileDelayMs={NO_AUTO_COMPILE} />);
+
+    const opener = screen
+      .getAllByTestId("add-agent-open")
+      .find((button) => button.getAttribute("data-department") === "engineering");
+    // The opener says which department it acts on, for a screen reader too.
+    expect(opener?.textContent).toContain("engineering");
+
+    fireEvent.click(opener as HTMLElement);
+
+    const form = screen.getByTestId("add-agent-form");
+    expect(form.getAttribute("aria-label")).toBe("Add an agent to engineering");
+
+    for (const testId of ["add-agent-id", "add-agent-role", "add-agent-autonomy"]) {
+      const field = screen.getByTestId(testId);
+      const label = form.querySelector(`label[for="${field.id}"]`);
+      expect(label, `${testId} must have a label`).toBeTruthy();
+    }
+
+    expect(screen.getByTestId("add-agent-id").getAttribute("aria-required")).toBe("true");
+    expect(screen.getByTestId("add-agent-role").getAttribute("aria-required")).toBeNull();
+    expect(screen.getByTestId("add-agent-autonomy").getAttribute("aria-required")).toBeNull();
+  });
+});

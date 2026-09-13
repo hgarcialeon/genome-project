@@ -26,6 +26,9 @@ importers:
       '@genome/adapter-reference':
         specifier: workspace:*
         version: link:../../packages/genome-adapter-reference
+      '@genome/authoring':
+        specifier: workspace:*
+        version: link:../../packages/genome-authoring
       '@genome/compiler':
         specifier: workspace:*
         version: link:../../packages/genome-compiler

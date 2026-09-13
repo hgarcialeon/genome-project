@@ -8,10 +8,31 @@
  * `inspectTarget` returned.
  */
 
-import type { ComponentChildren } from "preact";
+import type { ComponentChildren, RefObject } from "preact";
 import { useState } from "preact/hooks";
 
 import type { InspectReport } from "@genome/compiler";
+
+import { AddAgentForm, type AddAgentOutcome } from "./AddAgentForm.js";
+
+import type { AddAgentIntent } from "@genome/authoring";
+
+/**
+ * The id of a department's Add agent control.
+ *
+ * Focus returns here on cancel. It is looked up by id rather than held as a
+ * node, because the button is unmounted while the form is open and the element
+ * that comes back is a different one.
+ */
+export const addAgentOpenerId = (department: string): string => `add-agent-open-${department}`;
+
+export type AuthoringHandlers = {
+  /** Which department currently has its Add agent form open, if any. */
+  openDepartment?: string;
+  onOpen: (department: string) => void;
+  onCancel: () => void;
+  onSubmit: (intent: AddAgentIntent) => AddAgentOutcome;
+};
 
 function Disclosure({
   id,
@@ -62,7 +83,20 @@ function Leaf({ name, detail }: { name: string; detail?: string }) {
   );
 }
 
-export function OrganizationTree({ report, headingId }: { report: InspectReport; headingId: string }) {
+export function OrganizationTree({
+  report,
+  headingId,
+  authoring,
+  confirmationRef,
+  lastAdded,
+}: {
+  report: InspectReport;
+  headingId: string;
+  /** Absent when the projection is not the current source: nothing is authorable. */
+  authoring?: AuthoringHandlers;
+  confirmationRef?: RefObject<HTMLParagraphElement>;
+  lastAdded?: { department: string; id: string };
+}) {
   return (
     <section class="tree" aria-labelledby={headingId}>
       <h2 id={headingId} class="panel__heading">
@@ -72,6 +106,9 @@ export function OrganizationTree({ report, headingId }: { report: InspectReport;
       <p class="tree__company" data-testid="tree-company">
         {report.company.name}
       </p>
+
+      {/* The organization is a thing you change, not only a thing you read. */}
+      <p class="tree__lede">Describe and change your organization. Every change is written to the Genome source below.</p>
 
       <ul class="tree__root">
         {report.departments.map((department) => (
@@ -85,6 +122,39 @@ export function OrganizationTree({ report, headingId }: { report: InspectReport;
               {department.agents.map((agent) => (
                 <Leaf key={`agent:${department.id}.${agent}`} name={agent} detail="agent" />
               ))}
+              {authoring !== undefined ? (
+                <li class="tree__item tree__item--authoring">
+                  {authoring.openDepartment === department.id ? (
+                    <AddAgentForm
+                      department={department.id}
+                      onSubmit={authoring.onSubmit}
+                      onCancel={authoring.onCancel}
+                    />
+                  ) : (
+                    <button
+                      type="button"
+                      id={addAgentOpenerId(department.id)}
+                      class="button button--add"
+                      data-testid="add-agent-open"
+                      data-department={department.id}
+                      onClick={() => authoring.onOpen(department.id)}
+                    >
+                      + Add agent<span class="visually-hidden"> to {department.id}</span>
+                    </button>
+                  )}
+                  {lastAdded?.department === department.id ? (
+                    <p
+                      ref={confirmationRef}
+                      class="tree__confirmation"
+                      data-testid="add-agent-confirmation"
+                      tabIndex={-1}
+                    >
+                      Added <strong>{lastAdded.id}</strong> to {department.id}. The Genome source below has changed;
+                      the organization recompiles from it.
+                    </p>
+                  ) : null}
+                </li>
+              ) : null}
               {department.teams.map((team) => (
                 <Disclosure
                   key={`team:${department.id}.${team.id}`}

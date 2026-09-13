@@ -895,3 +895,116 @@ body {
 .principal--granted {
   border-color: var(--ok);
 }
+
+/* --------------------------------------------------------------------------
+   Add agent — the authoring interaction (RFC-0010 §9).
+
+   Uses the existing tokens and control conventions rather than introducing a
+   parallel visual language: the affordance is new, the vocabulary is not.
+   -------------------------------------------------------------------------- */
+
+.tree__lede {
+  margin: 0 0 0.75rem;
+  color: var(--ink-muted);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+.tree__item--authoring {
+  margin-top: 0.35rem;
+  padding-left: 0;
+  list-style: none;
+}
+
+.button--add {
+  background: var(--panel);
+  color: var(--accent);
+  border: 1px dashed var(--control-border);
+  width: 100%;
+  text-align: left;
+  font-size: 0.8125rem;
+  padding: 0.35rem 0.5rem;
+}
+
+.button--add:hover {
+  border-style: solid;
+  background: #f4f7fd;
+}
+
+.add-agent {
+  border: 1px solid var(--control-border);
+  border-radius: 6px;
+  background: #f4f7fd;
+  padding: 0.6rem;
+  margin-top: 0.25rem;
+}
+
+.add-agent__context {
+  margin: 0 0 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--ink);
+}
+
+.add-agent__field {
+  margin-bottom: 0.5rem;
+}
+
+.add-agent__label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--ink);
+  margin-bottom: 0.2rem;
+}
+
+.add-agent__required,
+.add-agent__optional {
+  color: var(--ink-muted);
+  font-weight: 400;
+}
+
+.add-agent__input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.3rem 0.4rem;
+  border: 1px solid var(--control-border);
+  border-radius: 4px;
+  background: var(--panel);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.8125rem;
+}
+
+.add-agent__input[aria-invalid="true"] {
+  border-color: var(--error);
+}
+
+.add-agent__errors {
+  margin: 0.5rem 0;
+  padding: 0.45rem 0.55rem;
+  border-left: 3px solid var(--error);
+  background: #fdf4f4;
+  color: var(--error);
+  font-size: 0.8125rem;
+}
+
+.add-agent__errors p {
+  margin: 0 0 0.25rem;
+}
+
+.add-agent__errors p:last-child {
+  margin-bottom: 0;
+}
+
+.add-agent__actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tree__confirmation {
+  margin: 0.4rem 0 0;
+  padding: 0.4rem 0.5rem;
+  border-left: 3px solid var(--ok);
+  background: #f5faf6;
+  color: var(--ok);
+  font-size: 0.8125rem;
+}
