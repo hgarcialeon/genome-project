@@ -1,0 +1,17 @@
+# Golden revision fixture: canonicalization invariance, variant B.
+# Same document as golden-formatting-a.yaml with keys reordered, quoting
+# changed, and whitespace altered: it must canonicalize to the same revision.
+company:
+  mission: "Prove that formatting does not change identity."
+  name: 'Canonical Form'
+
+departments:
+  operations:
+    teams:
+      support:
+        agents:
+          triage:
+            autonomy: "supervised"
+            role: "Support Engineer"
+
+genomeVersion: 0.1

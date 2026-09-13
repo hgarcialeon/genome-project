@@ -1,0 +1,5 @@
+# Golden revision fixture: the smallest schema-valid Genome document.
+genomeVersion: 0.1
+
+company:
+  name: Minimal

@@ -1,0 +1,25 @@
+# Golden revision fixture: multi-byte UTF-8 across names, missions, and roles.
+genomeVersion: 0.1
+
+company:
+  name: Añoranza 株式会社
+  mission: Créer des organisations gouvernées — avec précision ✅
+
+departments:
+  ingeniería:
+    teams:
+      facturación:
+        agents:
+          arquitecta:
+            role: Arquitecta de Software 🏛
+            autonomy: supervised
+          respaldo:
+            role: Ingeniero de Backend — 后端
+
+workflows:
+  ciclo-de-facturación:
+    owner: ingeniería.facturación.respaldo
+    steps:
+      - planificar
+      - implementar
+      - revisar

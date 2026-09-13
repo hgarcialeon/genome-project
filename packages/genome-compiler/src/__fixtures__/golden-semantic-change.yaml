@@ -1,0 +1,16 @@
+# Golden revision fixture: one semantic difference from golden-formatting-a.yaml
+# (the agent's autonomy is manual), which must produce a different revision.
+genomeVersion: 0.1
+
+company:
+  name: Canonical Form
+  mission: Prove that formatting does not change identity.
+
+departments:
+  operations:
+    teams:
+      support:
+        agents:
+          triage:
+            role: Support Engineer
+            autonomy: manual
