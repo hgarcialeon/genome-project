@@ -122,11 +122,11 @@ Goal: create an Organization IDE.
 
 | Deliverable | Status | Evidence / Notes |
 |-------------|--------|------------------|
-| Genome document editor | Not Started | Product-level deliverable per `RFC/0009-phase-4-governed-authoring.md` §8.1; no editor framework is prescribed (ERR-0003) |
-| Schema validation | Not Started | |
-| Live preview | Not Started | |
-| Organization tree | Not Started | |
-| Runtime logs | Not Started | |
+| Genome document editor | In Progress | RFC-0009 §8.1; no editor framework is prescribed (ERR-0003). Landed as Milestone-1 checkpoint 2 (`apps/genome-studio`); awaiting Product Owner acceptance — `docs/reviews/phase-4-m1-product-acceptance.md` |
+| Schema validation | In Progress | RFC-0009 §8.2 inline diagnostics, projected from the compiler. Landed as Milestone-1 checkpoint 2; awaiting Product Owner acceptance |
+| Live preview | In Progress | RFC-0009 §8.3 live Organization Graph, derived from `graphTarget`. Landed as Milestone-1 checkpoint 3; awaiting Product Owner acceptance |
+| Organization tree | In Progress | RFC-0009 §8.4 inspect projection, derived from `inspectTarget`. Landed as Milestone-1 checkpoint 3; awaiting Product Owner acceptance |
+| Runtime logs | Not Started | Recorded as Phase 4 Milestone 2 (RFC-0009 §12) — not opened, not designed, not in Milestone 1 |
 
 ## Phase 5 — Autonomy Substrate
 

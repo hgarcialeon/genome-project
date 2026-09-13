@@ -48,8 +48,11 @@ opening RFC `RFC/0009-phase-4-governed-authoring.md` was **accepted 2026-07-18
 under Option B** (`docs/reviews/rfc-0009-board-review.md`, Product Owner
 ratification), opening Phase 4 for Milestone 1 and adding exactly one engineering
 item to `IMPLEMENTATION_QUEUE.md` — the **Studio Milestone 1 — Governed
-Authoring** implementation (Not Started). The current implementation iteration is
-that Milestone-1 item; no Studio code has yet been written.
+Authoring** implementation. The current implementation iteration is that
+Milestone-1 item, now **In Progress**: the authorized compiler-portability work
+and Studio implementation checkpoints 1–6 have landed on `main`, and the
+milestone is **awaiting Product Owner acceptance**. It is not complete, not
+drained, and Phase 4 is not closed.
 
 ## Current Milestone
 
@@ -66,7 +69,7 @@ participation binding (E3/E7). RFC-0008 was **closed complete 2026-07-18**
 (Option A, `docs/reviews/rfc-0008-implementation-close-review.md`). The active
 milestone is now **Studio Milestone 1 — Governed Authoring**, authorized by the
 acceptance of `RFC/0009-phase-4-governed-authoring.md` (Option B, 2026-07-18) and
-queued as a single Not-Started item in `IMPLEMENTATION_QUEUE.md`. Its scope is
+queued as a single **In Progress** item in `IMPLEMENTATION_QUEUE.md`. Its scope is
 fixed by the accepted (amended) RFC: a Studio surface providing a code editor,
 inline validation, a live Organization Graph, an organization tree, ephemeral
 governed execution, a live session event stream, deny-safe park, explicit grant,
@@ -74,8 +77,17 @@ attributed approval, and completion — demonstrated on
 `SPEC/examples/genome-project.yaml` via `rfc-lifecycle` — built strictly as a
 projection/interaction layer (Principle 5) with the nine protected boundaries
 held. Close requires uncached executable conformance **and** a recorded
-reviewer-walkthrough product-acceptance record (RFC-0009 §14, Amendment 4). No
-Studio code has yet been written.
+reviewer-walkthrough product-acceptance record (RFC-0009 §14, Amendment 4).
+Implementation checkpoints 1–6 landed on `main` 2026-09-13 (scaffold; editor,
+diagnostics and compilation state; graph and tree projections; ephemeral runtime
+and live event stream; explicit grant and attributed completion; accessibility
+and error-recovery hardening), preceded by the authorized compiler-portability
+work (ADR-0011) in its ratified order — goldens frozen, platform-neutral change,
+permanent Node ↔ browser conformance harness. Checkpoint 7 prepared the
+end-to-end product evidence and the acceptance record
+`docs/reviews/phase-4-m1-product-acceptance.md`. **The milestone is awaiting
+Product Owner acceptance: the disposition is PENDING, the milestone is not
+complete, the queue item is not drained, and Phase 4 is not closed.**
 The prior RFC-0007 queue item was **implemented, drained, and closed**
 (2026-07-15) by the Board's implementation closure review
 (`docs/reviews/rfc-0007-implementation-close-review.md`, Option A).
@@ -125,8 +137,10 @@ objective is to implement Studio Milestone 1 (Governed Authoring)** to the
 accepted RFC's Definition of Done — a projection/interaction layer over the
 shipped compiler targets and the ephemeral runtime event stream (Principle 5),
 with the nine protected boundaries held and a recorded product-acceptance
-walkthrough required to close. No Studio code has yet been written; only
-Milestone 1 is authorized. Re-sequencing `ROADMAP.md` per adopted Option B was
+walkthrough required to close. That implementation is **In Progress**:
+checkpoints 1–6 have landed and the Checkpoint-7 acceptance evidence is prepared
+in `docs/reviews/phase-4-m1-product-acceptance.md`, whose Product Owner
+disposition is **PENDING**. Only Milestone 1 is authorized. Re-sequencing `ROADMAP.md` per adopted Option B was
 **performed 2026-09-12** (Product Owner direction) as the separate ratified act
 that disposition reserved: the autonomy substrate now holds the Phase 5 slot,
 Self-Improvement remains Phase 6, and Office View is recorded as a future
@@ -188,10 +202,13 @@ None. The Milestone-1 portability blocker raised on 2026-09-13 was cleared the
 same day by the Product Owner's ratification of Option A
 (`docs/reviews/rfc-0009-m1-compiler-portability-board-review.md`,
 `docs/adr/0011-platform-neutral-compiler.md`). Phase 4 Milestone 1 — Governed
-Authoring remains the current authorized work; substantive Studio UI
-implementation stays gated behind the authorized portability change, its
-permanent conformance evidence, and the browser-first gate recorded with the
-Milestone-1 acceptance floor in `IMPLEMENTATION_QUEUE.md`.
+Authoring remains the current authorized work. The gate that held substantive
+Studio UI implementation — the authorized portability change, its permanent
+conformance evidence, and the browser-first re-spike recorded with the
+Milestone-1 acceptance floor in `IMPLEMENTATION_QUEUE.md` — was satisfied before
+checkpoint 1, and checkpoints 1–6 have since landed. The milestone is not
+blocked; it is **awaiting Product Owner acceptance**, which is a governance act
+reserved to the Product Owner and not an engineering blocker.
 
 ## Governance Status
 
@@ -214,8 +231,10 @@ Milestone-1 acceptance floor in `IMPLEMENTATION_QUEUE.md`.
   Option B (accept with four amendments applied), 2026-07-18
   (`docs/reviews/rfc-0009-board-review.md`, Product Owner ratification)
 - Phase 4: 🚧 **Open for Milestone 1 — Governed Authoring — only** (2026-07-18);
-  one Milestone-1 implementation item queued (Not Started); durable runtime logs
-  remain a later, unopened Phase 4 milestone
+  the one Milestone-1 implementation item is **In Progress** — checkpoints 1–6
+  landed, Checkpoint-7 acceptance evidence prepared, Product Owner disposition
+  **PENDING** (`docs/reviews/phase-4-m1-product-acceptance.md`); durable runtime
+  logs remain a later, unopened Phase 4 milestone
 - Specification-maintenance mechanism: ✅ established — erratum registry
   adopted 2026-07-15 (`docs/adr/0010-erratum-mechanism.md`, `docs/ERRATA.md`)
 
@@ -250,11 +269,16 @@ merged and disposed (2026-07-18). Under the adopted Option A sequencing
 Board-reviewed, and **accepted 2026-07-18 under Option B**
 (`docs/reviews/rfc-0009-board-review.md`, Product Owner ratification), which
 **opened Phase 4 for Milestone 1 — Governed Authoring — only** and added one
-implementation item to `IMPLEMENTATION_QUEUE.md`. The next expected deliverable
-is therefore the **implementation of Studio Milestone 1 (Governed Authoring)** to
-the accepted RFC's Definition of Done, followed by its Board implementation close
-review — which requires both uncached executable conformance and a recorded
-product-acceptance walkthrough (RFC-0009 §14). Only Milestone 1 is authorized;
+implementation item to `IMPLEMENTATION_QUEUE.md`. That implementation is **In
+Progress**: checkpoints 1–6 landed and Checkpoint 7 prepared the end-to-end
+product evidence and the acceptance record. The next expected deliverable is
+therefore the **Product Owner's Milestone-1 product acceptance** against
+`docs/reviews/phase-4-m1-product-acceptance.md` (disposition **PENDING**),
+followed — only if accepted — by the Board implementation close review, which
+requires both uncached executable conformance and that recorded
+product-acceptance walkthrough (RFC-0009 §14). Neither act has occurred; nothing
+authorizes marking the milestone complete, draining the queue item, or closing
+Phase 4 ahead of them. Only Milestone 1 is authorized;
 durable runtime logs remain a later, unopened Phase 4 milestone. Re-sequencing
 `ROADMAP.md` per adopted Option B was performed 2026-09-12 and is no longer
 outstanding; it commissioned no autonomy work and opened no phase.
