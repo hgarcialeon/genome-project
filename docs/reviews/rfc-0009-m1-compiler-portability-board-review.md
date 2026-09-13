@@ -2,8 +2,14 @@
 
 ## Status
 
-**Board review complete; awaiting Product Owner ratification. No option is
-applied and no code is changed by this review.**
+**Option A ratified by the Product Owner, 2026-09-13.** The Board review below is
+unchanged as reviewed; the ratification is recorded verbatim at the end of this
+document (`## Product Owner Ratification (2026-09-13)`), together with the
+architectural property it accepts. The authorization is a **one-time
+protected-boundary implementation authorization for RFC-0009 Milestone 1**: it
+does not amend RFC-0009 semantics, does not authorize broader compiler redesign,
+and does not authorize Studio to own Genome revision derivation. The ADR the
+review requires is `docs/adr/0011-platform-neutral-compiler.md`.
 
 Commissioned 2026-09-13 by the Product Owner, following the RFC-0009 Milestone 1
 browser-compatibility spike. The disposition that commissioned it accepted the
@@ -424,3 +430,52 @@ Exactly three, as commissioned. None is applied by this review.
 - No change to `RFC/0009-phase-4-governed-authoring.md`, to any ADR, to
   `SPEC/`, or to any test.
 - No milestone opened, no queue item added, no capability commissioned.
+
+## Product Owner Ratification (2026-09-13)
+
+Recorded verbatim as delivered.
+
+> As Product Owner, I ratify Option A from:
+>
+> docs/reviews/rfc-0009-m1-compiler-portability-board-review.md
+>
+> Authorize the narrow compiler portability work under the exact scope,
+> constraints, and evidence requirements recorded by the Architecture Board.
+>
+> This is a one-time protected-boundary implementation authorization for
+> RFC-0009 Milestone 1.
+>
+> It does not amend RFC-0009 semantics.
+> It does not authorize broader compiler redesign.
+> It does not authorize Studio to own Genome revision derivation.
+>
+> Architectural decision
+>
+> The accepted architectural property is:
+>
+> - Genome revision derivation remains exclusively compiler-owned;
+> - the normative derivation remains unchanged:
+>   - schema-valid parsed Genome document as input;
+>   - accepted canonicalization;
+>   - UTF-8;
+>   - SHA-256;
+>   - lowercase hexadecimal representation;
+>   - Stage-5 derivation;
+> - compile remains synchronous;
+> - callers cannot supply or replace the revision algorithm;
+> - Node and browser consumers receive byte-identical revisions for identical
+>   accepted input;
+> - compiler behavior must not depend on Studio-specific shims;
+> - browser portability becomes a property of the compiler, not a workaround in
+>   the view.
+
+The ratification further pinned the implementation order (golden baseline before
+production change; smallest portability change; permanent cross-platform
+conformance harness that fails CI on divergence; protected-boundary re-evidence;
+a browser-first gate repeating the original spike without Studio-specific Node
+shims), the commit discipline, the unchanged scope exclusions, and the stop
+conditions that return the work to this Board. Those are operative for the
+authorized implementation and are recorded in
+`docs/adr/0011-platform-neutral-compiler.md` where they are durable, and in the
+Milestone-1 item's acceptance floor in `IMPLEMENTATION_QUEUE.md` where they bind
+the work.

@@ -339,3 +339,49 @@ review; the canonical scenario; the first-five-minutes journey; each RFC-0009
 or other durable evidence where useful; observed defects or caveats; and the
 Product Owner disposition. This walkthrough is **not** a CI gate (RFC-0009
 Amendment 4).
+
+### Milestone-1 portability authorization (Product Owner ratification, 2026-09-13)
+
+Binding on this item; it adds **no second queue item**. The Product Owner
+ratified Option A of
+`docs/reviews/rfc-0009-m1-compiler-portability-board-review.md` — a one-time
+authorization to cross the RFC-0009 §11 compiler boundary for the narrow
+portability work only — and the accepted architectural property is recorded as
+`docs/adr/0011-platform-neutral-compiler.md`.
+
+Normative order for the authorized work:
+
+1. **Freeze first.** Permanent golden revision fixtures pinning the pre-change
+   behavior, as committed literals, covering minimal valid input, ASCII,
+   Unicode, formatting-only differences that canonicalize identically,
+   semantically different documents, and the canonical
+   `SPEC/examples/genome-project.yaml`. The test exercises public compiler
+   behavior and must not recompute SHA-256 or canonicalization to derive its
+   expectations. Committed before any production change.
+2. **Smallest portability change**, preserving synchronous `compile` and its
+   defaulting, the accepted canonicalization, SHA-256, lowercase hex, Stage-5
+   derivation, `graphTarget`, `inspectTarget`, `runtimeModelTarget`, CLI
+   behavior, and diff canonicalization compatibility. No caller-injected
+   hashing, no async compilation, no Studio-local hashing, no Node-crypto shims
+   in Studio, no semantic fork, no provider dependency.
+3. **Permanent cross-platform conformance harness** owned by the repository,
+   exercising compiler and runtime behavior rather than reproducing Genome
+   semantics, proving Node ↔ browser equality of `genomeRevision` across the
+   golden fixture classes, `graphTarget`, `inspectTarget`, `runtimeModelTarget`
+   where directly comparable, deny-safe park, granted execution, event sequence,
+   `approval.granted` attribution and ordering, and determinism under a fixed
+   clock — failing CI on divergence. Smallest tooling addition that provides the
+   evidence; the harness must not decide the Studio UI framework.
+4. **Protected-boundary re-evidence**: `pnpm check-state`, `pnpm typecheck`,
+   `pnpm test -- --force`, plus explicit diffs or absences for schema, language
+   semantics, runtime semantics, event taxonomy, persistence, exported-log
+   reader, provider adapter, and trigger behavior.
+5. **Browser-first gate**: repeat the original compatibility spike with no
+   Studio-specific Node shims. Substantive Studio UI implementation is unblocked
+   only after that gate passes.
+
+Stop and return to the Architecture Board if any existing golden revision must
+change, `compile` must become asynchronous, a caller-supplied hash primitive
+becomes necessary, the accepted canonicalization must change, runtime or event
+behavior must change, browser portability would require Studio to reproduce
+compiler semantics, or the change grows materially beyond the authorized scope.
