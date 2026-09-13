@@ -293,7 +293,7 @@ body {
 
 .studio__workspace {
   display: grid;
-  grid-template-columns: 200px minmax(0, 1fr) 320px;
+  grid-template-columns: 260px minmax(0, 1fr) 320px;
   gap: 1rem;
   align-items: start;
 }
@@ -998,6 +998,12 @@ body {
 .add-agent__actions {
   display: flex;
   gap: 0.5rem;
+}
+
+.add-agent__actions .button {
+  flex: 1;
+  white-space: nowrap;
+  padding-inline: 0.5rem;
 }
 
 .tree__confirmation {

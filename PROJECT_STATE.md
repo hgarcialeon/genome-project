@@ -56,11 +56,12 @@ on 2026-09-13** on a single blocking product failure — Governed Authoring
 discoverability (`docs/reviews/phase-4-m1-product-acceptance.md` §12). The item
 is not complete, not drained, and Phase 4 is not closed. The remediation
 architecture was ratified and `RFC/0010-semantic-authoring-operations.md`
-**accepted 2026-09-13 under Option B**, adding a second **Not Started**
-engineering item. **The current engineering objective is the implementation of
-RFC-0010** — the `@genome/authoring` package (`add-agent` only) plus the minimal
-Studio `add-agent` integration required to repeat Milestone-1 product acceptance.
-No implementation has been performed.
+**accepted 2026-09-13 under Option B**, adding a second engineering item — now
+**In Progress**. Its implementation landed in two stages: `@genome/authoring`
+(Stage A) and the minimal Studio `add-agent` integration (Stage B). **The current
+engineering objective is the repeated Product Owner product acceptance** against
+`docs/reviews/phase-4-m1-product-acceptance-remediation.md`, whose disposition is
+**PENDING**.
 
 ## Current Milestone
 
@@ -116,8 +117,14 @@ amendments; `docs/reviews/rfc-0010-board-review.md` §28;
 `docs/adr/0012-semantic-authoring-boundary.md`). Acceptance added **exactly one**
 implementation item to `IMPLEMENTATION_QUEUE.md` — the `@genome/authoring`
 package (`add-agent` only) plus the minimal Studio integration needed to repeat
-Milestone-1 product acceptance. **No implementation has been performed.** The
-prior Milestone-1 product acceptance remains **Rejected pending remediation**.
+Milestone-1 product acceptance. That item is **In Progress**: Stage A
+(`@genome/authoring`) and Stage B (Studio integration) have both landed, with
+RFC-0010 evidence E1–E19 passing uncached and every protected boundary empty. A
+**new** acceptance record is prepared at
+`docs/reviews/phase-4-m1-product-acceptance-remediation.md` with its disposition
+**PENDING**. The prior Milestone-1 product acceptance
+(`docs/reviews/phase-4-m1-product-acceptance.md`) remains **Rejected** and is not
+reused or reopened.
 The prior RFC-0007 queue item was **implemented, drained, and closed**
 (2026-07-15) by the Board's implementation closure review
 (`docs/reviews/rfc-0007-implementation-close-review.md`, Option A).
@@ -301,8 +308,10 @@ remediation implementation is authorized. The rejection authorizes no Milestone
   landed, Checkpoint-7 acceptance evidence prepared, and Product Owner
   acceptance **performed and REJECTED 2026-09-13** on the authoring
   discoverability blocker (`docs/reviews/phase-4-m1-product-acceptance.md`
-  §12); the remediation architecture is **ratified** (Option C, amendments
-  A1–A8, 2026-09-13) and commissioned
+  §12); the remediation is **implemented and awaiting a repeated product
+  acceptance** (`docs/reviews/phase-4-m1-product-acceptance-remediation.md`,
+  disposition PENDING); the remediation architecture is **ratified** (Option C,
+  amendments A1–A8, 2026-09-13) and commissioned
   `RFC/0010-semantic-authoring-operations.md` (**Accepted** 2026-09-13 under
   Option B; ADR-0012), scoped to a single `add-agent` operation and carrying one
   queued implementation item; durable runtime logs remain a later,
@@ -316,7 +325,8 @@ remediation implementation is authorized. The rejection authorizes no Milestone
   amendments applied; `docs/reviews/rfc-0010-board-review.md` §28, Product Owner
   ratification recorded there); architectural property recorded as
   `docs/adr/0012-semantic-authoring-boundary.md`; **one** implementation item
-  queued (Not Started); no implementation performed
+  queued, now **In Progress** — `@genome/authoring` and the Studio `add-agent`
+  integration have landed; E1–E19 pass uncached
 - Specification-maintenance mechanism: ✅ established — erratum registry
   adopted 2026-07-15 (`docs/adr/0010-erratum-mechanism.md`, `docs/ERRATA.md`)
 
@@ -363,12 +373,13 @@ A1–A8**, resolving the remediation architecture and commissioning one RFC. The
 amendments applied; `docs/reviews/rfc-0010-board-review.md` §28), with the
 durable boundary recorded as `docs/adr/0012-semantic-authoring-boundary.md` and
 **exactly one** implementation item added to `IMPLEMENTATION_QUEUE.md` (Not
-Started). The next expected deliverable is therefore the **implementation of
-RFC-0010** — the `@genome/authoring` package (`add-agent` only) together with the
-minimal Studio integration required to repeat Milestone-1 product acceptance —
-followed by a **repeated recorded product-acceptance walkthrough**. Only a
-successful acceptance re-opens the path to the Milestone-1 implementation close
-review. Only then does an implementation item enter
+Started). RFC-0010 is **implemented** — the `@genome/authoring` package (`add-agent` only)
+and the minimal Studio integration both landed 2026-09-13. The next expected
+deliverable is therefore the **repeated recorded product-acceptance walkthrough**
+by the Product Owner against
+`docs/reviews/phase-4-m1-product-acceptance-remediation.md` (disposition
+**PENDING**). Only a successful acceptance re-opens the path to the Milestone-1
+implementation close review. Only then does an implementation item enter
 `IMPLEMENTATION_QUEUE.md`. The capability carries a **non-zero Language
 Complexity Budget** — a new semantic operation, new document-transformation
 semantics, a new public toolchain API and a new maintained package — while
