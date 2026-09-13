@@ -1,0 +1,258 @@
+/*
+ * Studio's surface. Two rules govern it: state is never carried by colour
+ * alone, and focus is always visible. Contrast pairs below are AA or better
+ * against their backgrounds (WCAG 2.2 AA, 1.4.3 / 1.4.11).
+ */
+
+:root {
+  --ink: #10151c; /* 16.5:1 on --surface */
+  --ink-muted: #4a5462; /* 7.4:1 on --surface */
+  --surface: #f6f7f9;
+  --panel: #ffffff;
+  --border: #c3cad4;
+  --accent: #1a3f8f; /* 8.9:1 on --panel */
+  --error: #8a1420; /* 8.2:1 on --panel */
+  --warning: #6b4400; /* 7.6:1 on --panel */
+  --ok: #14532d; /* 9.7:1 on --panel */
+  --stale: #5a3d00;
+  --focus: #0b3ba8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--ink);
+  font: 16px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.studio {
+  display: grid;
+  gap: 1rem;
+  padding: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.studio__product {
+  margin: 0;
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.studio__organization {
+  margin: 0.25rem 0 0;
+  font-size: 1.75rem;
+  line-height: 1.2;
+}
+
+.studio__mission {
+  margin: 0.25rem 0 0;
+  color: var(--ink-muted);
+  max-width: 60ch;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.panel__heading {
+  margin: 0 0 0.75rem;
+  font-size: 0.9375rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.status {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0;
+  font-weight: 650;
+}
+
+.status--current {
+  color: var(--ok);
+}
+
+.status--editing {
+  color: var(--stale);
+}
+
+.status--invalid {
+  color: var(--error);
+}
+
+.status__mark {
+  font-size: 1.1em;
+}
+
+.status-bar__document {
+  margin: 0 0 0.25rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.875rem;
+  color: var(--ink-muted);
+}
+
+.status-bar__detail {
+  margin: 0.25rem 0 0.75rem;
+  color: var(--ink);
+}
+
+.status-bar__facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.25rem 1rem;
+  margin: 0;
+}
+
+.status-bar__facts dt {
+  color: var(--ink-muted);
+  font-size: 0.875rem;
+}
+
+.status-bar__facts dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.stale-banner {
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+  margin: 0.75rem 0 0;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--stale);
+  border-radius: 4px;
+  background: #fdf7ea;
+  color: var(--stale);
+}
+
+.editor__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.editor__label {
+  font-weight: 600;
+}
+
+.editor__textarea {
+  width: 100%;
+  min-height: 22rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--panel);
+  color: var(--ink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  resize: vertical;
+}
+
+.editor__textarea[aria-invalid="true"] {
+  border-color: var(--error);
+  border-left-width: 4px;
+}
+
+.button {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  background: var(--accent);
+  color: #ffffff;
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.button--quiet {
+  background: var(--panel);
+  color: var(--accent);
+  margin-left: 0.5rem;
+}
+
+.button__hint {
+  opacity: 0.9;
+  font-size: 0.8125rem;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.diagnostics__summary {
+  margin: 0 0 0.75rem;
+}
+
+.diagnostics__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.diagnostic {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.75rem;
+}
+
+.diagnostic__head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: baseline;
+  margin: 0 0 0.25rem;
+  font-size: 0.8125rem;
+  color: var(--ink-muted);
+}
+
+.badge {
+  font-weight: 650;
+}
+
+.badge--error {
+  color: var(--error);
+}
+
+.badge--warning {
+  color: var(--warning);
+}
+
+.diagnostic__message {
+  margin: 0 0 0.25rem;
+}
+
+.diagnostic__where {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

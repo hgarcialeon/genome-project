@@ -1,0 +1,70 @@
+/**
+ * Automated accessibility checks for the surface implemented so far
+ * (WCAG 2.2 AA acceptance floor, `IMPLEMENTATION_QUEUE.md`).
+ *
+ * axe-core in jsdom cannot evaluate colour contrast — there is no layout or
+ * painting — so 1.4.3 is carried by the tokens in `styles.css` and confirmed in
+ * the Product Owner walkthrough, not here. What these checks do catch is the
+ * structural floor: names, roles, associations, and duplicate or missing
+ * labelling.
+ */
+
+import { fireEvent, render, screen } from "@testing-library/preact";
+import axe from "axe-core";
+import { describe, expect, it } from "vitest";
+
+import { App } from "./app.js";
+
+const NO_AUTO_COMPILE = 1_000_000;
+
+const violations = async (container: Element): Promise<string[]> => {
+  const results = await axe.run(container, {
+    resultTypes: ["violations"],
+    // jsdom paints nothing; contrast is verified visually, not here.
+    rules: { "color-contrast": { enabled: false } },
+  });
+  return results.violations.map((violation) => `${violation.id}: ${violation.help}`);
+};
+
+describe("accessibility floor", () => {
+  it("has no axe violations with a compiled document", async () => {
+    const { container } = render(<App autoCompileDelayMs={NO_AUTO_COMPILE} />);
+
+    expect(await violations(container)).toEqual([]);
+  });
+
+  it("has no axe violations while the source is invalid and diagnostics are shown", async () => {
+    const { container } = render(<App autoCompileDelayMs={NO_AUTO_COMPILE} />);
+
+    fireEvent.input(screen.getByTestId("source"), { target: { value: "company: [unclosed" } });
+    fireEvent.click(screen.getByTestId("compile-now"));
+
+    expect(screen.getByTestId("compilation-status").textContent).toContain("Invalid");
+    expect(await violations(container)).toEqual([]);
+  });
+
+  it("gives every interactive control an accessible name", () => {
+    render(<App autoCompileDelayMs={NO_AUTO_COMPILE} />);
+
+    const editor = screen.getByLabelText("Genome source");
+    expect(editor).toBe(screen.getByTestId("source"));
+
+    for (const button of screen.getAllByRole("button")) {
+      expect(button.textContent?.trim().length ?? 0).toBeGreaterThan(0);
+    }
+  });
+
+  it("keeps every essential interaction reachable by keyboard", () => {
+    render(<App autoCompileDelayMs={NO_AUTO_COMPILE} />);
+
+    const focusable = Array.from(
+      document.querySelectorAll<HTMLElement>("textarea, button, [href], [tabindex]:not([tabindex='-1'])"),
+    );
+
+    expect(focusable).toContain(screen.getByTestId("source"));
+    expect(focusable).toContain(screen.getByTestId("compile-now"));
+    for (const element of focusable) {
+      expect(element.getAttribute("tabindex")).not.toBe("-1");
+    }
+  });
+});

@@ -24,6 +24,7 @@ export default defineConfig({
   esbuild: { jsx: "automatic", jsxImportSource: "preact" },
   test: {
     environment: "jsdom",
+    setupFiles: ["src/test-setup.ts"],
     // Studio tests exercise the real accepted packages; Genome semantics are
     // never mocked (RFC-0009 §3). Cross-platform equality is proven separately
     // and independently by @genome/browser-conformance.
