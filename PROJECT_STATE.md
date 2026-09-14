@@ -412,8 +412,12 @@ the Autonomy Substrate, Office View or persistence.
   found `add-workflow` **sufficient**. On that evidence the Product Owner
   **commissioned the RFC** the same day (§11); the discovery is **complete**
 - RFC-0011 — Semantic Authoring Operations (`add-workflow`): 📝 **Draft —
-  awaiting Architecture Board review**
-  (`RFC/0011-add-workflow-authoring-operation.md`, commissioned 2026-09-14).
+  Architecture Board review held 2026-09-14, awaiting Product Owner
+  ratification** (`RFC/0011-add-workflow-authoring-operation.md`, commissioned
+  2026-09-14; review `docs/reviews/rfc-0011-board-review.md` on commit
+  `8f7a559`, every material claim re-executed). The Board recommends **Option B
+  — accept with amendments A1–A7** and **no new ADR**; nothing is applied and the
+  RFC is unmodified.
   Scoped to exactly one operation, with governance visibility in scope (its §8)
   sourced from `runtimeModelTarget` — `RuntimeWorkflow.governedBy` resolved
   against `RuntimePolicy.requiresApprovalFrom` — so Studio owns no
@@ -481,9 +485,11 @@ draining both queue items and marking the four shipped Phase 4 deliverables Done
 
 **There is no next expected engineering deliverable.** No milestone is authorized
 and no implementation work is in flight. The next expected deliverable is a
-**governance** one: the **Architecture Board review of
-`RFC/0011-add-workflow-authoring-operation.md`** (Draft, commissioned
-2026-09-14), and the Product Owner ratification that would follow it. The product
+**governance** one: the **Product Owner ratification of the Architecture Board's
+review of `RFC/0011-add-workflow-authoring-operation.md`**
+(`docs/reviews/rfc-0011-board-review.md`, held 2026-09-14, recommending Option B
+— accept with amendments A1–A7, no new ADR). The RFC remains **Draft** and
+unmodified until that ratification. The product
 discovery that produced it
 (`docs/discovery/create-and-operate-a-governed-team.md`) is complete: Q1–Q5 are
 answered and its empirical pre-RFC analysis found no missing semantic
