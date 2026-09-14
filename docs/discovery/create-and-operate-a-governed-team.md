@@ -580,3 +580,36 @@ The smallest RFC would carry: the single `add-workflow` operation and its intent
 shape; the four §9.8 constraints; the §9.9 governance projection; the ADR-0012
 layering; and the protected boundaries RFC-0010 already pins. It would change no
 language, schema, compiler, runtime, event or revision semantics.
+
+---
+
+## 11. Product Owner commissioning disposition — 2026-09-14 (second act)
+
+**The discovery condition is recorded as satisfied and the RFC is commissioned.**
+
+The Product Owner records that, on this discovery's evidence: `add-workflow`
+alone is sufficient for the complete experiment; existing agents are sufficient;
+existing policies are sufficient; the reference adapter is sufficient; ephemeral
+execution is sufficient; and **no** provider, trigger, persistence,
+team-governance, Gap 2, Gap 5 or `add-policy` capability is required.
+
+**Commissioned: the smallest ADR-0012-conformant RFC for exactly one new
+semantic authoring operation, `add-workflow`** — drafted as
+`RFC/0011-add-workflow-authoring-operation.md`.
+
+Governance effect of this act, stated exactly: it **commissions RFC drafting
+only**. It does **not** add an implementation queue item, open Phase 4
+Milestone 2, open Phase 5, or authorize `add-workflow` implementation. The RFC
+stands as **Draft** for Architecture Board review; nothing enters
+`IMPLEMENTATION_QUEUE.md` unless and until it is accepted.
+
+**Governance visibility is in scope of that RFC** (§8 of the RFC), on this
+discovery's §9.9 finding: governance is a consequence of the owner chosen, and
+the experiment fails its own purpose if the user cannot see that consequence.
+The RFC adds no governance semantics and gives Studio no policy-applicability
+implementation of its own.
+
+**This discovery is complete.** Its remaining findings — F1's uncommissioned
+operations, F2's Govern gap, F3's durability and real-effect gates, and F4's
+Gap 2 / Gap 5 observations — stand recorded as evidence for future decisions and
+are commissioned by nothing here.
