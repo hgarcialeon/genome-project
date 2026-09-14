@@ -203,12 +203,18 @@ commissioned, drafted, Board-reviewed, and **accepted 2026-07-18 under Option B*
 `docs/reviews/rfc-0009-board-review.md`, Product Owner ratification). That
 acceptance **opened Phase 4 for Milestone 1 — Governed Authoring — only** and
 added one implementation item to `IMPLEMENTATION_QUEUE.md`. **The current
-objective is product discovery — "Create and Operate a Governed Team"
+objective is product discovery — "Make Engineering Perform Governed Work"
 (`docs/discovery/create-and-operate-a-governed-team.md`), commissioned by the
-Product Owner 2026-09-14.** Discovery is a pre-RFC instrument: it decides
-nothing, opens no phase or milestone, commissions no RFC, and adds no queue
-item, so **there is no current engineering objective.** The last one —
-implementing RFC-0010
+Product Owner 2026-09-14 as "Create and Operate a Governed Team", with Q1–Q5
+dispositioned and the experiment refocused the same day (§8 of that
+document).** Discovery is a pre-RFC instrument: it decides nothing, opens no
+phase or milestone, commissions no RFC, and adds no queue item, so **there is no
+current engineering objective.** The disposition authorized the empirical
+pre-RFC analysis only; that analysis is **complete** (§9) and concludes that a
+single `add-workflow` operation is **sufficient** for the refocused journey using
+existing governance, with **no missing semantic capability** and no expansion to
+`add-policy` (§10). Commissioning the resulting RFC remains an unexercised
+Product Owner act. The last engineering objective — implementing RFC-0010
 (`@genome/authoring`, `add-agent` only) and the minimal Studio `add-agent`
 integration so that Milestone-1 product acceptance could be repeated — is
 discharged, and no work has been authorized to replace it. That objective had
@@ -382,14 +388,28 @@ the Autonomy Substrate, Office View or persistence.
   integration landed; E1–E19 pass uncached
 - Specification-maintenance mechanism: ✅ established — erratum registry
   adopted 2026-07-15 (`docs/adr/0010-erratum-mechanism.md`, `docs/ERRATA.md`)
-- Product discovery — "Create and Operate a Governed Team": 🔎 **commissioned**
-  2026-09-14 by the Product Owner
-  (`docs/discovery/create-and-operate-a-governed-team.md`). A **pre-RFC**
-  instrument: it decides nothing, opens no phase or milestone, commissions no
-  RFC, records no ADR, adds no queue item, and changes no roadmap deliverable.
-  It exits only on recorded answers to its questions Q1–Q5 and a severable
-  assignment of each finding to an owner layer and instrument; an RFC may be
-  commissioned only then
+- Product discovery — "Make Engineering Perform Governed Work": 🔎
+  **commissioned and dispositioned** 2026-09-14 by the Product Owner
+  (`docs/discovery/create-and-operate-a-governed-team.md`; commissioned as
+  "Create and Operate a Governed Team", refocused the same day — the file path
+  is retained so the commissioning record resolves). A **pre-RFC** instrument:
+  it decides nothing, opens no phase or milestone, commissions no RFC, records
+  no ADR, adds no queue item, and changes no roadmap deliverable. **Q1–Q5 are
+  answered** (§8): the **agent** remains the governance subject and the team an
+  organizational grouping — team-governance semantics are **not** commissioned;
+  durability is **not** required, so Milestone 2 stays unopened and the
+  persistence gate stays closed; real external effects are **not** required, so
+  Phase 5, provider adapters and triggers stay uncommissioned; the candidate
+  minimum operation is **`add-workflow`** alone; and Gap 2's deferral gate is
+  determined **reached** but Gap 2 is **re-deferred** ("gate reached; consumer
+  not yet sufficient to justify language expansion"), with Gap 5 recorded as
+  having new evidence but **not** reopened. The disposition authorized the
+  **empirical pre-RFC analysis only**; that analysis is complete (§9–§10) and
+  found `add-workflow` **sufficient**, so the condition for preparing the
+  smallest ADR-0012-conformant RFC is met — **the RFC is not commissioned by
+  this act**
+- Milestone-1 authoring remediation follow-on: no `add-workflow` implementation
+  is authorized; the discovery disposition explicitly withholds it
 
 ## Current North Star
 
@@ -446,13 +466,16 @@ draining both queue items and marking the four shipped Phase 4 deliverables Done
 
 **There is no next expected engineering deliverable.** No milestone is authorized
 and no implementation work is in flight. The next expected deliverable is a
-**governance** one: the exit of the commissioned product discovery "Create and
-Operate a Governed Team" (`docs/discovery/create-and-operate-a-governed-team.md`),
-whose recorded exit criteria are the answers to its questions Q1–Q5 and a
-severable assignment of each finding to an owner layer and instrument. Discovery
-adds no queue item; only an RFC accepted after it could. The decisions now
-available to the Product Owner are governance acts, not queued work: answer the
-discovery questions, open a further Phase 4 milestone (Milestone 2 — durable
+**governance** one: a Product Owner decision on whether to commission the
+smallest `add-workflow` RFC that the completed product discovery "Make
+Engineering Perform Governed Work"
+(`docs/discovery/create-and-operate-a-governed-team.md`) found sufficient and
+ADR-0012-conformant. Its questions Q1–Q5 are answered and its empirical pre-RFC
+analysis is complete; no missing semantic capability was found. Discovery adds no
+queue item; only an RFC accepted after it could, and **no `add-workflow`
+implementation is authorized**. The decisions now
+available to the Product Owner are governance acts, not queued work: commission
+that RFC, open a further Phase 4 milestone (Milestone 2 — durable
 runtime logs would require its own RFC), open
 Phase 5, commission the F1–F4 Studio follow-up, or commission something else.
 Milestone 2 remains **unopened**, the autonomy substrate is **not commissioned**,
