@@ -202,8 +202,13 @@ commissioned, drafted, Board-reviewed, and **accepted 2026-07-18 under Option B*
 (accept with four clarifying amendments applied;
 `docs/reviews/rfc-0009-board-review.md`, Product Owner ratification). That
 acceptance **opened Phase 4 for Milestone 1 — Governed Authoring — only** and
-added one implementation item to `IMPLEMENTATION_QUEUE.md`. **There is no
-current engineering objective.** The last one — implementing RFC-0010
+added one implementation item to `IMPLEMENTATION_QUEUE.md`. **The current
+objective is product discovery — "Create and Operate a Governed Team"
+(`docs/discovery/create-and-operate-a-governed-team.md`), commissioned by the
+Product Owner 2026-09-14.** Discovery is a pre-RFC instrument: it decides
+nothing, opens no phase or milestone, commissions no RFC, and adds no queue
+item, so **there is no current engineering objective.** The last one —
+implementing RFC-0010
 (`@genome/authoring`, `add-agent` only) and the minimal Studio `add-agent`
 integration so that Milestone-1 product acceptance could be repeated — is
 discharged, and no work has been authorized to replace it. That objective had
@@ -377,6 +382,14 @@ the Autonomy Substrate, Office View or persistence.
   integration landed; E1–E19 pass uncached
 - Specification-maintenance mechanism: ✅ established — erratum registry
   adopted 2026-07-15 (`docs/adr/0010-erratum-mechanism.md`, `docs/ERRATA.md`)
+- Product discovery — "Create and Operate a Governed Team": 🔎 **commissioned**
+  2026-09-14 by the Product Owner
+  (`docs/discovery/create-and-operate-a-governed-team.md`). A **pre-RFC**
+  instrument: it decides nothing, opens no phase or milestone, commissions no
+  RFC, records no ADR, adds no queue item, and changes no roadmap deliverable.
+  It exits only on recorded answers to its questions Q1–Q5 and a severable
+  assignment of each finding to an owner layer and instrument; an RFC may be
+  commissioned only then
 
 ## Current North Star
 
@@ -432,9 +445,15 @@ B**, and the Product Owner **ratified it the same day** — closing Milestone 1,
 draining both queue items and marking the four shipped Phase 4 deliverables Done.
 
 **There is no next expected engineering deliverable.** No milestone is authorized
-and no implementation work is in flight. The decisions now available to the
-Product Owner are governance acts, not queued work: open a further Phase 4
-milestone (Milestone 2 — durable runtime logs would require its own RFC), open
+and no implementation work is in flight. The next expected deliverable is a
+**governance** one: the exit of the commissioned product discovery "Create and
+Operate a Governed Team" (`docs/discovery/create-and-operate-a-governed-team.md`),
+whose recorded exit criteria are the answers to its questions Q1–Q5 and a
+severable assignment of each finding to an owner layer and instrument. Discovery
+adds no queue item; only an RFC accepted after it could. The decisions now
+available to the Product Owner are governance acts, not queued work: answer the
+discovery questions, open a further Phase 4 milestone (Milestone 2 — durable
+runtime logs would require its own RFC), open
 Phase 5, commission the F1–F4 Studio follow-up, or commission something else.
 Milestone 2 remains **unopened**, the autonomy substrate is **not commissioned**,
 and Office View, Marketplace, simulation, persistence, provider adapters and
