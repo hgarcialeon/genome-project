@@ -574,3 +574,94 @@ Consolidated required amendments:
 
 **Board recommendation: OPTION B.** Not applied. Awaiting Product Owner
 ratification.
+
+---
+
+## 30. Product Owner ratification — RATIFIED
+
+**Product Owner disposition: RATIFIED — 2026-09-15 — Option B (accept RFC-0011
+with amendments A1–A7).** Recorded verbatim:
+
+> As Product Owner, I ratify OPTION B — ACCEPT RFC-0011 WITH AMENDMENTS.
+>
+> `RFC/0011-add-workflow-authoring-operation.md` is **Accepted** with the
+> Architecture Board amendments A1–A7 applied.
+>
+> **A1 — owner preflight must be compiler-derived.** `@genome/authoring` must not
+> reconstruct owner-resolution semantics. Remove any wording permitting authoring
+> to determine owner existence by traversing departments/teams directly,
+> rebuilding dotted owner references, reproducing `buildAgentIndex`, or
+> independently interpreting agent identity rules. The accepted pattern is
+> original source → compile → `runtimeModelTarget(before.graph)` →
+> `agents[].reference` → membership check. If the original source does not
+> compile, return `invalid-source` before owner preflight. Unknown owner may
+> remain `invalid-intent` **only because** the fact is obtained from
+> compiler-derived accepted meaning.
+>
+> **A2 — duplicate workflow conflict rationale.** The reason for the pre-check is
+> not that the candidate would contain an invalid duplicate YAML key; the
+> accepted mutation mechanism can overwrite an existing workflow silently. The
+> protected invariant is that **`add-workflow` must be non-destructive** and must
+> never silently replace or modify an existing workflow. Strengthen the Definition
+> of Done accordingly. Preserve the actual uniqueness scope — unique only within
+> the top-level `workflows` mapping — and introduce no global id uniqueness.
+>
+> **A3 — governance preview is initiator-scoped.** Correct any wording implying
+> governance is determined universally by `RuntimeWorkflow.governedBy`. The
+> preview is the effective approval requirements for the candidate workflow when
+> initiated by the principal Studio will actually use. A future change to Studio's
+> initiator requires the preview to be re-evaluated. No runtime governance
+> semantics change.
+>
+> **A4** — record the resolved questions and the candidate preview architecture:
+> no new ADR; the authoring result stays source-oriented; the preview occurs
+> before Create; the user supplies the workflow id; ungoverned wording stays
+> neutral and accurate.
+>
+> **A5** — add E38–E43 exactly as recorded, and strengthen E23 to prove
+> non-destructive conflict behaviour. Do not remove E1–E37.
+>
+> **A6** — the programmatically-exposed governance preview and the
+> non-colour-only ungoverned state are non-negotiable.
+>
+> **A7** — the id-supply friction is recorded as a product UX concern for the
+> acceptance walkthrough, not resolved by hidden derivation.
+>
+> **No new ADR is required**; ADR-0012 continues to own the semantic-authoring
+> boundary.
+>
+> The amendments do not expand the accepted Language Complexity Budget: A1
+> reduces semantic duplication, A2 corrects the protected invariant, A3 narrows
+> the governance-preview claim.
+>
+> Acceptance adds **exactly one** implementation item to
+> `IMPLEMENTATION_QUEUE.md` covering `@genome/authoring` `add-workflow`, the
+> governance preview, the minimal Studio Create-work integration, E1–E43, and a
+> recorded human product acceptance.
+>
+> **Do not implement `add-workflow` yet.** Implementation does not occur in the
+> same commit as acceptance and state reconciliation.
+>
+> **Stop condition.** This ratification opens no phase and no milestone. Phase 4
+> Milestone 2 remains unopened, Phase 5 remains uncommissioned, Gap 2 remains
+> re-deferred, and Gap 5 remains not reopened.
+
+### 30.1 Applied
+
+| Act | Result |
+|---|---|
+| A1 — compiler-derived owner preflight | Applied — RFC §5.1 (normative mechanism), §5.2 (prohibitions) |
+| A2 — non-destructive conflict invariant | Applied — RFC §12.1, with the corrected rationale and preserved uniqueness scope |
+| A3 — initiator-scoped preview | Applied — RFC §8.2.1, including the empirical divergence and the return-to-Board condition |
+| A4 — resolved questions + preview architecture | Applied — RFC §8.4 (before Create), §23 (OQ1–OQ5), §23.1 (candidate preview architecture) |
+| A5 — evidence | Applied — RFC §22: E23 strengthened; **E38–E43 added**; E1–E37 retained |
+| A6 — accessibility non-negotiables | Applied — RFC §19 |
+| A7 — id-supply UX concern | Applied — RFC §23 (OQ3), referred to the acceptance walkthrough |
+| RFC-0011 status | **Accepted 2026-09-15 under Option B** |
+| New ADR | **None created** — ADR-0012 continues to own the boundary |
+| `IMPLEMENTATION_QUEUE.md` | **One** item added (High, Not Started) |
+| Phase 4 Milestone 2 · Phase 5 · Gap 2 · Gap 5 | **Unopened / uncommissioned / re-deferred / not reopened** |
+| Implementation | **Not begun** — no production code changed by this act |
+
+**RFC-0011 is ACCEPTED, 2026-09-15.** No implementation is authorized to begin
+until separately instructed.

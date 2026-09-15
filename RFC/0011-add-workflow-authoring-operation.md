@@ -2,7 +2,17 @@
 
 ## Status
 
-**Draft — prepared for Architecture Board review. Not ratified.**
+**Accepted 2026-09-15 under Option B** — accept with the Architecture Board
+amendments **A1–A7** applied. Board review
+`docs/reviews/rfc-0011-board-review.md` (held 2026-09-14 on commit `8f7a559`,
+every material claim re-executed); Product Owner ratification recorded there.
+
+**No new ADR is required**: `docs/adr/0012-semantic-authoring-boundary.md`
+continues to own the semantic-authoring boundary (§21, §23 OQ1).
+
+Acceptance adds **exactly one** item to `IMPLEMENTATION_QUEUE.md`. It opens no
+phase and no milestone: Phase 4 Milestone 2 remains unopened and Phase 5 remains
+uncommissioned.
 
 Commissioned 2026-09-14 by the Product Owner, on the completed product discovery
 "Make Engineering Perform Governed Work"
@@ -11,10 +21,8 @@ pre-RFC analysis established that a single `add-workflow` operation is sufficien
 for the experiment using existing agents, existing policies, the reference
 adapter and ephemeral execution.
 
-This RFC **decides nothing until ratified**. Acceptance would add **exactly one**
-item to `IMPLEMENTATION_QUEUE.md`. It opens no phase and no milestone, and
-authorizes no implementation before that acceptance. Current project state lives
-only in `PROJECT_STATE.md` (Governance Rule 8) and is not restated here.
+Current project state lives only in `PROJECT_STATE.md` (Governance Rule 8) and is
+not restated here.
 
 Every material claim below was **re-verified against the working tree while
 drafting**, not carried over from discovery. Verification commit: `aad69ac`
@@ -125,22 +133,39 @@ language requires neither.
 ## 5. Owner resolution
 
 The intent carries a **dotted agent reference**, resolved by the compiler's
-accepted rules.
+accepted rules. **`@genome/authoring` resolves nothing.** *(Amendment A1.)*
 
-The operation **may preflight** the reference — checking it against the agents of
-the parsed source so the user gets `unknown-owner` rather than a raw compiler
-diagnostic — but **the compiler remains the semantic authority**: the candidate
-is compiled, and a failure there returns `invalid-result` carrying compiler
-diagnostics verbatim. The preflight is a product affordance, never a second
-implementation of resolution; it decides nothing the compiler would decide
-differently.
+### 5.1 The accepted preflight mechanism (normative)
 
-Explicitly prohibited: implicitly creating an agent; accepting a **team** as
-owner; inventing team execution semantics; introducing global identity
-semantics; duplicating compiler cross-reference resolution.
+Owner existence is established **only** from compiler-derived meaning, obtained
+from the operation's own step-1 compile of the original source:
 
-Studio presents owners by reading the **existing compiled model** (`RuntimeModel.agents`),
-not by parsing source.
+```text
+original source → compile → runtimeModelTarget(before.graph)
+               → agents[].reference → membership check
+```
+
+`@genome/authoring` may test whether the requested owner **appears in that
+compiler-derived set**. It must resolve nothing independently.
+
+If the original source does not compile, the operation returns the accepted
+**`invalid-source`** failure **before** owner preflight — the set does not exist
+until the compiler has produced it.
+
+### 5.2 Explicitly prohibited
+
+The operation **must not** determine owner existence by traversing
+`departments`/`teams` directly, rebuilding dotted owner references, reproducing
+`buildAgentIndex`, or independently interpreting agent identity rules. Also
+prohibited: implicitly creating an agent; accepting a **team** as owner;
+inventing team execution semantics; introducing global identity semantics.
+
+This keeps the compiler's ownership of *source → meaning* intact. The candidate
+compile (step 5) remains the backstop: a failure there returns `invalid-result`
+with compiler diagnostics verbatim, and the two paths must agree.
+
+Studio presents owners by reading the **existing compiled model**
+(`RuntimeModel.agents`), not by parsing source.
 
 ## 6. Steps
 
@@ -199,15 +224,60 @@ Evaluated and rejected:
 - **`graphTarget` `requires` edges** — carries the same fact but leaves Studio to
   join edges to principals itself. The runtime model already performs that join.
 - **Reading the *current* model's `RuntimeAgent.governedBy`** — **incorrect.**
-  Agent-scoped gates enter a run through the *initiating* principal, and Studio
-  initiates as `human:operator`, so the gate set for a Studio run is exactly
-  `RuntimeWorkflow.governedBy`. Predicting the derived workflow→policy edge
-  before compiling would mean reproducing RFC-0007 participation binding in the
-  view — precisely what is forbidden.
+  Predicting the derived workflow→policy edge before compiling would mean
+  reproducing RFC-0007 participation binding in the view — precisely what is
+  forbidden.
 
 Compiling the candidate is the same operation Studio already performs on every
 edit; only the input differs. **No Studio-owned "which policies apply?"
 implementation is created, and no governance semantics are added.**
+
+### 8.2.1 The preview is initiator-scoped (normative) *(Amendment A3)*
+
+**Governance is not a universal intrinsic property of a workflow.** A run's gates
+are the union of the workflow's policies and the *initiating principal's*, plus
+the supervised intrinsic floor when the initiator is a supervised agent. The
+preview is therefore defined as:
+
+> **governance preview = the effective approval requirements for the candidate
+> workflow when initiated by the principal Studio will actually use.**
+
+Studio currently initiates through `STUDIO_OPERATOR = "human:operator"`. Because
+that is a human principal and not a declared agent, `governingPolicies` finds no
+initiating agent and the effective gate set **for that principal** is exactly the
+candidate's `RuntimeWorkflow.governedBy`. The equality holds *because of* the
+initiator, not independently of it.
+
+**The divergence is real, not theoretical.** Re-executed: a supervised agent
+owning a workflow whose compiled `governedBy` is `[]` —
+
+```text
+initiator human:operator          → status=running            approval.requested=(none)
+initiator <supervised agent>      → status=pending-approval   approval.requested=["human:*"]
+```
+
+Identical compiled `governedBy`; different effective gates.
+
+Consequently: the UI **must not** imply the preview is intrinsic to the
+workflow, and **any future change to Studio's execution principal requires the
+preview to be re-evaluated and returned to the Architecture Board.** No runtime
+governance semantics are changed by this requirement.
+
+### 8.4 The preview occurs before Create (normative) *(Amendment A4, OQ4)*
+
+The user must be able to see the effective approval consequence **before
+committing the workflow**. A preview available only after creation cannot satisfy
+"understand what governance will apply" before commitment, which is the whole
+purpose of the experiment (§15).
+
+Canonical governed case — owner `engineering.engineering-agent`, existing policy
+`queue-discipline`, Studio initiator `human:operator` → **expected effective
+requirement: `human:product-owner`**.
+
+Negative case — owner `governance.chief-architect`, Studio initiator
+`human:operator` → **expected: no approval requirement** under currently accepted
+semantics. The UI communicates this **neutrally**: an ungoverned workflow is not
+an error, and the requirement is transparency.
 
 ### 8.3 What the UI must be able to communicate
 
@@ -284,18 +354,35 @@ new diagnostic is introduced.
 uniqueness to exactly that mapping. Workflows are flat: there is no second scope,
 and therefore no cross-scope question of the kind `add-agent` had to answer.
 
+### 12.1 The invariant: `add-workflow` must be non-destructive *(Amendment A2)*
+
+**The pre-check does not exist to avoid a malformed duplicate YAML key.** The
+accepted preservation mechanism writes with a set/update operation
+(`document.setIn`) that **silently overwrites an existing entry**. Re-executed on
+the canonical example: setting `workflows.rfc-lifecycle` replaced its owner and
+all five steps, and the resulting candidate **compiled cleanly with no parse
+error**. Without the pre-check the operation would **silently destroy an existing
+workflow and return success.**
+
+The invariant this protects is therefore:
+
+> **`add-workflow` must be non-destructive. It must never silently replace or
+> modify an existing workflow.**
+
 Two consequences, both required:
 
-1. **Refuse** only `workflows.<id>` already present. Verified necessity: a
-   duplicate key fails at **parse** — `Map keys must be unique at line 75,
-   column 3` — which would surface raw YAML mechanics to a user who asked to
-   create work. The check happens **before writing**, exactly as `add-agent`
-   does.
+1. **Refuse** when `workflows.<id>` is already present, as a `conflict`, checked
+   **before writing** — exactly as `add-agent` does, and for this stronger
+   reason.
 2. **Do not refuse** an id that collides across a *different* mapping. Verified:
    a workflow named `ratification`, colliding with an existing **policy** id,
-   compiles with **0 diagnostics**. Genome defines no cross-mapping id
-   uniqueness, and **authoring must not add language uniqueness semantics by
-   convention.**
+   compiles with **0 diagnostics**; the same holds for an existing **agent** id.
+   Genome defines no cross-mapping id uniqueness, and **authoring must not add
+   language uniqueness semantics by convention.**
+
+The accepted uniqueness scope is preserved exactly: **workflow ids are unique
+only within the top-level `workflows` mapping**, enforced by the authoring
+operation. **No global id uniqueness is introduced.**
 
 ## 13. Revision semantics
 
@@ -412,6 +499,11 @@ steps fields accessible; validation errors programmatically associated; the
 placement-only); predictable focus on successful creation; cancel returns focus;
 no pointer-only essential interaction.
 
+**Two items are non-negotiable, not illustrative** *(Amendment A6)*: the
+governance preview **must be programmatically exposed**, because it carries the
+decisive product meaning and cannot be visual-only; and the **ungoverned state
+must not be conveyed by colour alone**.
+
 ## 20. Protected boundaries
 
 Expected **zero semantic change** to: Genome syntax; Genome language semantics;
@@ -451,17 +543,25 @@ The budget is **non-zero but strictly smaller than RFC-0010's**: that RFC create
 the package, the boundary, the failure architecture and the preservation model.
 This one adds a second operation *inside* all of them.
 
-**ADR assessment — none required.** ADR-0012 already owns the durable
-architectural decision (compiler owns *source → meaning*; authoring owns
+**The ratified amendments do not expand the accepted budget.** A1 *reduces*
+semantic duplication, A2 corrects the protected invariant, and A3 *narrows* the
+governance-preview claim to the actual initiator. The accepted new capability
+remains: the `add-workflow` operation; the workflow transformation contract; the
+`@genome/authoring` public API expansion; the minimal Studio Create-work
+interaction; and the compiler/runtime-derived governance preview **for the actual
+Studio initiator**.
+
+**ADR assessment — none required, ratified.** The Board resolved OQ1 and the
+Product Owner ratified it on 2026-09-15: **no new ADR.** ADR-0012 already owns the
+durable architectural decision (compiler owns *source → meaning*; authoring owns
 *intent → source*; views collect intent and present results; source stays
 canonical; operations are consumer-gated). `add-workflow` **applies** that
 decision with a demonstrated consumer; it establishes no new durable boundary.
 
-One judgment is referred to the Board (§23, OQ1): whether §8.2 — a view
-compiling a **candidate** document to display a compiler-derived consequence
-before commit — is merely an application of the existing projection model, or a
-durable pattern deserving its own ADR. The drafter's assessment is the former:
-Studio already compiles on every edit, and only the input differs.
+The judgment once referred to the Board — whether a view compiling a
+**candidate** document to display a compiler-derived consequence before commit is
+merely the existing projection model applied to a new input, or a durable pattern
+deserving its own ADR — is **resolved as the former** (§23, OQ1).
 
 ## 22. Definition of Done
 
@@ -492,8 +592,9 @@ the required principal is correctly projected; E20 `approval.granted` attributio
 attributed to the owner; E22 the workflow completes (exit 0).
 
 **Conflict and failure.** E23 duplicate workflow id refused with the **actual
-accepted scope** (the `workflows` mapping); E24 a cross-mapping id collision is
-**accepted**, not refused; E25 `invalid-source` handling; E26 `invalid-result`
+accepted scope** (the `workflows` mapping), proving **non-destructive** behaviour
+rather than mere parser-failure avoidance *(strengthened, A5)*; E24 a
+cross-mapping id collision is **accepted**, not refused; E25 `invalid-source` handling; E26 `invalid-result`
 carries compiler diagnostics verbatim; E27 failure atomicity — no `source` on any
 failure.
 
@@ -507,38 +608,70 @@ persistence expansion; E36 protected-boundary diffs empty.
 **Accessibility.** E37 the §19 floor on both success and failure paths, including
 focus behaviour and the programmatically-available governance preview.
 
+**Board additions (Amendment A5).** Six further permanent cases, added exactly as
+the Board recorded them. None of E1–E37 is superseded or removed.
+
+| Case | Requirement |
+|---|---|
+| **E38** | **Non-destructive duplicate conflict** — on a duplicate workflow id the operation reports `conflict`, returns **no candidate source**, and the existing workflow is **unchanged**: its owner, trigger and every step intact. Cross-category collisions remain accepted where Genome accepts them |
+| **E39** | **Compiler-derived owner preflight** — authoring resolves no reference itself; the accepted-owner set originates in a compiler projection of the original source (§5.1) |
+| **E40** | **Initiator-scoped governance preview** — the previewed gate set equals the effective gate set **for `STUDIO_OPERATOR`**, with the divergence under an agent initiator recorded so the scoping cannot silently regress (§8.2.1) |
+| **E41** | **Candidate state is not canonical before Create** — canonical source, graph and tree projections are unchanged while a preview is displayed; candidate projections never replace current ones (§23.1) |
+| **E42** | **No generic authoring dispatcher** — the public surface exposes exactly two named operations (`applyAddAgent`, `applyAddWorkflow`) and no dispatch or operation-name vocabulary |
+| **E43** | **Ungoverned execution emits no false approval evidence** — the ungoverned-owner case completes with **zero** `approval.*` and zero `policy.enforced` events |
+
 **Product acceptance.** A **recorded reviewer walkthrough** (§17) including the
 negative scenario (§18) and the "What caused this work to require approval?"
 question. **Mandatory, and not a CI gate.**
 
-## 23. Open questions for the Architecture Board
+## 23. Resolved questions (Architecture Board, ratified 2026-09-15)
 
-**OQ1 — Does §8.2 need its own ADR?** Drafter's assessment: no — it applies the
-existing projection model to a candidate input. The Board may disagree, since
-"views may compile a candidate to preview consequences" is a sentence future
-views will cite.
+All five questions the Draft referred to the Board are **resolved and ratified**
+(`docs/reviews/rfc-0011-board-review.md`). *(Amendment A4.)*
 
-**OQ2 — Should the preview compile the candidate, or should `applyAddWorkflow`
-return it for the caller to compile?** The operation already compiles the
-candidate internally to produce `invalid-result`. Returning that compiled product
-would avoid a second compile; keeping the surfaces separate keeps authoring's
-contract narrow (source in, source out). The drafter leans to the latter for
-contract cleanliness, and notes the cost is one extra synchronous compile of a
-small document.
+**OQ1 — no new ADR.** Candidate compilation is **ADR-0012 applied to transient
+source**, not a new durable architectural boundary. Studio already compiles on
+every edit; only the input's lifetime differs. ADR-0012 continues to own the
+semantic-authoring boundary.
 
-**OQ3 — Is `id` user-supplied or derived from a name?** §14 requires the user to
-supply what accepted semantics require. Deriving a kebab-case id from a typed
-name would be friendlier but puts an identifier-shaping rule in the product.
-Recommended: user-supplied, validated against the accepted identifier form, with
-the shaping question deferred.
+**OQ2 — the authoring result stays source-oriented.** `applyAddWorkflow` returns
+source or a structured failure and **must not return compiler targets** merely to
+save the extra compile. A narrow "source in, source out" contract is what keeps
+the boundary legible.
 
-**OQ4 — Should the governance preview appear before or only at creation?**
-§15 permits either. Before is stronger for understanding and costs a compile per
-owner change.
+**OQ3 — the user supplies the workflow id.** No id-generation, slug or
+identifier-shaping semantics are introduced. Studio may present the concept in
+understandable language but creates no durable identifier rule. The residual
+first-time-user friction is recorded as a **product UX concern to be observed in
+the acceptance walkthrough** (§17), not resolved by hidden derivation
+*(Amendment A7)*.
 
-**OQ5 — Does the ungoverned case need a stronger signal than neutral wording?**
-§18 requires accuracy, not discouragement. The Board may wish to fix how neutral
-that copy must be, to avoid implying a defect.
+**OQ4 — the preview occurs before Create** (§8.4).
+
+**OQ5 — ungoverned wording stays neutral and accurate** (§18).
+
+### 23.1 Candidate preview architecture (normative)
+
+**Before Create:**
+
+1. canonical source remains **unchanged**;
+2. Studio gathers `add-workflow` intent;
+3. `@genome/authoring` produces **candidate source**;
+4. Studio compiles that candidate using the **accepted compiler**;
+5. Studio derives effective governance **for the actual Studio initiator** (§8.2.1);
+6. Studio presents that governance consequence;
+7. candidate projections are **preview-only** and **never** replace the current
+   canonical organization projections.
+
+**After Create:**
+
+1. the successful source returned by `add-workflow` enters the **existing editor
+   source lifecycle**;
+2. existing auto-compile behaviour applies;
+3. normal compiler-derived projections replace the canonical projections when
+   current;
+4. the existing execution UI discovers the workflow from the compiled runtime
+   model.
 
 ## Constitutional check
 
@@ -555,8 +688,11 @@ that copy must be, to avoid implying a defect.
 
 ## Explicitly not authorized / not done by this RFC
 
-No phase or milestone is opened; Phase 4 Milestone 2 remains unopened. No
-implementation is authorized before ratification. Not commissioned: `add-policy`,
+No phase or milestone is opened; **Phase 4 Milestone 2 remains unopened and Phase
+5 remains uncommissioned.** Acceptance authorizes **exactly one** queue item —
+`@genome/authoring` (`add-workflow` only), the governance preview, and the
+minimal Studio Create-work integration — and nothing beyond it. **Gap 2 remains
+re-deferred and Gap 5 remains not reopened.** Not commissioned: `add-policy`,
 `add-team`, `add-department`, any edit/delete/move operation, generic CRUD or
 dispatch, a visual designer, team-governance semantics, Gap 2 (declarable human
 members), Gap 5 (non-conjunctive approvals), Gap 3 (artifacts), Gap 4 (control

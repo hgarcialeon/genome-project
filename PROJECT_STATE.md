@@ -1,6 +1,6 @@
 # Genome Project State
 
-Last Updated: 2026-09-13
+Last Updated: 2026-09-15
 
 This file is the **only** source for current project state (Governance
 Rule 8). Other documents point here; none may restate what this file owns.
@@ -202,23 +202,28 @@ commissioned, drafted, Board-reviewed, and **accepted 2026-07-18 under Option B*
 (accept with four clarifying amendments applied;
 `docs/reviews/rfc-0009-board-review.md`, Product Owner ratification). That
 acceptance **opened Phase 4 for Milestone 1 — Governed Authoring — only** and
-added one implementation item to `IMPLEMENTATION_QUEUE.md`. **The current
-objective is product discovery — "Make Engineering Perform Governed Work"
-(`docs/discovery/create-and-operate-a-governed-team.md`), commissioned by the
-Product Owner 2026-09-14 as "Create and Operate a Governed Team", with Q1–Q5
-dispositioned and the experiment refocused the same day (§8 of that
-document).** Discovery is a pre-RFC instrument: it decides nothing, opens no
-phase or milestone, commissions no RFC, and adds no queue item, so **there is no
-current engineering objective.** The disposition authorized the empirical
-pre-RFC analysis only; that analysis is **complete** (§9) and concludes that a
-single `add-workflow` operation is **sufficient** for the refocused journey using
-existing governance, with **no missing semantic capability** and no expansion to
-`add-policy` (§10). On that evidence the Product Owner **commissioned RFC
-drafting on 2026-09-14** (§11 of that document), and
-`RFC/0011-add-workflow-authoring-operation.md` is **drafted and awaiting
-Architecture Board review**. That commissioning act adds **no** queue item, opens
-no phase or milestone, and authorizes **no** `add-workflow` implementation. The
-last engineering objective — implementing RFC-0010
+added one implementation item to `IMPLEMENTATION_QUEUE.md`. **The current engineering
+objective is the implementation of RFC-0011 — Semantic Authoring Operations
+(`add-workflow`) — accepted 2026-09-15 under Option B with Architecture Board
+amendments A1–A7 applied** (`RFC/0011-add-workflow-authoring-operation.md`;
+`docs/reviews/rfc-0011-board-review.md` §30). It is carried by the **single**
+implementation item acceptance added to `IMPLEMENTATION_QUEUE.md` (High, **Not
+Started**): the `@genome/authoring` `add-workflow` operation, the
+compiler-derived governance preview, and the minimal Studio Create-work
+integration. **Implementation has not begun and is not authorized to begin until
+separately instructed.** Closure requires evidence **E1–E43** uncached **and** a
+recorded human product-acceptance walkthrough, which is not a CI gate.
+
+That objective arrived through the product discovery "Make Engineering Perform
+Governed Work" (`docs/discovery/create-and-operate-a-governed-team.md`),
+commissioned 2026-09-14 as "Create and Operate a Governed Team" and refocused the
+same day with Q1–Q5 dispositioned (§8). Discovery itself decided nothing and
+queued nothing; its empirical analysis concluded that a single `add-workflow`
+operation is **sufficient**, with **no missing semantic capability** and no
+expansion to `add-policy` (§9–§10), and on that evidence the Product Owner
+commissioned the RFC (§11). **Phase 4 Milestone 2 remains unopened, Phase 5
+remains uncommissioned, Gap 2 remains re-deferred, and Gap 5 remains not
+reopened.** The previous engineering objective — implementing RFC-0010
 (`@genome/authoring`, `add-agent` only) and the minimal Studio `add-agent`
 integration so that Milestone-1 product acceptance could be repeated — is
 discharged, and no work has been authorized to replace it. That objective had
@@ -411,13 +416,24 @@ the Autonomy Substrate, Office View or persistence.
   **empirical pre-RFC analysis only**; that analysis is complete (§9–§10) and
   found `add-workflow` **sufficient**. On that evidence the Product Owner
   **commissioned the RFC** the same day (§11); the discovery is **complete**
-- RFC-0011 — Semantic Authoring Operations (`add-workflow`): 📝 **Draft —
-  Architecture Board review held 2026-09-14, awaiting Product Owner
-  ratification** (`RFC/0011-add-workflow-authoring-operation.md`, commissioned
-  2026-09-14; review `docs/reviews/rfc-0011-board-review.md` on commit
-  `8f7a559`, every material claim re-executed). The Board recommends **Option B
-  — accept with amendments A1–A7** and **no new ADR**; nothing is applied and the
-  RFC is unmodified.
+- RFC-0011 — Semantic Authoring Operations (`add-workflow`): ✅ **Accepted**
+  2026-09-15 under **Option B** (accept with Architecture Board amendments
+  **A1–A7** applied; `RFC/0011-add-workflow-authoring-operation.md`; Board review
+  `docs/reviews/rfc-0011-board-review.md` held 2026-09-14 on commit `8f7a559`
+  with every material claim re-executed, Product Owner ratification recorded
+  there §30). The amendments: **A1** owner preflight strictly compiler-derived
+  (`agents[].reference` membership check; authoring resolves nothing); **A2** the
+  conflict invariant corrected — the accepted mutation mechanism overwrites
+  silently, so `add-workflow` must be **non-destructive**, with uniqueness scoped
+  to the top-level `workflows` mapping and no global uniqueness introduced;
+  **A3** the governance preview is **initiator-scoped** to the principal Studio
+  actually uses; **A4** OQ1–OQ5 resolved and the candidate-preview architecture
+  recorded; **A5** evidence **E38–E43** added and E23 strengthened; **A6**
+  accessibility non-negotiables; **A7** the id-supply friction recorded as a
+  product UX concern. **No new ADR** — `docs/adr/0012-semantic-authoring-boundary.md`
+  continues to own the boundary. Acceptance added **exactly one** implementation
+  item to `IMPLEMENTATION_QUEUE.md` (High, **Not Started**). **Implementation has
+  not begun and is not authorized to begin until separately instructed**
   Scoped to exactly one operation, with governance visibility in scope (its §8)
   sourced from `runtimeModelTarget` — `RuntimeWorkflow.governedBy` resolved
   against `RuntimePolicy.requiresApprovalFrom` — so Studio owns no
@@ -485,11 +501,15 @@ draining both queue items and marking the four shipped Phase 4 deliverables Done
 
 **There is no next expected engineering deliverable.** No milestone is authorized
 and no implementation work is in flight. The next expected deliverable is a
-**governance** one: the **Product Owner ratification of the Architecture Board's
-review of `RFC/0011-add-workflow-authoring-operation.md`**
-(`docs/reviews/rfc-0011-board-review.md`, held 2026-09-14, recommending Option B
-— accept with amendments A1–A7, no new ADR). The RFC remains **Draft** and
-unmodified until that ratification. The product
+an **engineering** one, for the first time since Milestone 1 closed: the
+**implementation of RFC-0011** — the `@genome/authoring` `add-workflow`
+operation, the compiler-derived governance preview, and the minimal Studio
+Create-work integration — carried by the single queue item that acceptance added.
+RFC-0011 is **Accepted** (2026-09-15, Option B, amendments A1–A7). **That
+implementation has not begun and is not authorized to begin until separately
+instructed**; the queue item stands **Not Started**. Closure will require
+evidence E1–E43 uncached **and** a recorded human product-acceptance walkthrough,
+which is not a CI gate. The product
 discovery that produced it
 (`docs/discovery/create-and-operate-a-governed-team.md`) is complete: Q1–Q5 are
 answered and its empirical pre-RFC analysis found no missing semantic
